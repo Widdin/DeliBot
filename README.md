@@ -1,3 +1,5 @@
+![DeliBot-Banner](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Delibot_banner.png)
+
 # DeliBot
 A Discord bot which help Pokémon GO communities to organize raids in Discord.  
 DeliBot is a Discord bot written in Python 3.6.
@@ -34,4 +36,4 @@ For e.g. `!raid entei 19:30 on github` will display:
 
 ## Contribute:
 If you want to contribute with something / contact me, then hit me up on:  
-Discord - Widdin#6289
+**Discord** - Widdin#6289
