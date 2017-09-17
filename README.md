@@ -1,7 +1,7 @@
 ![DeliBot-Banner](https://github.com/OfficialWiddin/DeliBot/blob/master/images/DBanner.png)
 
 # DeliBot
-A Discord bot which help Pokémon GO communities to organize raids in Discord.  
+A Discord bot that helps Pokémon GO communities to organize raids in Discord.  
 DeliBot is a Discord bot written in Python 3.6.
 
 
@@ -16,9 +16,9 @@ DeliBot is a Discord bot written in Python 3.6.
 
 
 ## Information:
-- Only the ones who has the role 'Admin' or 'Moderator' are able to use the commands.
+- Only the ones who has the role 'Admin' or 'Moderator' are able to use the ``!raid``-command.
 - DeliBot will remove his own reactions after 15 minutes (even thought they don't count, visual effect).
-- DeliBot will remove his message after 2 hours (to save performance).
+- DeliBot will remove his own embed-message after 2 hours (to save performance).
 - DeliBot will remove your command-message.
 - Only one team reaction will count and be displayed on the embed-message per user BUT if they are coming with multiple others they can react and combine 'One', 'Two' and 'Three' up to six extra players. Note that those 'extra' players will only count towards 'Total :' as they have no name.
 
