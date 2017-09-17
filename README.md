@@ -1,4 +1,4 @@
-![DeliBot-Banner](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Delibot_banner.png)
+![DeliBot-Banner](https://github.com/OfficialWiddin/DeliBot/blob/master/images/DBanner.png)
 
 # DeliBot
 A Discord bot which help Pokémon GO communities to organize raids in Discord.  
