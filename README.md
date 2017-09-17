@@ -27,9 +27,9 @@ DeliBot is a Discord bot written in Python 3.6.
 - `!install` - Imports necessary emojis to the server and checks if they are valid. 
 - `!help` - Displays available commands and other info.
 - `!raid <boss> <time> <place*>` - Starts a raid-message with the given information.  
--- `<boss>` - Needs to be one connected name, e.g. *Entei*.  
--- `<time>` - Needs to be one connected time, e.g. *12:00*.  
--- `<place>` - Can be multiple lines, e.g. *Center of town*.
+  | `<boss>` - Needs to be one connected name, e.g. *Entei*.  
+  | `<time>` - Needs to be one connected time, e.g. *12:00*.  
+  | `<place>` - Can be multiple lines, e.g. *Center of town*.
   
 For e.g. `!raid entei 19:30 on github` will display:  
 ![raid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Example.PNG)  
