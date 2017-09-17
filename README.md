@@ -8,12 +8,11 @@ DeliBot is a Discord bot written in Python 3.6.
 ## How to run DeliBot on your server:
 1. Invite DeliBot - https://discordapp.com/oauth2/authorize?client_id=354229190666616844&scope=bot&permissions=0
 2. Create a new role named **Bot**
-3. Keep all the default settings but also add **Manage messages** and **External emojis**.
+3. Keep all the default settings but also add **Manage messages** and **Manage Emojis**.
 4. Assign the **Bot**-role to DeliBot.
 5. Create a new role named **Admin** or/and **Moderator**
 6. Assign the role to yourself.
-7. ??
-8. Profit
+7. Run `!install` once.
 
 
 ## Information:
@@ -25,6 +24,7 @@ DeliBot is a Discord bot written in Python 3.6.
 
 
 ## Commands:
+- `!install` - Imports necessary emojis to the server and checks if they are valid. 
 - `!raid <boss> <time> <place*>` - Starts a raid-message with the given information.  
 - `<boss>` - Needs to be one connected name, e.g. *Entei*.  
 - `<time>` - Needs to be one connected time, e.g. *12:00*.  
