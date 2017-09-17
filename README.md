@@ -25,6 +25,7 @@ DeliBot is a Discord bot written in Python 3.6.
 
 ## Commands:
 - `!install` - Imports necessary emojis to the server and checks if they are valid. 
+- `!help` - Displays available commands and other info.
 - `!raid <boss> <time> <place*>` - Starts a raid-message with the given information.  
 - `<boss>` - Needs to be one connected name, e.g. *Entei*.  
 - `<time>` - Needs to be one connected time, e.g. *12:00*.  
