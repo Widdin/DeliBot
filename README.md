@@ -16,10 +16,10 @@ DeliBot is a Discord bot written in Python 3.6.
 
 
 ## Information:
-- Only the ones who has the role 'Admin' or 'Moderator' are able to use the ``!raid``-command.
-- DeliBot will remove his own reactions after 15 minutes (even thought they don't count, visual effect).
-- DeliBot will remove his own embed-message after 2 hours (to save performance).
-- DeliBot will remove your command-message.
+- Only the ones who has the role '**Admin**' or '**Moderator**' are able to use the ``!raid``-command.
+- DeliBot will remove his own reactions after 45 minutes (even thought they don't count, visual effect).
+- DeliBot will remove his own raid-message after 2 hours (to save performance).
+- DeliBot will remove your command-message (when you type e.g `!raid`).
 - Only one team reaction will count and be displayed on the embed-message per user BUT if they are coming with multiple others they can react and combine 'One', 'Two' and 'Three' up to six extra players. Note that those 'extra' players will only count towards 'Total :' as they have no name.
 
 
@@ -31,9 +31,13 @@ DeliBot is a Discord bot written in Python 3.6.
   | `<time>` - Needs to be one connected time, e.g. *12:00*.  
   | `<place>` - Can be multiple lines, e.g. *Center of town*.
   
-For e.g. `!raid entei 19:30 on github` will display:  
-![raid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Example.PNG)  
+For e.g. "`!raid entei 19:30 on github`" will display:  
+![Raid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Raid.PNG)
 
+- `!shortraid <boss> <time> <place*>` - Just like `!raid` but compressed.
+
+For e.g. "`!shortraid entei 19:30 also on github`" will display:  
+![ShortRaid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/ShortRaid.PNG)
 
 ## Contribute:
 If you want to contribute with something / contact me, then hit me up on:  
