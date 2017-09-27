@@ -29,15 +29,21 @@ DeliBot is a Discord bot written in Python 3.6.
 - `!raid <boss> <time> <place*>` - Starts a raid-message with the given information.  
   | `<boss>` - Needs to be one connected name, e.g. *Entei*.  
   | `<time>` - Needs to be one connected time, e.g. *12:00*.  
-  | `<place>` - Can be multiple lines, e.g. *Center of town*.
+  | `<place>` - Can be multiple lines, e.g. *Center of town*.  
+- `!shortraid <boss> <time> <place*>` - Just like "`!raid`" but compressed.
+- `!exraid <boss> <time> <day> <place*>` - Just like "`!raid`" but it lasts for 5 days and updates every 30min.  
+  | `<day>` - Needs to be one connected day, e.g. *Monday* or *Monday-(01/01/2017)*
   
 For e.g. "`!raid entei 19:30 on github`" will display:  
 ![Raid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Raid.PNG)
 
-- `!shortraid <boss> <time> <place*>` - Just like `!raid` but compressed.
 
 For e.g. "`!shortraid entei 19:30 also on github`" will display:  
 ![ShortRaid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/ShortRaid.PNG)
+
+
+For e.g. "`!exraid mewtwo 19:30 sunday on github`" will display:  
+![ExRaid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/ExRaid.png)
 
 ## Contribute:
 If you want to contribute with something / contact me, then hit me up on:  
