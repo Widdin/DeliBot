@@ -16,7 +16,8 @@ DeliBot is a Discord bot written in Python 3.6.
 
 
 ## Information:
-- Only the ones who has the role '**Admin**' or '**Moderator**' are able to use the ``!raid``-command.
+- Only the ones who has the role '**Admin**' or '**Moderator**' are able to use the ``!raid``-command.  
+- DeliBot updates the raid-message every 15 sec.
 - DeliBot will remove his own reactions after 45 minutes (even thought they don't count, visual effect).
 - DeliBot will remove his own raid-message after 2 hours (to save performance).
 - DeliBot will remove your command-message (when you type e.g `!raid`).
