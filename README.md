@@ -10,7 +10,7 @@ DeliBot is a Discord bot written in Python 3.6.
 2. Create a new role named **Bot**
 3. Keep all the default settings but also add **Manage messages** and **Manage Emojis**.
 4. Assign the **Bot**-role to DeliBot.
-5. Create a new role named **Admin** or/and **Moderator**
+5. Create a new role named **Admin** or/and **Moderator** or/and **Delibot** (Not case-sensitive).
 6. Assign the role to yourself.
 7. Run `!install` once.
 
