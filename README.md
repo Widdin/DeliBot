@@ -40,7 +40,7 @@ DeliBot is a Discord bot written in Python 3.6.
   
 - `!shortraid <boss> <time> <place*>` - Just like "`!raid`" but compressed.  
 
-- `!exraid <boss> <time> <day> <place*>` - Just like "`!raid`" but it lasts for 5 days and updates every 30min.  
+- `!exraid <boss> <time> <day> <place*>` - Just like "`!raid`" but it lasts for 10 days and updates every 30min.  
   | `<day>` - Needs to be one connected day, e.g. *Monday* or *Monday-(01/01/2017)*  
   
   
