@@ -4,6 +4,9 @@
 A Discord bot that helps Pokémon GO communities to organize raids in Discord.  
 DeliBot is a Discord bot written in Python 3.6.
 
+## Discord
+Join the server to get help, make a suggestion or just chat!  
+Invite - https://discord.gg/f2mkW8g  
 
 ## How to run DeliBot on your server:
 1. Invite DeliBot - https://discordapp.com/oauth2/authorize?client_id=354229190666616844&scope=bot&permissions=0
