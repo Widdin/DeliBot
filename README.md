@@ -42,10 +42,6 @@ For e.g. "`!raid entei 19:30 on github`" will display:
 ![Raid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Raid.PNG)
 
 
-For e.g. "`!shortraid entei 19:30 also on github`" will display:  
-![ShortRaid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/ShortRaid.PNG)
-
-
 For e.g. "`!exraid mewtwo 19:30 sunday on github`" will display:  
 ![ExRaid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/ExRaid.png)
 
