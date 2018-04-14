@@ -10,7 +10,7 @@ Invite - https://discord.gg/f2mkW8g
 
 ## How to run DeliBot on your server:
 1. Invite DeliBot - https://discordapp.com/oauth2/authorize?client_id=354229190666616844&scope=bot&permissions=1342532672
-2. Run `!install` once.
+2. Go to a channel in your server and run `!install` one time.
 
 
 ## Information:
