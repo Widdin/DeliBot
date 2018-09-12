@@ -121,7 +121,7 @@ For e.g "`!stats`" will display:
 
 
 For e.g "`!list raids`" will display:  
-![list-raids](https://raw.githubusercontent.com/OfficialWiddin/DeliBot/master/images/list_raid.PNG)
+![list-raids](https://raw.githubusercontent.com/OfficialWiddin/DeliBot/master/images/list_raids.PNG)
 
 ## Aliases:
 `!raid`   = `!Raid` / `!r` / `!R`  
