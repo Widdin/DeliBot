@@ -38,7 +38,7 @@ Get the stats of a user.
 - `stats overall` - Total stats for all servers.
 - `stats leaderboard` - Leaderboard for best stats.
 
-Get a list of the current raids / quests or gyms
+Server configuration
 - `set_gmt` - Set the GMT for the server.
 - `set_language` - Set the language for the server.
 - `set_ex_scan` - Set where to scan for ex-raid passes.
@@ -62,9 +62,6 @@ Link NEEDS to be in this format: https://www.google.com/maps/place/longitude,lat
 e.g https://www.google.com/maps/place/23.28273,47.97334
 
 BUT, If you use any other links the !find command and hyperlinks on locations will still work, the image just wont show up, thats all.
-
-
-
 - `del_gym {name}` - Delete any hyperlinked gym.
 
 
