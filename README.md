@@ -32,28 +32,28 @@ Invite - https://discord.gg/f2mkW8g
 #### Server-owner and administrators
 
 Get the stats of a user.
-- `stats` - Your own stats.
-- `stats @user` - Stats for a user.
-- `stats server` - Total stats for this server.
-- `stats overall` - Total stats for all servers.
-- `stats leaderboard` - Leaderboard for best stats.
+- `!stats` - Your own stats.
+- `!stats @user` - Stats for a user.
+- `!stats server` - Total stats for this server.
+- `!stats overall` - Total stats for all servers.
+- `!stats leaderboard` - Leaderboard for best stats.
 
 Server configuration
-- `set_gmt` - Set the GMT for the server.
-- `set_language` - Set the language for the server.
-- `set_ex_scan` - Set where to scan for ex-raid passes.
-- `set_profile_scan` - Set where to scan for team images.
-- `set_raid_channel` - Set where to post raids by default.
-- `set_ex_channel` - Set where to post ex-raids by default.
-- `unset_ex_scan` - Unset where to scan for ex-raid passes.
-- `unset_profile_scan` - Unset where to scan for team images.
-- `unset_raid_channel` - Unset where to post raids by default.
-- `unset_ex_channel` - Unset where to post ex-raids by default.
+- `!set_gmt` - Set the GMT for the server.
+- `!set_language` - Set the language for the server.
+- `!set_ex_scan` - Set where to scan for ex-raid passes.
+- `!set_profile_scan` - Set where to scan for team images.
+- `!set_raid_channel` - Set where to post raids by default.
+- `!set_ex_channel` - Set where to post ex-raids by default.
+- `!unset_ex_scan` - Unset where to scan for ex-raid passes.
+- `!unset_profile_scan` - Unset where to scan for team images.
+- `!unset_raid_channel` - Unset where to post raids by default.
+- `!unset_ex_channel` - Unset where to post ex-raids by default.
 - `!set_role_permission` Run this command and Delibot will ask you to tag a role by using `@`. The chosen role will now be granted permission to edit & delete ANY raid. They will also have permission to use `add_gym` / `del_gym`. 
 - `!unset_role_permission` Run this command and Delibot will remove the role you had set.
 
 #### Role specific, administrators and server owner
-- `add_gym  awesome gym name , link to google map` - Add a Gym to the database so it will appear as a hyperlink on raids.
+- `!add_gym  awesome gym name , link to google map` - Add a Gym to the database so it will appear as a hyperlink on raids.
 *Make sure to have , between the name and hyperlink*.
 
 If you want the !find gym-name command to show an image like this 
@@ -65,19 +65,19 @@ Link NEEDS to be in this format: https://www.google.com/maps/place/longitude,lat
 e.g https://www.google.com/maps/place/23.28273,47.97334
 
 BUT, If you use any other links the !find command and hyperlinks on locations will still work, the image just wont show up, thats all.
-- `del_gym {name}` - Delete any hyperlinked gym.
+- `!del_gym {name}` - Delete any hyperlinked gym.
 
 
 #### Everyone
 - `!help` - Displays available commands and other info.  
-- `list raids`
-- `list quests`
-- `list gyms`
-- `find {name}` - Get the google maps link to a location
-- `valor` - Sets your role to Valor.
-- `mystic` - Sets your role to Mystic
-- `instinct` - Sets your role to Instinct
-- `pokebox` - Useless but fun feature!
+- `!list raids`
+- `!list quests`
+- `!list gyms`
+- `!find {name}` - Get the google maps link to a location
+- `!valor` - Sets your role to Valor.
+- `!mystic` - Sets your role to Mystic
+- `!instinct` - Sets your role to Instinct
+- `!pokebox` - Useless but fun feature!
 - `!raid` - Opens a private message dialog to create a raid
 - `!raid {boss} {time} {location*}` - Starts a raid-message with the given information.  
   | `{boss}` - Needs to be one connected name, e.g. "*Entei*".  
