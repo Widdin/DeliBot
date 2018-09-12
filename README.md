@@ -1,3 +1,5 @@
+
+
 ![DeliBot-Banner](https://github.com/OfficialWiddin/DeliBot/blob/master/images/DBanner.png)
 
 # DeliBot
@@ -24,10 +26,59 @@ Invite - https://discord.gg/f2mkW8g
 
 
 ## Commands:
+#### Server-owner 
 - `!install` - Imports necessary emojis to the server (server-owner only) 
 
-- `!help` - Displays available commands and other info.  
+#### Server-owner and administrators
 
+Get the stats of a user.
+- `!stats` - Your own stats.
+- `!stats @user` - Stats for a user.
+- `!stats server` - Total stats for this server.
+- `!stats overall` - Total stats for all servers.
+- `!stats leaderboard` - Leaderboard for best stats.
+
+Server configuration
+- `!set_gmt` - Set the GMT for the server.
+- `!set_language` - Set the language for the server.
+- `!set_ex_scan` - Set where to scan for ex-raid passes.
+- `!set_profile_scan` - Set where to scan for team images.
+- `!set_raid_channel` - Set where to post raids by default.
+- `!set_ex_channel` - Set where to post ex-raids by default.
+- `!unset_ex_scan` - Unset where to scan for ex-raid passes.
+- `!unset_profile_scan` - Unset where to scan for team images.
+- `!unset_raid_channel` - Unset where to post raids by default.
+- `!unset_ex_channel` - Unset where to post ex-raids by default.
+- `!set_role_permission` Run this command and Delibot will ask you to tag a role by using `@`. The chosen role will now be granted permission to edit & delete ANY raid. They will also have permission to use `add_gym` / `del_gym`. 
+- `!unset_role_permission` Run this command and Delibot will remove the role you had set.
+
+#### Role specific, administrators and server owner
+- `!add_gym  awesome gym name , link to google map` - Add a Gym to the database so it will appear as a hyperlink on raids.
+*Make sure to have , between the name and hyperlink*.
+
+If you want the !find gym-name command to show an image like this 
+
+![raid-with-link](https://cdn.discordapp.com/attachments/416342787240230917/488314774292135937/unknown.png)
+
+
+Link NEEDS to be in this format: https://www.google.com/maps/place/longitude,latitude
+e.g https://www.google.com/maps/place/23.28273,47.97334
+
+BUT, If you use any other links the !find command and hyperlinks on locations will still work, the image just wont show up, thats all.
+- `!del_gym {name}` - Delete any hyperlinked gym.
+
+
+#### Everyone
+- `!help` - Displays available commands and other info.  
+- `!list raids`
+- `!list quests`
+- `!list gyms`
+- `!find {name}` - Get the google maps link to a location
+- `!valor` - Sets your role to Valor.
+- `!mystic` - Sets your role to Mystic
+- `!instinct` - Sets your role to Instinct
+- `!pokebox` - Useless but fun feature!
+- `!raid` - Opens a private message dialog to create a raid
 - `!raid {boss} {time} {location*}` - Starts a raid-message with the given information.  
   | `{boss}` - Needs to be one connected name, e.g. "*Entei*".  
   | `{time}` - Needs to be one connected time, e.g. "*12:00*".  
@@ -35,19 +86,7 @@ Invite - https://discord.gg/f2mkW8g
 
 - `!exraid {boss} {time} {day} {location*}` - Just like "`!raid`" but it lasts for 10 days and updates every 30min.  
   | `{day}` - Needs to be one connected day, e.g. "*Monday*" or "*Monday-(01/01/2017)*"  
-  
-- `!edit boss {id} {boss}` - Change the boss on a raid-message.  
-  | `{id}` - The number in the footer of the raid (1-500), e.g. "*89*".  
-  | `{boss}` - Needs to be one connected name, e.g. "*Mewtwo*".  
-
-- `!edit time {id} {time}` - Change the time on a raid-message.  
-  | `{id}` - The number in the footer of the raid (1-500), e.g. "*89*".  
-  | `{time}` - Needs to be one connected time, e.g. "*12:00*".  
-
-- `!edit location {id} {location*}` - Change the location on a raid-message.  
-  | `{id}` - The number in the footer of the raid (1-500), e.g. "*89*".  
-  | `{location*}` - Can be multiple lines, e.g. "*Center of town*".  
-  
+    
 - `!trade {pokémon have*} , {pokémon want*}` - Text & Image of what you want to trade in a clean Embed.  
   | `{pokémon have*}` - The pokémon you want to trade away, e.g. "*shiny aron*".  
   | `{pokémon want*}` - The pokémon you want to have, e.g. "*shiny ash pichu*".  
