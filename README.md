@@ -103,12 +103,25 @@ Get the stats of a user.
 Arguments marked with `*` can contain more than one word.  
 Do not include the `{` `}` brackets.
 
+*(Names are censored on github)*  
 For e.g. "`!raid entei 19:30 on github`" will display:  
-![Raid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/Raid.PNG)
+![Raid-message](https://raw.githubusercontent.com/OfficialWiddin/DeliBot/master/images/Raid.PNG)
 
 
 For e.g. "`!exraid mewtwo 19:30 sunday on github`" will display:  
-![ExRaid-message](https://github.com/OfficialWiddin/DeliBot/blob/master/images/ExRaid.png)
+![ExRaid-message](https://raw.githubusercontent.com/OfficialWiddin/DeliBot/master/images/ExRaid.PNG)  
+
+
+For e.g "`!research hatch 5 eggs, chansey, on github`" will display:  
+![Research](https://raw.githubusercontent.com/OfficialWiddin/DeliBot/master/images/research.PNG)
+
+
+For e.g "`!stats`" will display:  
+![Stats](https://raw.githubusercontent.com/OfficialWiddin/DeliBot/master/images/stats.PNG)
+
+
+For e.g "`!list raids`" will display:  
+![list-raids](https://raw.githubusercontent.com/OfficialWiddin/DeliBot/master/images/list_raid.PNG)
 
 ## Aliases:
 `!raid`   = `!Raid` / `!r` / `!R`  
