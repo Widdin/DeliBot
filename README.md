@@ -57,7 +57,10 @@ Server configuration
 *Make sure to have , between the name and hyperlink*.
 
 If you want the !find gym-name command to show an image like this 
+
 ![raid-with-link](https://cdn.discordapp.com/attachments/416342787240230917/488314774292135937/unknown.png)
+
+
 Link NEEDS to be in this format: https://www.google.com/maps/place/longitude,latitude
 e.g https://www.google.com/maps/place/23.28273,47.97334
 
