@@ -65,7 +65,7 @@ e.g `https://www.google.com/maps/place/23.28273,47.97334`
 - `!instinct` - Sets your role to Instinct.
 - `!pokebox` - Useless but fun feature!
 - `!raid` - Opens a private message dialog with Delibot, to create a Raid by answering questions.
-- `!raid {boss} {time} {location*}` - Starts a Raid with the given information, lasts for 2 hours.
+- `!raid {boss} {time} {location*}` - Starts a Raid with the given information, lasts for 2 hours.  
   | `{boss}` - Needs to be one connected name, e.g. "*Entei*".  
   | `{time}` - Needs to be one connected time, e.g. "*12:00*".  
   | `{location*}` - Can be multiple lines, e.g. "*Center of town*".  
@@ -73,11 +73,11 @@ e.g `https://www.google.com/maps/place/23.28273,47.97334`
 - `!exraid {boss} {time} {day} {location*}` - Just like "`!raid`" but it lasts for 14 days. 
   | `{day}` - Needs to be one connected day, e.g. "*Monday*" or "*Monday-(01/01/2017)*"  
     
-- `!trade {pokémon have*} , {pokémon want*}` - Text & Image of what you want to trade in a clean message. 
+- `!trade {pokémon have*} , {pokémon want*}` - Text & Image of what you want to trade in a clean message.  
   | `{pokémon have*}` - The pokémon you want to trade away, e.g. "*shiny aron*".  
   | `{pokémon want*}` - The pokémon you want to have, e.g. "*shiny ash pichu*".  
 
-- `!want {pokémon want*}` - Text & Image of what you want to have in a clean message.
+- `!want {pokémon want*}` - Text & Image of what you want to have in a clean message.  
   | `{pokémon want*}` - The pokémon you want to have, e.g. "*shiny ash pichu*".  
 
 - `!offer {pokémon have*}` - Text & Image of what you want to offer in a clean message.  
