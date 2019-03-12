@@ -72,7 +72,7 @@
 	"EDIT_QUESTION":{
 		"US": "What would you like to edit?",
 		"SE": "Vad vill du redigera?",
-		"FR": "What would you like to edit?",
+		"FR": "Que veux tu modifier?", 
 		"DE": "What would you like to edit?",
 		"NL": "What would you like to edit?",
 		"GR": "What would you like to edit?"
@@ -88,7 +88,7 @@
 	"THANK_YOU":{
 		"US": "Thank you",
 		"SE": "Tack",
-		"FR": "Thank you",
+		"FR": "Merci",
 		"DE": "Thank you",
 		"NL": "Thank you",
 		"GR": "Thank you"
@@ -99,7 +99,7 @@
 	"RAID_TIME":{
 		"US": "Time",
 		"SE": "Tid",
-		"FR": "Time",
+		"FR": "Heure",
 		"DE": "Time",
 		"NL": "Time",
 		"GR": "Time"
@@ -123,7 +123,7 @@
 	"RAID_BY":{
 		"US": "By",
 		"SE": "Av",
-		"FR": "By",
+		"FR": "Par",
 		"DE": "By",
 		"NL": "By",
 		"GR": "By"
@@ -131,7 +131,7 @@
 	"RAID_DAY":{
 		"US": "Day",
 		"SE": "Dag",
-		"FR": "Day",
+		"FR": "Jour",
 		"DE": "Day",
 		"NL": "Day",
 		"GR": "Day"
@@ -241,15 +241,15 @@
 	"WHAT_POKEMON":{
 		"US": "What Pokémon?",
 		"SE": "Vilken Pokémon?",
-		"FR": "What Pokémon?",
-		"DE": "What Pokémon?",
+		"FR": "Quel Pokemon?",
+		"DE": "What Pokemon?",
 		"NL": "What Pokémon?",
 		"GR": "What Pokémon?"
 	},
 	"WHAT_TIME":{
 		"US": "What time?",
 		"SE": "Vilken tid?",
-		"FR": "What time?",
+		"FR": "Quelle heure?",
 		"DE": "What time?",
 		"NL": "What time?",
 		"GR": "What time?"
@@ -257,7 +257,7 @@
 	"WHAT_LOCATION":{
 		"US": "What location?",
 		"SE": "Vilken plats?",
-		"FR": "What location?",
+		"FR": "Quel lieu?",
 		"DE": "What location?",
 		"NL": "What location?",
 		"GR": "What location?"
@@ -265,7 +265,7 @@
 	"RAID_CREATION":{
 		"US": "The raid will be created in",
 		"SE": "Raid kommer att skapas i",
-		"FR": "The raid will be created in",
+		"FR": "Le Raid sera créé dans",
 		"DE": "The raid will be created in",
 		"NL": "The raid will be created in",
 		"GR": "The raid will be created in"
