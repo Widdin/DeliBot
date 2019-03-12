@@ -1,0 +1,407 @@
+{
+	"FEATURED_POKEMON":{
+		"US": "Featured Pokémon",
+		"SE": "Dagens Pokémon",
+		"FR": "Featured Pokémon",
+		"DE": "Featured Pokémon",
+		"NL": "Featured Pokémon",
+		"GR": "Featured Pokémon"
+	},
+	"EXCLUSIVE_MOVE":{
+		"US": "Exclusive Move",
+		"SE": "Exklusiv Attack",
+		"FR": "Exclusive Move",
+		"DE": "Exclusive Move",
+		"NL": "Exclusive Move",
+		"GR": "Exclusive Move"
+	},
+	"BONUS":{
+		"US": "Bonus",
+		"SE": "Bonus",
+		"FR": "Bonus",
+		"DE": "Bonus",
+		"NL": "Bonus",
+		"GR": "Bonus"
+	},
+	"DATE":{
+		"US": "Date",
+		"SE": "Datum",
+		"FR": "Date",
+		"DE": "Date",
+		"NL": "Date",
+		"GR": "Date"
+	},
+	"OFFICIAL_PAGE":{
+		"US": "Official Page",
+		"SE": "Officiella Sidan",
+		"FR": "Official Page",
+		"DE": "Official Page",
+		"NL": "Official Page",
+		"GR": "Official Page"
+	},
+	"COMMUNITY_DAY":{
+		"US": "Community Day",
+		"SE": "Gemenskapsdagen",
+		"FR": "Community Day",
+		"DE": "Community Day",
+		"NL": "Community Day",
+		"GR": "Community Day"
+	},
+	
+	
+	
+	"INSUFFICIENT_PERM":{
+		"US": "Insufficient permission",
+		"SE": "Otillräckligt tillstånd",
+		"FR": "Insufficient permission",
+		"DE": "Insufficient permission",
+		"NL": "Insufficient permission",
+		"GR": "Insufficient permission"
+	},
+	"NO_PERMISSION":{
+		"US": "You do not have permission to run this command.",
+		"SE": "Du har inte behörighet att köra detta kommando.",
+		"FR": "You do not have permission to run this command.",
+		"DE": "You do not have permission to run this command.",
+		"NL": "You do not have permission to run this command.",
+		"GR": "You do not have permission to run this command."
+	},
+	
+	
+	
+	"EDIT_QUESTION":{
+		"US": "What would you like to edit?",
+		"SE": "Vad vill du redigera?",
+		"FR": "What would you like to edit?",
+		"DE": "What would you like to edit?",
+		"NL": "What would you like to edit?",
+		"GR": "What would you like to edit?"
+	},
+	"EDIT_TYPE":{
+		"US": "Type a new",
+		"SE": "Skriv en ny",
+		"FR": "Type a new",
+		"DE": "Type a new",
+		"NL": "Type a new",
+		"GR": "Type a new"
+	},
+	"THANK_YOU":{
+		"US": "Thank you",
+		"SE": "Tack",
+		"FR": "Thank you",
+		"DE": "Thank you",
+		"NL": "Thank you",
+		"GR": "Thank you"
+	},
+	
+	
+	
+	"RAID_TIME":{
+		"US": "Time",
+		"SE": "Tid",
+		"FR": "Time",
+		"DE": "Time",
+		"NL": "Time",
+		"GR": "Time"
+	},
+	"RAID_LOCATION":{
+		"US": "Location",
+		"SE": "Plats",
+		"FR": "Location",
+		"DE": "Location",
+		"NL": "Location",
+		"GR": "Location"
+	},
+	"RAID_TOTAL":{
+		"US": "Total",
+		"SE": "Totalt",
+		"FR": "Total",
+		"DE": "Total",
+		"NL": "Total",
+		"GR": "Total"
+	},
+	"RAID_BY":{
+		"US": "By",
+		"SE": "Av",
+		"FR": "By",
+		"DE": "By",
+		"NL": "By",
+		"GR": "By"
+	},
+	"RAID_DAY":{
+		"US": "Day",
+		"SE": "Dag",
+		"FR": "Day",
+		"DE": "Day",
+		"NL": "Day",
+		"GR": "Day"
+	},
+	
+	
+	
+	"IMAGE_FAILED":{
+		"US": "Failed to scan image",
+		"SE": "Misslyckades att skanna bild",
+		"FR": "Failed to scan image",
+		"DE": "Failed to scan image",
+		"NL": "Failed to scan image",
+		"GR": "Failed to scan image"
+	},
+	"IMAGE_FAILED_DESC":{
+		"US": "Save the image and send it to Dimios#0592 if the problem occurs often.",
+		"SE": "Spara bilden och skicka den till Dimios#0592 om problemet uppstår ofta.",
+		"FR": "Save the image and send it to Dimios#0592 if the problem occurs often.",
+		"DE": "Save the image and send it to Dimios#0592 if the problem occurs often.",
+		"NL": "Save the image and send it to Dimios#0592 if the problem occurs often.",
+		"GR": "Save the image and send it to Dimios#0592 if the problem occurs often."
+	},
+	"WARNING":{
+		"US": "Warning",
+		"SE": "Varning",
+		"FR": "Warning",
+		"DE": "Warning",
+		"NL": "Warning",
+		"GR": "Warning"
+	},
+	"ERROR":{
+		"US": "Error",
+		"SE": "Fel",
+		"FR": "Error",
+		"DE": "Error",
+		"NL": "Error",
+		"GR": "Error"
+	},
+	"RAID_EXIST":{
+		"US": "This raid already exists, so it will not be created.",
+		"SE": "Denna raid finns redan, så den kommer inte att skapas.",
+		"FR": "This raid already exists, so it will not be created.",
+		"DE": "This raid already exists, so it will not be created.",
+		"NL": "This raid already exists, so it will not be created.",
+		"GR": "This raid already exists, so it will not be created."
+	},
+	"MISSING_ROLE":{
+		"US": "Missing role",
+		"SE": "Saknad roll",
+		"FR": "Missing role",
+		"DE": "Missing role",
+		"NL": "Missing role",
+		"GR": "Missing role"
+	},
+	"MISSING_ROLE_DESC":{
+		"US": "The role was not found. Create the role and try again.",
+		"SE": "Rollen hittades inte. Skapa rollen och försök igen.",
+		"FR": "The role was not found. Create the role and try again.",
+		"DE": "The role was not found. Create the role and try again.",
+		"NL": "The role was not found. Create the role and try again.",
+		"GR": "The role was not found. Create the role and try again."
+	},
+	"TEAM_ALREADY_ASSIGNED":{
+		"US": "Team already assigned",
+		"SE": "Lag redan tilldelat",
+		"FR": "Team already assigned",
+		"DE": "Team already assigned",
+		"NL": "Team already assigned",
+		"GR": "Team already assigned"
+	},
+	"TEAM_ALREADY_ASSIGNED_DESC":{
+		"US": "You already have a team-role assigned.",
+		"SE": "Du har redan ett lag tilldelat.",
+		"FR": "You already have a team-role assigned.",
+		"DE": "You already have a team-role assigned.",
+		"NL": "You already have a team-role assigned.",
+		"GR": "You already have a team-role assigned."
+	},
+	"MISSING_PERM":{
+		"US": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
+		"SE": "Jag har inte behörighet att lägga till roller. Vänligen aktivera 'Hantera roller' på min roll.",
+		"FR": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
+		"DE": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
+		"NL": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
+		"GR": "I don't have permission to add roles. Please enable 'Manage Roles' on my role."
+	},
+	"TEAM_WELCOME":{
+		"US": "Welcome to",
+		"SE": "Välkommen till",
+		"FR": "Welcome to",
+		"DE": "Welcome to",
+		"NL": "Welcome to",
+		"GR": "Welcome to"
+	},
+	"TEAM_WELCOME_DESC":{
+		"US": "Your team has been updated.",
+		"SE": "Ditt lag har uppdaterats.",
+		"FR": "Your team has been updated.",
+		"DE": "Your team has been updated.",
+		"NL": "Your team has been updated.",
+		"GR": "Your team has been updated."
+	},
+	
+	
+	
+	"WHAT_POKEMON":{
+		"US": "What Pokémon?",
+		"SE": "Vilken Pokémon?",
+		"FR": "What Pokémon?",
+		"DE": "What Pokémon?",
+		"NL": "What Pokémon?",
+		"GR": "What Pokémon?"
+	},
+	"WHAT_TIME":{
+		"US": "What time?",
+		"SE": "Vilken tid?",
+		"FR": "What time?",
+		"DE": "What time?",
+		"NL": "What time?",
+		"GR": "What time?"
+	},
+	"WHAT_LOCATION":{
+		"US": "What location?",
+		"SE": "Vilken plats?",
+		"FR": "What location?",
+		"DE": "What location?",
+		"NL": "What location?",
+		"GR": "What location?"
+	},
+	"RAID_CREATION":{
+		"US": "The raid will be created in",
+		"SE": "Raid kommer att skapas i",
+		"FR": "The raid will be created in",
+		"DE": "The raid will be created in",
+		"NL": "The raid will be created in",
+		"GR": "The raid will be created in"
+	},
+	
+	
+	
+	"WHAT_QUEST":{
+		"US": "What quest?",
+		"SE": "Vilket uppdrag?",
+		"FR": "What quest?",
+		"DE": "What quest?",
+		"NL": "What quest?",
+		"GR": "What quest?"
+	},
+	"WHAT_REWARD":{
+		"US": "What reward?",
+		"SE": "Vilken belöning?",
+		"FR": "What reward?",
+		"DE": "What reward?",
+		"NL": "What reward?",
+		"GR": "What reward?"
+	},
+	"WHAT_POKESTOP":{
+		"US": "What pokestop?",
+		"SE": "Vilket pokestop?",
+		"FR": "What pokestop?",
+		"DE": "What pokestop?",
+		"NL": "What pokestop?",
+		"GR": "What pokestop?"
+	},
+	"TYPE_BELOW":{
+		"US": "Type below:",
+		"SE": "Skriv nedan:",
+		"FR": "Type below:",
+		"DE": "Type below:",
+		"NL": "Type below:",
+		"GR": "Type below:"
+	},
+	"QUEST_CREATION":{
+		"US": "The research will be created in",
+		"SE": "Questen kommer att skapas i",
+		"FR": "The research will be created in",
+		"DE": "The research will be created in",
+		"NL": "The research will be created in",
+		"GR": "The research will be created in"
+	},
+	"QUEST":{
+		"US": "Quest",
+		"SE": "Uppdrag",
+		"FR": "Quest",
+		"DE": "Quest",
+		"NL": "Quest",
+		"GR": "Quest"
+	},
+	"QUEST_REWARD":{
+		"US": "Reward",
+		"SE": "Belöning",
+		"FR": "Reward",
+		"DE": "Reward",
+		"NL": "Reward",
+		"GR": "Reward"
+	},
+	
+	
+	
+	"NAME_NOT_FOUND":{
+		"US": "Sorry, your name was not found.",
+		"SE": "Tyvärr, ditt namn hittades inte.",
+		"FR": "Sorry, your name was not found.",
+		"DE": "Sorry, your name was not found.",
+		"NL": "Sorry, your name was not found.",
+		"GR": "Sorry, your name was not found."
+	},
+	"NAME_NOT_FOUND_DESC":{
+		"US": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
+		"SE": "Prova att rapportera en Research Quest eller skapa en Raid som löper ut med minst 2 personer som deltar.",
+		"FR": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
+		"DE": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
+		"NL": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
+		"GR": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending."
+	},
+	"STATS":{
+		"US": "Stats for",
+		"SE": "Statistik för",
+		"FR": "Stats for",
+		"DE": "Stats for",
+		"NL": "Stats for",
+		"GR": "Stats for"
+	},
+	"RAIDS_JOINED":{
+		"US": "Raids Joined:",
+		"SE": "Raider Deltagna:",
+		"FR": "Raids Joined:",
+		"DE": "Raids Joined:",
+		"NL": "Raids Joined:",
+		"GR": "Raids Joined:"
+	},
+	"RAIDS_CREATED":{
+		"US": "Raids Created:",
+		"SE": "Raider Skapade:",
+		"FR": "Raids Created:",
+		"DE": "Raids Created:",
+		"NL": "Raids Created:",
+		"GR": "Raids Created:"
+	},
+	"RESEARCH_CREATED":{
+		"US": "Research Created:",
+		"SE": "Research Skapade:",
+		"FR": "Research Created:",
+		"DE": "Research Created:",
+		"NL": "Research Created:",
+		"GR": "Research Created:"
+	},
+	"CONTRIBUTOR":{
+		"US": "Contributor:",
+		"SE": "Bidragsgivare:",
+		"FR": "Contributor:",
+		"DE": "Contributor:",
+		"NL": "Contributor:",
+		"GR": "Contributor:"
+	},
+	"Leaderboard":{
+		"US": "Leaderboard for:",
+		"SE": "Topplista för:",
+		"FR": "Leaderboard for:",
+		"DE": "Leaderboard for:",
+		"NL": "Leaderboard for:",
+		"GR": "Leaderboard for:"
+	},
+	"FUSION_ERROR":{
+		"US": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
+		"SE": "Tänk på att endast generation 1 finns, och du måste stava Pokémon korrekt.",
+		"FR": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
+		"DE": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
+		"NL": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
+		"GR": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly."
+	}
+}
