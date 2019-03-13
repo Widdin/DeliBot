@@ -39,7 +39,8 @@ Server configuration
 - `!unset_raid_channel` - Unset where to post Raids by default.
 - `!unset_ex_channel` - Unset where to post EX-Raids by default.
 - `!set_role_permission` - Delibot will ask you to tag a role by using `@`. The role will be granted permission to edit and delete any Raid, also permission to use `add_gym` / `del_gym`. 
-- `!unset_role_permission` - This will remove the role you had set.
+- `!unset_role_permission` - This will remove the role you had set.  
+- `!set_overview` - Set where to show an overview-message of active raids, updates every 2nd minute.
 
 #### Server-owner, Administrators, Role Specific
 - `!add_gym  {gym name} , {url}` - Adds the Gym to the database, so it will appear as a hyperlink on Raids.  
