@@ -3,7 +3,7 @@
 		"US": "Featured Pokémon",
 		"SE": "Dagens Pokémon",
 		"FR": "Featured Pokémon",
-		"DE": "Featured Pokémon",
+		"DE": "Pokémon des Tages",
 		"NL": "Featured Pokémon",
 		"GR": "Featured Pokémon"
 	},
@@ -11,7 +11,7 @@
 		"US": "Exclusive Move",
 		"SE": "Exklusiv Attack",
 		"FR": "Exclusive Move",
-		"DE": "Exclusive Move",
+		"DE": "Exklusive Attacke",
 		"NL": "Exclusive Move",
 		"GR": "Exclusive Move"
 	},
@@ -27,7 +27,7 @@
 		"US": "Date",
 		"SE": "Datum",
 		"FR": "Date",
-		"DE": "Date",
+		"DE": "Datum",
 		"NL": "Date",
 		"GR": "Date"
 	},
@@ -35,7 +35,7 @@
 		"US": "Official Page",
 		"SE": "Officiella Sidan",
 		"FR": "Official Page",
-		"DE": "Official Page",
+		"DE": "Offizielle Seite",
 		"NL": "Official Page",
 		"GR": "Official Page"
 	},
@@ -54,7 +54,7 @@
 		"US": "Insufficient permission",
 		"SE": "Otillräckligt tillstånd",
 		"FR": "Insufficient permission",
-		"DE": "Insufficient permission",
+		"DE": "Unzureichende Berechtigung",
 		"NL": "Insufficient permission",
 		"GR": "Insufficient permission"
 	},
@@ -62,7 +62,7 @@
 		"US": "You do not have permission to run this command.",
 		"SE": "Du har inte behörighet att köra detta kommando.",
 		"FR": "You do not have permission to run this command.",
-		"DE": "You do not have permission to run this command.",
+		"DE": "Du hast keine Berechtigung diesen Befehl auszuführen.",
 		"NL": "You do not have permission to run this command.",
 		"GR": "You do not have permission to run this command."
 	},
@@ -73,7 +73,7 @@
 		"US": "What would you like to edit?",
 		"SE": "Vad vill du redigera?",
 		"FR": "Que veux tu modifier?", 
-		"DE": "What would you like to edit?",
+		"DE": "Was möchtest du ändern?",
 		"NL": "What would you like to edit?",
 		"GR": "What would you like to edit?"
 	},
@@ -81,7 +81,7 @@
 		"US": "Type a new",
 		"SE": "Skriv en ny",
 		"FR": "Type a new",
-		"DE": "Type a new",
+		"DE": "Ändere die/das/den",
 		"NL": "Type a new",
 		"GR": "Type a new"
 	},
@@ -89,7 +89,7 @@
 		"US": "Thank you",
 		"SE": "Tack",
 		"FR": "Merci",
-		"DE": "Thank you",
+		"DE": "Vielen Dank",
 		"NL": "Thank you",
 		"GR": "Thank you"
 	},
@@ -100,7 +100,7 @@
 		"US": "Time",
 		"SE": "Tid",
 		"FR": "Heure",
-		"DE": "Time",
+		"DE": "Uhrzeit",
 		"NL": "Time",
 		"GR": "Time"
 	},
@@ -108,7 +108,7 @@
 		"US": "Location",
 		"SE": "Plats",
 		"FR": "Location",
-		"DE": "Location",
+		"DE": "Ort",
 		"NL": "Location",
 		"GR": "Location"
 	},
@@ -116,7 +116,7 @@
 		"US": "Total",
 		"SE": "Totalt",
 		"FR": "Total",
-		"DE": "Total",
+		"DE": "Insgesamt",
 		"NL": "Total",
 		"GR": "Total"
 	},
@@ -124,7 +124,7 @@
 		"US": "By",
 		"SE": "Av",
 		"FR": "Par",
-		"DE": "By",
+		"DE": "Von",
 		"NL": "By",
 		"GR": "By"
 	},
@@ -132,7 +132,7 @@
 		"US": "Day",
 		"SE": "Dag",
 		"FR": "Jour",
-		"DE": "Day",
+		"DE": "Tag",
 		"NL": "Day",
 		"GR": "Day"
 	},
@@ -143,7 +143,7 @@
 		"US": "Failed to scan image",
 		"SE": "Misslyckades att skanna bild",
 		"FR": "Failed to scan image",
-		"DE": "Failed to scan image",
+		"DE": "Fehler beim Scannen des Bildes",
 		"NL": "Failed to scan image",
 		"GR": "Failed to scan image"
 	},
@@ -151,7 +151,7 @@
 		"US": "Save the image and send it to Dimios#0592 if the problem occurs often.",
 		"SE": "Spara bilden och skicka den till Dimios#0592 om problemet uppstår ofta.",
 		"FR": "Save the image and send it to Dimios#0592 if the problem occurs often.",
-		"DE": "Save the image and send it to Dimios#0592 if the problem occurs often.",
+		"DE": "Speichere das Bild und schicke es an Dimios#0592, wenn das Problem häufiger auftritt.",
 		"NL": "Save the image and send it to Dimios#0592 if the problem occurs often.",
 		"GR": "Save the image and send it to Dimios#0592 if the problem occurs often."
 	},
@@ -159,7 +159,7 @@
 		"US": "Warning",
 		"SE": "Varning",
 		"FR": "Warning",
-		"DE": "Warning",
+		"DE": "Warnung",
 		"NL": "Warning",
 		"GR": "Warning"
 	},
@@ -167,7 +167,7 @@
 		"US": "Error",
 		"SE": "Fel",
 		"FR": "Error",
-		"DE": "Error",
+		"DE": "Fehler",
 		"NL": "Error",
 		"GR": "Error"
 	},
@@ -175,7 +175,7 @@
 		"US": "This raid already exists, so it will not be created.",
 		"SE": "Denna raid finns redan, så den kommer inte att skapas.",
 		"FR": "This raid already exists, so it will not be created.",
-		"DE": "This raid already exists, so it will not be created.",
+		"DE": "Dieser Raid ist bereits vorhanden und wird daher nicht erstellt.",
 		"NL": "This raid already exists, so it will not be created.",
 		"GR": "This raid already exists, so it will not be created."
 	},
@@ -183,7 +183,7 @@
 		"US": "Missing role",
 		"SE": "Saknad roll",
 		"FR": "Missing role",
-		"DE": "Missing role",
+		"DE": "Fehlende Rolle",
 		"NL": "Missing role",
 		"GR": "Missing role"
 	},
@@ -191,7 +191,7 @@
 		"US": "The role was not found. Create the role and try again.",
 		"SE": "Rollen hittades inte. Skapa rollen och försök igen.",
 		"FR": "The role was not found. Create the role and try again.",
-		"DE": "The role was not found. Create the role and try again.",
+		"DE": "Die Rolle wurde nicht gefunden. Erstelle die Rolle und versuche es erneut.",
 		"NL": "The role was not found. Create the role and try again.",
 		"GR": "The role was not found. Create the role and try again."
 	},
@@ -199,7 +199,7 @@
 		"US": "Team already assigned",
 		"SE": "Lag redan tilldelat",
 		"FR": "Team already assigned",
-		"DE": "Team already assigned",
+		"DE": "Team bereits zugewiesen",
 		"NL": "Team already assigned",
 		"GR": "Team already assigned"
 	},
@@ -207,7 +207,7 @@
 		"US": "You already have a team-role assigned.",
 		"SE": "Du har redan ett lag tilldelat.",
 		"FR": "You already have a team-role assigned.",
-		"DE": "You already have a team-role assigned.",
+		"DE": "Du hast bereits eine zugewiesene Teamrolle.",
 		"NL": "You already have a team-role assigned.",
 		"GR": "You already have a team-role assigned."
 	},
@@ -215,7 +215,7 @@
 		"US": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
 		"SE": "Jag har inte behörighet att lägga till roller. Vänligen aktivera 'Hantera roller' på min roll.",
 		"FR": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
-		"DE": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
+		"DE": "Ich habe keine Berechtigung Rollen hinzuzufügen. Bitte aktiviere dies für mich in der 'Rollenverwaltung'.",
 		"NL": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
 		"GR": "I don't have permission to add roles. Please enable 'Manage Roles' on my role."
 	},
@@ -223,7 +223,7 @@
 		"US": "Welcome to",
 		"SE": "Välkommen till",
 		"FR": "Welcome to",
-		"DE": "Welcome to",
+		"DE": "Willkommen bei",
 		"NL": "Welcome to",
 		"GR": "Welcome to"
 	},
@@ -231,7 +231,7 @@
 		"US": "Your team has been updated.",
 		"SE": "Ditt lag har uppdaterats.",
 		"FR": "Your team has been updated.",
-		"DE": "Your team has been updated.",
+		"DE": "Dein Team wurde aktualisiert.",
 		"NL": "Your team has been updated.",
 		"GR": "Your team has been updated."
 	},
@@ -242,7 +242,7 @@
 		"US": "What Pokémon?",
 		"SE": "Vilken Pokémon?",
 		"FR": "Quel Pokemon?",
-		"DE": "What Pokemon?",
+		"DE": "Welches Pokemon?",
 		"NL": "What Pokémon?",
 		"GR": "What Pokémon?"
 	},
@@ -250,7 +250,7 @@
 		"US": "What time?",
 		"SE": "Vilken tid?",
 		"FR": "Quelle heure?",
-		"DE": "What time?",
+		"DE": "Welche Uhrzeit?",
 		"NL": "What time?",
 		"GR": "What time?"
 	},
@@ -258,7 +258,7 @@
 		"US": "What location?",
 		"SE": "Vilken plats?",
 		"FR": "Quel lieu?",
-		"DE": "What location?",
+		"DE": "Welcher Ort?",
 		"NL": "What location?",
 		"GR": "What location?"
 	},
@@ -266,7 +266,7 @@
 		"US": "The raid will be created in",
 		"SE": "Raid kommer att skapas i",
 		"FR": "Le Raid sera créé dans",
-		"DE": "The raid will be created in",
+		"DE": "Der Raid wurde erstellt im Kanal",
 		"NL": "The raid will be created in",
 		"GR": "The raid will be created in"
 	},
@@ -277,7 +277,7 @@
 		"US": "What quest?",
 		"SE": "Vilket uppdrag?",
 		"FR": "What quest?",
-		"DE": "What quest?",
+		"DE": "Welche Feldforschung?",
 		"NL": "What quest?",
 		"GR": "What quest?"
 	},
@@ -285,7 +285,7 @@
 		"US": "What reward?",
 		"SE": "Vilken belöning?",
 		"FR": "What reward?",
-		"DE": "What reward?",
+		"DE": "Welche Belohnung?",
 		"NL": "What reward?",
 		"GR": "What reward?"
 	},
@@ -293,7 +293,7 @@
 		"US": "What pokestop?",
 		"SE": "Vilket pokestop?",
 		"FR": "What pokestop?",
-		"DE": "What pokestop?",
+		"DE": "Welcher PokéStop?",
 		"NL": "What pokestop?",
 		"GR": "What pokestop?"
 	},
@@ -301,7 +301,7 @@
 		"US": "Type below:",
 		"SE": "Skriv nedan:",
 		"FR": "Type below:",
-		"DE": "Type below:",
+		"DE": "Gib unten ein:",
 		"NL": "Type below:",
 		"GR": "Type below:"
 	},
@@ -309,7 +309,7 @@
 		"US": "The research will be created in",
 		"SE": "Questen kommer att skapas i",
 		"FR": "The research will be created in",
-		"DE": "The research will be created in",
+		"DE": "Die Feldforschung wurde erstellt im Kanal",
 		"NL": "The research will be created in",
 		"GR": "The research will be created in"
 	},
@@ -317,7 +317,7 @@
 		"US": "Quest",
 		"SE": "Uppdrag",
 		"FR": "Quest",
-		"DE": "Quest",
+		"DE": "Feldforschung",
 		"NL": "Quest",
 		"GR": "Quest"
 	},
@@ -325,7 +325,7 @@
 		"US": "Reward",
 		"SE": "Belöning",
 		"FR": "Reward",
-		"DE": "Reward",
+		"DE": "Belohnung",
 		"NL": "Reward",
 		"GR": "Reward"
 	},
@@ -336,7 +336,7 @@
 		"US": "Sorry, your name was not found.",
 		"SE": "Tyvärr, ditt namn hittades inte.",
 		"FR": "Sorry, your name was not found.",
-		"DE": "Sorry, your name was not found.",
+		"DE": "Entschuldige, dein Name wurde nicht gefunden.",
 		"NL": "Sorry, your name was not found.",
 		"GR": "Sorry, your name was not found."
 	},
@@ -344,7 +344,7 @@
 		"US": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
 		"SE": "Prova att rapportera en Research Quest eller skapa en Raid som löper ut med minst 2 personer som deltar.",
 		"FR": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
-		"DE": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
+		"DE": "Versuche eine Feldforschung oder einen Raid mit mindestens 2 Teilnehmern zu erstellen.",
 		"NL": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
 		"GR": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending."
 	},
@@ -352,7 +352,7 @@
 		"US": "Stats for",
 		"SE": "Statistik för",
 		"FR": "Stats for",
-		"DE": "Stats for",
+		"DE": "Statistik für",
 		"NL": "Stats for",
 		"GR": "Stats for"
 	},
@@ -360,7 +360,7 @@
 		"US": "Raids Joined:",
 		"SE": "Raider Deltagna:",
 		"FR": "Raids Joined:",
-		"DE": "Raids Joined:",
+		"DE": "Raids abgeschlossen:",
 		"NL": "Raids Joined:",
 		"GR": "Raids Joined:"
 	},
@@ -368,7 +368,7 @@
 		"US": "Raids Created:",
 		"SE": "Raider Skapade:",
 		"FR": "Raids Created:",
-		"DE": "Raids Created:",
+		"DE": "Raids erstellt:",
 		"NL": "Raids Created:",
 		"GR": "Raids Created:"
 	},
@@ -376,7 +376,7 @@
 		"US": "Research Created:",
 		"SE": "Research Skapade:",
 		"FR": "Research Created:",
-		"DE": "Research Created:",
+		"DE": "Feldforschungen erstellt:",
 		"NL": "Research Created:",
 		"GR": "Research Created:"
 	},
@@ -384,7 +384,7 @@
 		"US": "Contributor:",
 		"SE": "Bidragsgivare:",
 		"FR": "Contributor:",
-		"DE": "Contributor:",
+		"DE": "Unterstützer:",
 		"NL": "Contributor:",
 		"GR": "Contributor:"
 	},
@@ -392,7 +392,7 @@
 		"US": "Leaderboard for:",
 		"SE": "Topplista för:",
 		"FR": "Leaderboard for:",
-		"DE": "Leaderboard for:",
+		"DE": "Bestenliste für:",
 		"NL": "Leaderboard for:",
 		"GR": "Leaderboard for:"
 	},
@@ -400,7 +400,7 @@
 		"US": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
 		"SE": "Tänk på att endast generation 1 finns, och du måste stava Pokémon korrekt.",
 		"FR": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
-		"DE": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
+		"DE": "Denke daran, dass das hierfür nur die 1. Generation existiert und da das Pokémon korrekt geschrieben hast.",
 		"NL": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
 		"GR": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly."
 	}
