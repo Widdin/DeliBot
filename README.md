@@ -43,16 +43,12 @@ Server configuration
 - `!set_overview` - Set where to show an overview-message of active raids, updates every 2nd minute.
 
 #### Server-owner, Administrators, Role Specific
-- `!add_gym  {gym name} , {url}` - Adds the Gym to the database, so it will appear as a hyperlink on Raids.  
-
-If you want `!find gym-name` to show an image like below, the hyperlink NEEDS to be in this format:  
-`https://www.google.com/maps/place/longitude,latitude`  
-e.g `https://www.google.com/maps/place/23.28273,47.97334`  
+- `!create gym  {gym name} {lat} {lon}` - Adds the Gym to the database, so it will appear as a hyperlink on Raids.  
 
 ![raid-with-link](https://cdn.discordapp.com/attachments/416342787240230917/488314774292135937/unknown.png)  
 *But If you don't care about the image, any other hyperlink works.*
 
-- `!del_gym {gym name}` - Delete a hyperlinked Gym from the database.
+- `!delete gym {gym name}` - Delete a hyperlinked Gym from the database.
 
 
 #### Everyone
