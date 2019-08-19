@@ -23,33 +23,56 @@ Invite - https://discord.gg/f2mkW8g
 
 ## Commands:
 #### Server-owner 
-- `!install` - Imports necessary emojis to the server.
+- `!install` - Uploads necessary emojis to the server in order to work correctly.
 
 #### Server-owner and administrators
 
-Server configuration
-- `!set_gmt` - Set the GMT for the server.
+##### Server configuration
+
+- `!set_raid_channel` - Any Raid that gets created will be automagically posted in this channel. You will be asked to tag a channel by using #. 
+- `!unset_raid_channel` - The channel set with "set_raid_channel" will become none.
+
+- `!set_ex_channel` - Any EX-Raid that gets created will be automagically posted in this channel. You will be asked to tag a channel by using #.
+- `!unset_ex_channel` - The channel set with "set_ex_channel" will become none. 
+
+- `!set_profile_scan` - The channel will be continuously checked for Team images and give the player that posts an image a role based on their color. You will be asked to tag a channel by using #. 
+- `!unset_profile_scan` - The channel set with "set_profile_scan" will become none.
+
+- `!set_ex_scan` - Set where to scan for EX-Raid pass images.  
+- `!unset_ex_scan` - The channel set with "set_ex_scan" will become none.  
+
+- `!set_role_permission` - The role will be granted permissions to edit and delete any Raid and also use create/delete gym. You will be asked to tag a role by using @.
+- `!unset_role_permission` - The role set with "set_role_permission" will become none.
+
+- `!set_gmt` - Sets the GMT for your timezone so research-quests gets deleted on the correct time. You will be asked to enter a GMT, such as +1, 0, -1
 - `!set_language` - Set the language for the server.
-- `!set_ex_scan` - Set where to scan for EX-Raid pass images.
-- `!set_profile_scan` - Set where to scan for team images.
-- `!set_raid_channel` - Set where to post Raids by default.
-- `!set_ex_channel` - Set where to post EX-Raids by default.
-- `!unset_ex_scan` - Unset where to scan for EX-Raid pass images.
-- `!unset_profile_scan` - Unset where to scan for team images.
-- `!unset_raid_channel` - Unset where to post Raids by default.
-- `!unset_ex_channel` - Unset where to post EX-Raids by default.
+
+- `!set_log_channel` - Any Raid created / edited / deleted will be posted in this channel. You will be asked to tag a channel by using #.
+- `!unset_log_channel` - The channel set with "set_log_channel" will become none.
+
+
+- `!set_event_overview` - This will post a message that updates continuously with on-going / up-coming events. You will be asked to tag a channel by using #.
+- `!set_raid_overview` - This will post a message that updates continuously with on-going Raids. You will be asked to tag a channel by using #.
+- `!set_ex_overview` - This will post a message that updates continuously with on-going Raids. You will be asked to tag a channel by using #.
+- `!` -
+
+
+
+
+
+
+
+
 - `!set_role_permission` - Delibot will ask you to tag a role by using `@`. The role will be granted permission to edit and delete any Raid, also permission to use `add_gym` / `del_gym`. 
 - `!unset_role_permission` - This will remove the role you had set.  
 - `!set_overview` - Set where to show an overview-message of active raids, updates every 2nd minute.
 
 #### Server-owner, Administrators, Role Specific
-- `!create gym  {gym name} {lat} {lon}` - Adds the Gym to the database, so it will appear as a hyperlink on Raids.  
-
-![raid-with-link](https://cdn.discordapp.com/attachments/416342787240230917/488314774292135937/unknown.png)  
-*But If you don't care about the image, any other hyperlink works.*
-
-- `!delete gym {gym name}` - Delete a hyperlinked Gym from the database.
-
+- `!create gym  {gym name} {lat} {lon}` - Adds a Gym to the database so it will appear as a hyperlink on Raid-creations.  
+*Example: !create gym "Some name" 60.450 -20.350*
+- `!delete gym {gym name}` - Deletes a Gym from the database.  
+- `!create pokestop  {gym name} {lat} {lon}` -  Adds a Pokestop to the database so it will appear as a hyperlink on Research-creations. 
+- `!delete pokestop {pokestop name}` - Deletes a Pokestop from the database.  
 
 #### Everyone
 - `!help` - Displays available commands and other info.  
@@ -57,10 +80,10 @@ Server configuration
 - `!list quests` - List of todays Research tasks.
 - `!list gyms` - List of the added Gyms.
 - `!find {name}` - Get the Google Maps link to a location.
-- `!valor` - Sets your role to Valor.
-- `!mystic` - Sets your role to Mystic.
-- `!instinct` - Sets your role to Instinct.
-- `!pokebox` - Useless but fun feature!
+- `!valor` - Assigns the role Valor to you.
+- `!mystic` - Assigns the role Mystic to you.
+- `!instinct` - Assigns the role Instinct to you.
+- `!pokebox` - Totally useless but fun command!
 - `!raid` - Opens a private message dialog with Delibot, to create a Raid by answering questions.
 - `!raid {boss} {time} {location*}` - Starts a Raid with the given information, lasts for 2 hours.  
   | `{boss}` - Needs to be one connected name, e.g. "*Entei*".  
@@ -80,16 +103,25 @@ Server configuration
 - `!offer {pokémon have*}` - Text & Image of what you want to offer in a clean message.  
   | `{pokémon have*}` - The pokémon you want to trade away, e.g. "*shiny aron*".  
   
-- `!community_day {region} {GMT}` - Information window about the next Community-day.  
-  | `{region}` - Needs to be one region, e.g. "*asia*", "*europe*", or "*america*".  
-  | `{GMT}` - Your timezone from GMT+0, e.g. If you live in GMT+2 you type "*+2*".  
-  *(If you have used `set_gmt` you only need the region)*
+- `!community_day` - Information message of the next Community-day.
   
 - `!research {quest*} , {reward*} , {pokestop*}` - Clean message dislaying the quest.  
   | `{quest*}` - Can be multiple lines, e.g. "*Catch 10 pokémon*".  
   | `{reward*}` - Can be multiple lines, e.g. "*1 rare candy*".  
   | `{pokestop*}` - Can be multiple lines, e.g. "*The gitstop*".    
 
+- `!counter {league} , {pokemon}, {limit}` - Shows detailed information with counters on a specific Pokémon.
+  - Leagues: great (g), ultra (u), master (m), silph (s)
+  - Match-ups: general (g), counters (c)
+  - Limit: 1-24
+  - *Example:!counter ultra snorlax* 
+  
+ - `!pokebattler {pokemon}` - Shows detailed information with counters on a specific Raid-boss.  
+
+ - `!silphcard {name}` - Shows information of a players silphcard.
+ 
+ - `!fusion {pokemon} {pokemon}` - Combines two Pokémon images and creates a single one. (Only works with Gen 1)
+ 
 Get the stats of a user.
 - `!stats` - Your own stats.
 - `!stats @user` - Stats for a user.
