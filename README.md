@@ -76,7 +76,6 @@ Invite - https://discord.gg/f2mkW8g
 
 #### Everyone
 - `!help` - Displays available commands and other info.  
-- `!list raids` - List of ongoing Raids.
 - `!list quests` - List of todays Research tasks.
 - `!list gyms` - List of the added Gyms.
 - `!find {name}` - Get the Google Maps link to a location.
