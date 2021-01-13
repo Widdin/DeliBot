@@ -1,0 +1,14 @@
+[DATABASE]
+db-host:
+db-name:
+db-user:
+db-pass:
+db-port:
+
+[TOKEN]
+is-developing:
+dev-token:
+prod-token:
+
+[SETTINGS]
+prefix:
