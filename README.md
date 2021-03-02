@@ -1,5 +1,3 @@
-
-
 ![DeliBot-Banner](https://github.com/OfficialWiddin/DeliBot/blob/master/images/DBanner.png)
 
 # DeliBot
@@ -31,31 +29,23 @@ Invite - https://discord.gg/f2mkW8g
 
 - `!set_raid_channel` - Any Raid that gets created will be automagically posted in this channel. You will be asked to tag a channel by using #. 
 - `!unset_raid_channel` - The channel set with "set_raid_channel" will become none.
-
 - `!set_ex_channel` - Any EX-Raid that gets created will be automagically posted in this channel. You will be asked to tag a channel by using #.
-- `!unset_ex_channel` - The channel set with "set_ex_channel" will become none. 
-
+- `!unset_ex_channel` - The channel set with "set_ex_channel" will become none.
 - `!set_profile_scan` - The channel will be continuously checked for Team images and give the player that posts an image a role based on their color. You will be asked to tag a channel by using #. 
 - `!unset_profile_scan` - The channel set with "set_profile_scan" will become none.
-
-- `!set_ex_scan` - Set where to scan for EX-Raid pass images.  
-- `!unset_ex_scan` - The channel set with "set_ex_scan" will become none.  
-
+- `!set_ex_scan` - Set where to scan for EX-Raid pass images.
+- `!unset_ex_scan` - The channel set with "set_ex_scan" will become none.
 - `!set_role_permission` - The role will be granted permissions to edit and delete any Raid and also use create/delete gym. You will be asked to tag a role by using @.
 - `!unset_role_permission` - The role set with "set_role_permission" will become none.
-
 - `!set_gmt` - Sets the GMT for your timezone so research-quests gets deleted on the correct time. You will be asked to enter a GMT, such as +1, 0, -1
 - `!set_language` - Set the language for the server.
-
 - `!set_log_channel` - Any Raid created / edited / deleted will be posted in this channel. You will be asked to tag a channel by using #.
 - `!unset_log_channel` - The channel set with "set_log_channel" will become none.
-
-
 - `!set_event_overview` - This will post a message that updates continuously with on-going / up-coming events. You will be asked to tag a channel by using #.
 - `!set_raid_overview` - This will post a message that updates continuously with on-going Raids. You will be asked to tag a channel by using #.
 - `!set_ex_overview` - This will post a message that updates continuously with on-going Raids. You will be asked to tag a channel by using #.
 
-- `!set_role_permission` - Delibot will ask you to tag a role by using `@`. The role will be granted permission to edit and delete any Raid, also permission to use `add_gym` / `del_gym`. 
+- `!set_role_permission` - Delibot will ask you to tag a role by using `@`. The role will be granted permission to edit and delete any Raid, also permission to use `add_gym`/`del_gym`. 
 - `!unset_role_permission` - This will remove the role you had set.  
 - `!set_overview` - Set where to show an overview-message of active raids, updates every 2nd minute.
 
