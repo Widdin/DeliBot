@@ -10,24 +10,24 @@ DeliBot is a Discord bot written in Python 3.6.
 Join the server to get help, make a suggestion or just chat!  
 Invite - https://discord.gg/f2mkW8g  
 
-## How to run DeliBot on your server:
+## How to run DeliBot on your server
 1. Invite DeliBot - https://discordapp.com/oauth2/authorize?client_id=354229190666616844&scope=bot&permissions=1342532672
 2. Go to a channel in your server and run `!install` one time.
 
-## Information:
+## Information
 - Everyone are able to use the ``!raid``-command.  
 - DeliBot updates the Raid on every reaction.
 - DeliBot will delete the Raid 2 hours after creation.
 - DeliBot will remove your command-message (when you type e.g `!raid`).
 - Click on your team emoji and If you are coming with extra players, you can react and combine 'One', 'Two' and 'Three' up to six extra players (note that those extra players will only count towards 'Total :' as they have no name).  
 
-## Commands:
-#### Server-owner 
+## Commands
+### Server-owner 
 - `!install` - Uploads necessary emojis to the server in order to work correctly.
 
-#### Server-owner and administrators
+### Server-owner and administrators
 
-##### Server configuration
+### Server configuration
 
 - `!set_raid_channel` - Any Raid that gets created will be automagically posted in this channel. You will be asked to tag a channel by using #. 
 - `!unset_raid_channel` - The channel set with "set_raid_channel" will become none.
@@ -54,27 +54,19 @@ Invite - https://discord.gg/f2mkW8g
 - `!set_event_overview` - This will post a message that updates continuously with on-going / up-coming events. You will be asked to tag a channel by using #.
 - `!set_raid_overview` - This will post a message that updates continuously with on-going Raids. You will be asked to tag a channel by using #.
 - `!set_ex_overview` - This will post a message that updates continuously with on-going Raids. You will be asked to tag a channel by using #.
-- `!` -
-
-
-
-
-
-
-
 
 - `!set_role_permission` - Delibot will ask you to tag a role by using `@`. The role will be granted permission to edit and delete any Raid, also permission to use `add_gym` / `del_gym`. 
 - `!unset_role_permission` - This will remove the role you had set.  
 - `!set_overview` - Set where to show an overview-message of active raids, updates every 2nd minute.
 
-#### Server-owner, Administrators, Role Specific
+### Server-owner, Administrators, Role Specific
 - `!create gym  {gym name} {lat} {lon}` - Adds a Gym to the database so it will appear as a hyperlink on Raid-creations.  
 *Example: !create gym "Some name" 60.450 -20.350*
 - `!delete gym {gym name}` - Deletes a Gym from the database.  
 - `!create pokestop  {gym name} {lat} {lon}` -  Adds a Pokestop to the database so it will appear as a hyperlink on Research-creations. 
 - `!delete pokestop {pokestop name}` - Deletes a Pokestop from the database.  
 
-#### Everyone
+### Everyone
 - `!help` - Displays available commands and other info.  
 - `!list quests` - List of todays Research tasks.
 - `!list gyms` - List of the added Gyms.
