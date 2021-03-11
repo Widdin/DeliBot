@@ -40,11 +40,15 @@ class Database(commands.Cog):
         else:
             log.info("Successfully connected to database")
 
-    async def execute(self, query, params):
+    async def execute(self, query, params, single=False):
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cur:
                 await cur.execute(query, params)
-                return await cur.fetchall()
+
+                if single:
+                    return (await cur.fetchone())[0]
+                else:
+                    return await cur.fetchall()
 
     async def get_raids_older_than(self, hours: int):
         query = "SELECT * FROM raids WHERE created_at < ADDDATE(NOW(), INTERVAL -%s HOUR)"
@@ -57,6 +61,12 @@ class Database(commands.Cog):
         params = (hours,)
 
         return await self.execute(query, params)
+
+    async def get_default_channel(self, guild_id: int):
+        query = "SELECT default_raid_id FROM settings WHERE server_id = %s"
+        values = (guild_id,)
+
+        return await self.execute(query, values, single=True)
 
 
 def setup(bot):
