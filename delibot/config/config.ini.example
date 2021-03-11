@@ -9,6 +9,7 @@ db-port:
 is-developing:
 dev-token:
 prod-token:
+mapquest-token:
 
 [SETTINGS]
 prefix:
