@@ -1,4 +1,4 @@
-aiohttp==3.6.3
+aiohttp==3.7.4
 aiomysql==0.0.20
 appdirs==1.4.3
 asn1crypto==0.24.0
