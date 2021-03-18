@@ -40,10 +40,10 @@ class Database(commands.Cog):
         else:
             log.info("Successfully connected to database")
 
-    async def execute(self, query, params, single=False):
+    async def execute(self, query, params=None, single=False):
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cur:
-                await cur.execute(query, params)
+                await cur.execute(query, params or ())
 
                 if single:
                     return (await cur.fetchone())[0]
