@@ -202,10 +202,7 @@ class RawReaction(commands.Cog):
 
         if len(valor_ids) != 0:
             for v in valor_ids:
-                print(v)
-                member = guild.get_member(306926179074703362)
-                print(member)
-
+                member = guild.get_member(int(v.strip()))
                 valor_names += member.display_name + ", "
 
         if len(mystic_ids) != 0:

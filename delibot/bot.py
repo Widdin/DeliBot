@@ -5,7 +5,7 @@ from discord.ext import commands
 
 from utils import default
 
-logging.basicConfig(format='%(asctime)s [%(threadName)18s][%(module)14s][%(levelname)8s] %(message)s',
+logging.basicConfig(format='%(asctime)s [%(filename)12s:%(lineno)4d][%(levelname)8s] %(message)s',
                     level=logging.INFO)
 log = logging.getLogger()
 
