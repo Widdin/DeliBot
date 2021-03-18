@@ -64,9 +64,9 @@ class Database(commands.Cog):
 
     async def get_default_channel(self, guild_id: int):
         query = "SELECT default_raid_id FROM settings WHERE server_id = %s"
-        values = (guild_id,)
+        params = (guild_id,)
 
-        return await self.execute(query, values, single=True)
+        return await self.execute(query, params, single=True)
 
 
 def setup(bot):

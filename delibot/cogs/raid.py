@@ -213,8 +213,8 @@ class Raid(commands.Cog):
         # Insert raid to database
         query = ("INSERT INTO raids (server_id, channel_id, message_id, user_id, author, pokemon, time, location, "
                  "valor, mystic, instinct) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-        values = (str(ctx.message.guild.id), str(raid_message.channel.id), str(raid_message.id), str(ctx.message.author.id), "", str(pokemon), str(time), str(location.lower()), "", "", "")
-        await self.bot.db.execute(query, values)
+        params = (str(ctx.message.guild.id), str(raid_message.channel.id), str(raid_message.id), str(ctx.message.author.id), "", str(pokemon), str(time), str(location.lower()), "", "", "")
+        await self.bot.db.execute(query, params)
 
         # Find team-reactions
         reactions = ['1⃣', '2⃣', '3⃣', '\U0001f4dd', '\U0000274c', '\U00002694']

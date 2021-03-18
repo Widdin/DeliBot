@@ -18,8 +18,8 @@ class Exraid(commands.Cog):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
 
-            query_select_exraids = "SELECT * FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
-            results = await self.bot.db.execute(query_select_exraids)
+            query = "SELECT * FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
+            results = await self.bot.db.execute(query)
 
             query_delete_exraids = "DELETE FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
             await self.bot.db.execute(query_delete_exraids)
@@ -39,9 +39,9 @@ class Exraid(commands.Cog):
                     # Increment 'raids_joined' for the attending users.
                     if attending >= 2:
 
-                        query_raids_created = "UPDATE users SET raids_created = raids_created + 1 WHERE server_id = %s AND user_id = %s"
-                        values_raids_created = (result[0], result[3])
-                        await self.bot.db.execute(query_raids_created, values_raids_created)
+                        query = "UPDATE users SET raids_created = raids_created + 1 WHERE server_id = %s AND user_id = %s"
+                        params = (result[0], result[3])
+                        await self.bot.db.execute(query, params)
 
                         # Only count the user as attending ONCE.
                         attended_users = [",", " ", ""]
@@ -55,9 +55,9 @@ class Exraid(commands.Cog):
 
                                 await self.bot.get_cog("Utils").create_user_if_not_exist(result[0], user)
 
-                                query_raids_joined = "UPDATE users SET raids_joined = raids_joined + 1 WHERE server_id = %s AND user_id = %s"
-                                values_raids_joined = (result[0], user)
-                                await self.bot.db.execute(query_raids_joined, values_raids_joined)
+                                query = "UPDATE users SET raids_joined = raids_joined + 1 WHERE server_id = %s AND user_id = %s"
+                                params = (result[0], user)
+                                await self.bot.db.execute(query, params)
 
                 await asyncio.sleep(10)
 
@@ -65,9 +65,9 @@ class Exraid(commands.Cog):
 
     async def get_default_ex_channel(self, guild_id):
         query = "SELECT default_exraid_id FROM settings WHERE server_id = %s"
-        values = (guild_id,)
+        params = (guild_id,)
 
-        return await self.bot.db.execute(query, values, single=True)
+        return await self.bot.db.execute(query, params, single=True)
 
     @commands.command(pass_context=True, aliases=['Exraid', 'xr', 'Xr'])
     async def exraid(self, ctx, pokemon: str, time: str, day: str, *, location: str, delete=True):
@@ -131,7 +131,11 @@ class Exraid(commands.Cog):
             location = gym_name
 
         # Insert raid to database
-        values = (
+        query = ("INSERT INTO exraids "
+                 "(server_id, channel_id, message_id, user_id, author, pokemon, time, day, location, valor, mystic, "
+                 "instinct) "
+                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        params = (
             str(ctx.message.guild.id),
             str(raid_message.channel.id),
             str(raid_message.id),
@@ -144,11 +148,7 @@ class Exraid(commands.Cog):
             "",
             ""
         )
-        query = ("INSERT INTO exraids "
-                 "(server_id, channel_id, message_id, user_id, author, pokemon, time, day, location, valor, mystic, "
-                 "instinct) "
-                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-        await self.bot.db.execute(query, values)
+        await self.bot.db.execute(query, params)
 
         # Reactions
         reactions = ['1⃣', '2⃣', '3⃣', '\U0001f4dd',
