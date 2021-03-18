@@ -30,11 +30,9 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET role_permission = NULL WHERE server_id = %s",
-                                  (ctx.message.guild.id,))
-                await conn.commit()
+        query = "UPDATE settings SET role_permission = NULL WHERE server_id = %s"
+        params = (ctx.message.guild.id,)
+        await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"Permission role has been unset.",
                               color=discord.Colour.green())
@@ -67,11 +65,9 @@ class Admin(commands.Cog):
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET role_permission = %s WHERE server_id = %s",
-                                  (wait_for_role.content[3:-1], ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET role_permission = %s WHERE server_id = %s"
+        params = (wait_for_role.content[3:-1], ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"Permission role has been set.",
                               description=f"{wait_for_role.content} is the chosen role for additional permissions.",
@@ -86,11 +82,9 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET exraid_channel_id = NULL WHERE server_id = %s",
-                                  (ctx.message.guild.id,))
-                await conn.commit()
+        query = "UPDATE settings SET exraid_channel_id = NULL WHERE server_id = %s"
+        params = (ctx.message.guild.id,)
+        await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"EX-Pass Scanning Channel has been unset.",
                               description=f"EX-Pass Scanning is now offline!",
@@ -134,11 +128,9 @@ class Admin(commands.Cog):
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET exraid_channel_id = %s WHERE server_id = %s",
-                                  (channel_id, ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET exraid_channel_id = %s WHERE server_id = %s"
+        params = (channel_id, ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
         channel = ctx.guild.get_channel(int(channel_id))
         embed = discord.Embed(title=f"EX-Pass Scanning has been set.",
@@ -154,11 +146,9 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET profile_channel_id = NULL WHERE server_id = %s",
-                                  (ctx.message.guild.id,))
-                await conn.commit()
+        query = "UPDATE settings SET profile_channel_id = NULL WHERE server_id = %s"
+        params = (ctx.message.guild.id,)
+        await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"Profile Scanning Channel has been unset.",
                               description=f"Profile Scanning is now offline!",
@@ -201,11 +191,9 @@ class Admin(commands.Cog):
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET profile_channel_id = %s WHERE server_id = %s",
-                                  (channel_id, ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET profile_channel_id = %s WHERE server_id = %s"
+        params = (channel_id, ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
         channel = ctx.guild.get_channel(int(channel_id))
         embed = discord.Embed(title=f"Profile Scanning has been set.",
@@ -221,11 +209,9 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET default_raid_id = NULL WHERE server_id = %s",
-                                  (ctx.message.guild.id,))
-                await conn.commit()
+        query = "UPDATE settings SET default_raid_id = NULL WHERE server_id = %s"
+        params = (ctx.message.guild.id,)
+        await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"Raid Channel has been unset.",
                               description=f"Raids will be posted in the channel they are invoked.",
@@ -268,11 +254,9 @@ class Admin(commands.Cog):
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET default_raid_id = %s WHERE server_id = %s",
-                                  (channel_id, ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET default_raid_id = %s WHERE server_id = %s"
+        params = (channel_id, ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
         channel = ctx.message.guild.get_channel(int(channel_id))
         embed = discord.Embed(title=f"Raid Channel has been set.",
@@ -288,11 +272,9 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET default_exraid_id = NULL WHERE server_id = %s",
-                                  (ctx.message.guild.id,))
-                await conn.commit()
+        query = "UPDATE settings SET default_exraid_id = NULL WHERE server_id = %s"
+        params = (ctx.message.guild.id,)
+        await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"EX-Raid Channel has been unset.",
                               description=f"EX-Raids will be posted in the channel they are invoked.",
@@ -335,11 +317,9 @@ class Admin(commands.Cog):
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET default_exraid_id = %s WHERE server_id = %s",
-                                  (channel_id, ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET default_exraid_id = %s WHERE server_id = %s"
+        params = (channel_id, ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
         channel = ctx.message.guild.get_channel(int(channel_id))
         embed = discord.Embed(title=f"EX-Raid Channel has been set.",
@@ -384,11 +364,9 @@ class Admin(commands.Cog):
                               color=discord.Colour.dark_magenta())
         await ctx.channel.send(embed=embed, delete_after=20)
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET language = %s WHERE server_id = %s",
-                                  (reactions_dict[wait_for_reaction.emoji], ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET language = %s WHERE server_id = %s"
+        params = (reactions_dict[wait_for_reaction.emoji], ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -424,11 +402,10 @@ class Admin(commands.Cog):
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
 
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute("UPDATE settings SET timezone = %s WHERE server_id = %s",
-                                      (wait_for_message.content, ctx.guild.id))
-                    await conn.commit()
+            query = "UPDATE settings SET timezone = %s WHERE server_id = %s"
+            params = (wait_for_message.content, ctx.guild.id)
+            await self.bot.db.execute(query, params)
+
         else:
             embed = discord.Embed(title=f"Error",
                                   description=f"You didn't use ``+`` or ``-``, please try again.",
@@ -444,11 +421,9 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET log_channel_id = NULL WHERE server_id = %s",
-                                  (ctx.message.guild.id,))
-                await conn.commit()
+        query = "UPDATE settings SET log_channel_id = NULL WHERE server_id = %s"
+        params = (ctx.message.guild.id,)
+        await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"Log Channel has been unset.",
                               description=f"Logging is now Offline!",
@@ -491,11 +466,9 @@ class Admin(commands.Cog):
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("UPDATE settings SET log_channel_id = %s WHERE server_id = %s",
-                                  (channel_id, ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET log_channel_id = %s WHERE server_id = %s"
+        params = (channel_id, ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
         channel = ctx.message.guild.get_channel(int(channel_id))
         embed = discord.Embed(title=f"Log Channel has been set.",
@@ -549,22 +522,17 @@ class Admin(commands.Cog):
         embed.timestamp = datetime.datetime.utcnow()
         event_msg = await channel.send(embed=embed)
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    "UPDATE settings SET event_overview_channel_id = %s, event_overview_message_id = %s WHERE server_id = %s",
-                    (channel_id, event_msg.id, ctx.message.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET event_overview_channel_id = %s, event_overview_message_id = %s WHERE server_id = %s"
+        params = (channel_id, event_msg.id, ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
 
     async def _init_update_event(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute(
-                        "SELECT * FROM settings WHERE event_overview_channel_id != %s AND event_overview_message_id != %s",
-                        ('', ''))
-                    servers = await cur.fetchall()
+
+            query = "SELECT * FROM settings WHERE event_overview_channel_id != %s AND event_overview_message_id != %s"
+            params = ('', '')
+            servers = await self.bot.db.execute(query, params)
 
             log.info("Updating events")
 
@@ -661,33 +629,26 @@ class Admin(commands.Cog):
         embed.timestamp = datetime.datetime.utcnow()
         overview_msg = await channel.send(embed=embed)
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    "UPDATE settings SET raid_overview_channel_id = %s, raid_overview_message_id = %s WHERE server_id = %s",
-                    (channel_id, overview_msg.id, ctx.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET raid_overview_channel_id = %s, raid_overview_message_id = %s WHERE server_id = %s"
+        params = (channel_id, overview_msg.id, ctx.guild.id)
+        await self.bot.db.execute(query, params)
 
     async def _init_update_raid_overview(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute(
-                        "SELECT * FROM settings WHERE raid_overview_channel_id != %s AND raid_overview_message_id != %s",
-                        ('', ''))
-                    servers = await cur.fetchall()
+
+            query = "SELECT * FROM settings WHERE raid_overview_channel_id != %s AND raid_overview_message_id != %s"
+            params = ('', '')
+            servers = await self.bot.db.execute(query, params)
 
             for server in servers:
                 server_id = server[0]
                 channel_id = server[10]
                 message_id = server[11]
 
-                async with self.bot.pool.acquire() as conn:
-                    async with conn.cursor() as cur:
-                        await cur.execute("SELECT * FROM raids WHERE server_id = %s ORDER BY pokemon ASC, time",
-                                          (server_id))
-                        raids = await cur.fetchall()
+                query = "SELECT * FROM raids WHERE server_id = %s ORDER BY pokemon ASC, time"
+                params = (server_id,)
+                raids = await self.bot.db.execute(query, params)
 
                 embed = discord.Embed(title=f"Active raids:", color=discord.Colour.dark_green())
                 embed.set_thumbnail(
@@ -817,22 +778,17 @@ class Admin(commands.Cog):
         embed.timestamp = datetime.datetime.utcnow()
         overview_msg = await channel.send(embed=embed)
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    "UPDATE settings SET exraid_overview_channel_id = %s, exraid_overview_message_id = %s WHERE server_id = %s",
-                    (channel_id, overview_msg.id, ctx.guild.id))
-                await conn.commit()
+        query = "UPDATE settings SET exraid_overview_channel_id = %s, exraid_overview_message_id = %s WHERE server_id = %s"
+        params = (channel_id, overview_msg.id, ctx.guild.id)
+        await self.bot.db.execute(query, params)
 
     async def _init_update_ex_overview(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute(
-                        "SELECT * FROM settings WHERE exraid_overview_channel_id != %s AND exraid_overview_message_id != %s",
-                        ('', ''))
-                    servers = await cur.fetchall()
+
+            query = "SELECT * FROM settings WHERE exraid_overview_channel_id != %s AND exraid_overview_message_id != %s"
+            params = ('', '')
+            servers = await self.bot.db.execute(query, params)
 
             for server in servers:
 
@@ -840,11 +796,9 @@ class Admin(commands.Cog):
                 channel_id = server[14]
                 message_id = server[15]
 
-                async with self.bot.pool.acquire() as conn:
-                    async with conn.cursor() as cur:
-                        await cur.execute("SELECT * FROM exraids WHERE server_id = %s ORDER BY pokemon ASC, time",
-                                          (server_id))
-                        raids = await cur.fetchall()
+                query = "SELECT * FROM exraids WHERE server_id = %s ORDER BY pokemon ASC, time"
+                params = (server_id,)
+                raids = await self.bot.db.execute(query, params)
 
                 embed = discord.Embed(title=f"Active EX-Raids:",
                                       color=discord.Colour.dark_green())
