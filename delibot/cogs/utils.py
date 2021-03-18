@@ -513,6 +513,10 @@ class Utils(commands.Cog):
         elif pokemon_id == "386":
             url += "_14"
 
+        # Therium forms for Tornadus / Thundurus / Landorus
+        elif pokemon_id in ["641", "642", "645"]:
+            url += "_12"
+
         elif pokemon_id == "150":
             url = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_150_00_shiny.png"
             return url
