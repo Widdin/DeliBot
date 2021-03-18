@@ -210,10 +210,11 @@ class Raid(commands.Cog):
         else:
             location = gym_name
 
-        # Add the raid to the database
-        await self.db_insert_raid(ctx.message.guild.id, raid_message.channel.id, raid_message.id, ctx.message.author.id,
-                                  "",
-                                  pokemon, time, location.lower(), "", "", "")
+        # Insert raid to database
+        query = ("INSERT INTO raids (server_id, channel_id, message_id, user_id, author, pokemon, time, location, "
+                 "valor, mystic, instinct) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        values = (str(ctx.message.guild.id), str(raid_message.channel.id), str(raid_message.id), str(ctx.message.author.id), "", str(pokemon), str(time), str(location.lower()), "", "", "")
+        await self.bot.db.execute(query, values)
 
         # Find team-reactions
         reactions = ['1⃣', '2⃣', '3⃣', '\U0001f4dd', '\U0000274c', '\U00002694']
@@ -234,20 +235,6 @@ class Raid(commands.Cog):
                                   color=discord.Color.green())
             embed.timestamp = datetime.utcnow()
             await self.bot.http.send_message(int(log_channel_id), "", embed=embed.to_dict())
-
-    async def db_insert_raid(self, guild_id: str, channel_id: str, message_id: str, user_id: str, author: str,
-                             pokemon: str,
-                             time: str, location: str, valor: str, mystic: str, instinct: str):
-        query = ("INSERT INTO raids "
-                 "(server_id, channel_id, message_id, user_id, author, pokemon, time, location, valor, mystic, instinct) "
-                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-
-        values = (
-            str(guild_id), str(channel_id), str(message_id), str(user_id), str(author), str(pokemon), str(time),
-            str(location),
-            str(valor), str(mystic), str(instinct))
-
-        await self.bot.db.execute(query, values)
 
 
 def setup(bot):
