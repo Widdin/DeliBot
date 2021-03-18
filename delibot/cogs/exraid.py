@@ -17,76 +17,57 @@ class Exraid(commands.Cog):
     async def _init_delete_old_raids(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute("SELECT * FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)")
-                    results = await cur.fetchall()
-                    await cur.execute("DELETE FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)")
 
-                    for result in results:
-                        try:
-                            await self.bot.http.delete_message(result[1], result[2])
-                        except discord.NotFound:
-                            pass
-                        except discord.Forbidden:
-                            pass
-                        else:
-                            # If more than 2 attending at the end, increment 'raids_created' for the author
-                            attending = (len(result[9].split(",")) - 1) + (len(result[10].split(",")) - 1) + (
-                                    len(result[11].split(",")) - 1) + int(result[12])
+            query_select_exraids = "SELECT * FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
+            results = await self.bot.db.execute(query_select_exraids)
 
-                            # Increment 'raids_joined' for the attending users.
-                            if attending >= 2:
-                                await cur.execute(
-                                    "UPDATE users SET raids_created = raids_created + 1 WHERE server_id = %s AND "
-                                    "user_id = %s",
-                                    (result[0], result[3]))
+            query_delete_exraids = "DELETE FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
+            await self.bot.db.execute(query_delete_exraids)
 
-                                # Only count the user as attending ONCE.
-                                attended_users = [",", " ", ""]
-                                all_users = result[8].split(",") + result[9].split(",") + result[10].split(",")
+            for result in results:
+                try:
+                    await self.bot.http.delete_message(result[1], result[2])
+                except discord.NotFound:
+                    pass
+                except discord.Forbidden:
+                    pass
+                else:
+                    # If more than 2 attending at the end, increment 'raids_created' for the author
+                    attending = (len(result[9].split(",")) - 1) + (len(result[10].split(",")) - 1) + (
+                            len(result[11].split(",")) - 1) + int(result[12])
 
-                                for user in all_users:
-                                    user = user.strip()
+                    # Increment 'raids_joined' for the attending users.
+                    if attending >= 2:
 
-                                    if user not in attended_users:
-                                        attended_users.append(user)
+                        query_raids_created = "UPDATE users SET raids_created = raids_created + 1 WHERE server_id = %s AND user_id = %s"
+                        values_raids_created = (result[0], result[3])
+                        await self.bot.db.execute(query_raids_created, values_raids_created)
 
-                                        await self.bot.get_cog("Utils").create_user_if_not_exist(result[0], user)
+                        # Only count the user as attending ONCE.
+                        attended_users = [",", " ", ""]
+                        all_users = result[8].split(",") + result[9].split(",") + result[10].split(",")
 
-                                        await cur.execute(
-                                            "UPDATE users SET raids_joined = raids_joined + 1 WHERE server_id = %s "
-                                            "AND user_id = %s",
-                                            (result[0], user))
+                        for user in all_users:
+                            user = user.strip()
 
-                        await asyncio.sleep(10)
+                            if user not in attended_users:
+                                attended_users.append(user)
+
+                                await self.bot.get_cog("Utils").create_user_if_not_exist(result[0], user)
+
+                                query_raids_joined = "UPDATE users SET raids_joined = raids_joined + 1 WHERE server_id = %s AND user_id = %s"
+                                values_raids_joined = (result[0], user)
+                                await self.bot.db.execute(query_raids_joined, values_raids_joined)
+
+                await asyncio.sleep(10)
 
             await asyncio.sleep(3600)
 
-    async def mysqlRaid(self, guild_id: str, channel_id: str, message_id: str, user_id: str, author: str, pokemon: str,
-                        time: str, day: str, location: str, valor: str, mystic: str, instinct: str):
-        query = ("INSERT INTO exraids "
-                 "(server_id, channel_id, message_id, user_id, author, pokemon, time, day, location, valor, mystic, "
-                 "instinct) "
-                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-
-        values = (
-            str(guild_id), str(channel_id), str(message_id), str(user_id), str(author), str(pokemon), str(time),
-            str(day),
-            str(location), str(valor), str(mystic), str(instinct))
-
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(query, values)
-                await conn.commit()
-
     async def get_default_ex_channel(self, guild_id):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT default_exraid_id FROM settings WHERE server_id = %s", (guild_id,))
-                (channel,) = await cur.fetchone()
+        query = "SELECT default_exraid_id FROM settings WHERE server_id = %s"
+        values = (guild_id,)
 
-        return channel
+        return await self.bot.db.execute(query, values, single=True)
 
     @commands.command(pass_context=True, aliases=['Exraid', 'xr', 'Xr'])
     async def exraid(self, ctx, pokemon: str, time: str, day: str, *, location: str, delete=True):
@@ -149,9 +130,25 @@ class Exraid(commands.Cog):
         else:
             location = gym_name
 
-        # MYSQL
-        await self.mysqlRaid(ctx.message.guild.id, raid_message.channel.id, raid_message.id, ctx.message.author.id, "",
-                             pokemon, time, day, location.lower(), "", "", "")
+        # Insert raid to database
+        values = (
+            str(ctx.message.guild.id),
+            str(raid_message.channel.id),
+            str(raid_message.id),
+            str(ctx.message.author.id),
+            "",
+            pokemon,
+            time, day,
+            location.lower(),
+            "",
+            "",
+            ""
+        )
+        query = ("INSERT INTO exraids "
+                 "(server_id, channel_id, message_id, user_id, author, pokemon, time, day, location, valor, mystic, "
+                 "instinct) "
+                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        await self.bot.db.execute(query, values)
 
         # Reactions
         reactions = ['1⃣', '2⃣', '3⃣', '\U0001f4dd',
