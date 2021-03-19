@@ -80,18 +80,18 @@ class Community(commands.Cog):
         bonus_two = f":star: __{bonus_title}__"
         bonus_two_contents = " "
 
-        Date = f":calendar_spiral: __{date_title}__"
+        date = f":calendar_spiral: __{date_title}__"
 
-        Date_contents = "Aug 11 & 12, 11:00 AM - 2:00 PM"
+        date_contents = "Aug 11 & 12, 11:00 AM - 2:00 PM"
 
         for c in data['community']:
             featured_pokemon_contents = c['pokemon']
             exclusive_move_contents = c['move']
             bonus_one_contents = c['bonusOne']
             bonus_two_contents = c['bonusTwo']
-            Date_contents = c['day']
+            date_contents = c['day']
 
-        Date_contents += ', 11:00 PM - 2:00 PM'
+        date_contents += ', 11:00 PM - 2:00 PM'
 
         embed = discord.Embed(colour=0x0000FF, description=description)
         embed.title = community_day_title
@@ -107,7 +107,7 @@ class Community(commands.Cog):
         embed.add_field(name=exclusive_move, value="\u2022 " + exclusive_move_contents + "\n\u200b")
         embed.add_field(name=bonus_one, value="\u2022 " + bonus_one_contents + "\n\u200b")
         embed.add_field(name=bonus_two, value="\u2022 " + bonus_two_contents + "\n\u200b")
-        embed.add_field(name=Date, value="\u2022 " + Date_contents + "\n\u200b")
+        embed.add_field(name=date, value="\u2022 " + date_contents + "\n\u200b")
 
         await ctx.message.channel.send(embed=embed)
 
