@@ -76,11 +76,10 @@ class OCR(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if len(message.attachments) == 1 and message.author.id != self.bot.user.id:
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute("SELECT profile_channel_id, exraid_channel_id FROM settings WHERE server_id = %s",
-                                      (str(message.guild.id),))
-                    profile_channel_id, exraid_channel_id = await cur.fetchone()
+
+            query = "SELECT profile_channel_id, exraid_channel_id FROM settings WHERE server_id = %s"
+            params = (str(message.guild.id),)
+            profile_channel_id, exraid_channel_id = await self.bot.db.execute(query, params, single=True)
 
             # Scan Profile Image
             if str(message.channel.id) == profile_channel_id:
@@ -91,16 +90,15 @@ class OCR(commands.Cog):
                 await self.ocr_ex_image(message)
 
     async def exraid_exist(self, server_id: str, pokemon: str, time: str, day: str, location: str):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    f"SELECT * FROM exraids WHERE server_id = %s AND pokemon = %s AND time = %s AND day = %s AND location = %s",
-                    (server_id, pokemon, time, day, location))
-                result = await cur.fetchone()
-                if result is None:
-                    return False
-                else:
-                    return True
+        query = "SELECT * FROM exraids WHERE server_id = %s AND pokemon = %s AND time = %s AND day = %s AND location = %s"
+        params = (server_id, pokemon, time, day, location)
+
+        result = await self.bot.db.execute(query, params, single=True)
+
+        if result is None:
+            return False
+        else:
+            return True
 
     async def ocr_ex_image(self, message, re_run: int = 0):
 
