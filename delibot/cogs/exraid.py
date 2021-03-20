@@ -21,8 +21,8 @@ class Exraid(commands.Cog):
             query = "SELECT * FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
             results = await self.bot.db.execute(query)
 
-            query_delete_exraids = "DELETE FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
-            await self.bot.db.execute(query_delete_exraids)
+            query = "DELETE FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
+            await self.bot.db.execute(query)
 
             for result in results:
                 try:

@@ -96,12 +96,9 @@ class PointOfInterest(commands.Cog):
 
             if lat_check is True and lon_check is True:
 
-                async with self.bot.pool.acquire() as conn:
-                    async with conn.cursor() as cur:
-                        success = await cur.execute(
-                            "INSERT INTO pokestops (server_id, name, lat, lon) VALUES (%s, %s, %s, %s)",
-                            (ctx.message.guild.id, name.lower(), lat, lon))
-                        await conn.commit()
+                query = "INSERT INTO pokestops (server_id, name, lat, lon) VALUES (%s, %s, %s, %s)"
+                params = (ctx.message.guild.id, name.lower(), lat, lon)
+                success = self.bot.db.execute(query, params)
 
                 if success == 1:
                     embed = discord.Embed(title=f"Pokestop - {name.title()} was successfully created.",
@@ -120,7 +117,6 @@ class PointOfInterest(commands.Cog):
                     embed.set_footer(text="Auto-deleting in 15 seconds..")
                     await ctx.message.channel.send(embed=embed, delete_after=15)
                     return
-
 
             else:
                 embed = discord.Embed(
@@ -156,11 +152,9 @@ class PointOfInterest(commands.Cog):
 
         if allowed or ctx.message.author.guild_permissions.administrator:
 
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    success = await cur.execute("DELETE FROM gyms WHERE server_id = %s AND name = %s",
-                                                (ctx.message.guild.id, name.lower()))
-                    await conn.commit()
+            query = "DELETE FROM gyms WHERE server_id = %s AND name = %s"
+            params = (ctx.message.guild.id, name.lower())
+            success = self.bot.db.execute(query, params)
 
             if success == 1:
                 embed = discord.Embed(title=f"Gym - {name} was successfully deleted.",
@@ -187,11 +181,9 @@ class PointOfInterest(commands.Cog):
 
         if allowed or ctx.message.author.guild_permissions.administrator:
 
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    success = await cur.execute("DELETE FROM pokestops WHERE server_id = %s AND name = %s",
-                                                (ctx.message.guild.id, name.lower()))
-                    await conn.commit()
+            query = "DELETE FROM pokestops WHERE server_id = %s AND name = %s"
+            params = (ctx.message.guild.id, name.lower())
+            success = self.bot.db.execute(query, params)
 
             if success == 1:
                 embed = discord.Embed(title=f"Pokestop - {name} was successfully deleted.",
