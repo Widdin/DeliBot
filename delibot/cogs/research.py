@@ -22,27 +22,23 @@ class Research(commands.Cog):
 
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute("SELECT * FROM research")
-                    results = await cur.fetchall()
+            query = "SELECT * FROM research"
+            results = await self.bot.db.execute(query)
 
             for result in results:
                 if result[8] == gmt_dict[time.strftime("%H:00")] or result[9] < datetime.now() + timedelta(days=-1):
-                    async with self.bot.pool.acquire() as conn:
-                        async with conn.cursor() as cur:
-                            await cur.execute(
-                                "DELETE FROM research WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                                (result[0], result[1], result[2]))
+                    query = "DELETE FROM research WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+                    params = (result[0], result[1], result[2])
+                    await self.bot.db.execute(query, params)
 
-                            try:
-                                await self.bot.http.delete_message(result[1], result[2])
-                            except discord.NotFound:
-                                pass
-                            except discord.Forbidden:
-                                pass
-                            except discord.HTTPException:
-                                pass
+                    try:
+                        await self.bot.http.delete_message(result[1], result[2])
+                    except discord.NotFound:
+                        pass
+                    except discord.Forbidden:
+                        pass
+                    except discord.HTTPException:
+                        pass
 
             await asyncio.sleep(3600)
 
@@ -60,11 +56,9 @@ class Research(commands.Cog):
         # await self.bot.get_cog("Utils").create_user_if_not_exist(ctx.message.server.id, ctx.message.author.id)
 
         # research_created +1 for the user
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    "UPDATE users SET research_created = research_created + 1 WHERE server_id = %s AND user_id = %s",
-                    (str(ctx.message.guild.id), str(ctx.message.author.id)))
+        query = "UPDATE users SET research_created = research_created + 1 WHERE server_id = %s AND user_id = %s"
+        params = (str(ctx.message.guild.id), str(ctx.message.author.id))
+        await self.bot.db.execute(query, params)
 
         # Retrieve translation from JSON.
         what_quest, what_reward, what_pokestop, type_below, quest_creation, quest, quest_reward, thank_you, raid_by = await self.bot.get_cog(
@@ -144,21 +138,15 @@ class Research(commands.Cog):
         except discord.HTTPException:
             pass
 
-        await self.insert_database(ctx.message.guild.id, ctx.message.channel.id, msg.id, ctx.message.author.id,
-                                   ctx.message.author, questText, rewardText, pokestopText)
+        query = "SELECT timezone FROM settings WHERE server_id = %s"
+        params = (ctx.message.guild.id,)
+        GMT = await self.bot.db.execute(query, params, single=True)
 
-    async def insert_database(self, server_id: str, channel_id: str, message_id: str, user_id: str, author: str,
-                              quest: str, reward: str, pokestop: str):
-
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT timezone FROM settings WHERE server_id = %s", (server_id,))
-                (GMT,) = await cur.fetchone()
-
-                await cur.execute(
-                    "INSERT INTO research (server_id, channel_id, message_id, user_id, author, quest, reward, pokestop, GMT) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (server_id, channel_id, message_id, user_id, str(author), quest, reward, pokestop, GMT))
-                await conn.commit()
+        query = "INSERT INTO research (server_id, channel_id, message_id, user_id, author, quest, reward, pokestop, GMT) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        params = (
+        ctx.message.guild.id, ctx.message.channel.id, msg.id, ctx.message.author.id, str(ctx.message.author), questText,
+        rewardText, pokestopText, GMT)
+        await self.bot.db.execute(query, params)
 
 
 def setup(bot):
