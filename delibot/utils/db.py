@@ -46,7 +46,7 @@ class Database(commands.Cog):
                 await cur.execute(query, params or ())
 
                 if single:
-                    return (await cur.fetchone())[0]
+                    return await cur.fetchone()
                 else:
                     return await cur.fetchall()
 

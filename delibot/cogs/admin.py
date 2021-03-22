@@ -530,9 +530,8 @@ class Admin(commands.Cog):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
 
-            query = "SELECT * FROM settings WHERE event_overview_channel_id != %s AND event_overview_message_id != %s"
-            params = ('', '')
-            servers = await self.bot.db.execute(query, params)
+            query = "SELECT * FROM settings WHERE event_overview_channel_id IS NOT NULL AND event_overview_message_id IS NOT NULL"
+            servers = await self.bot.db.execute(query)
 
             log.info("Updating events")
 
@@ -637,9 +636,8 @@ class Admin(commands.Cog):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
 
-            query = "SELECT * FROM settings WHERE raid_overview_channel_id != %s AND raid_overview_message_id != %s"
-            params = ('', '')
-            servers = await self.bot.db.execute(query, params)
+            query = "SELECT * FROM settings WHERE raid_overview_channel_id IS NOT NULL AND raid_overview_message_id IS NOT NULL"
+            servers = await self.bot.db.execute(query)
 
             for server in servers:
                 server_id = server[0]
@@ -786,9 +784,8 @@ class Admin(commands.Cog):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
 
-            query = "SELECT * FROM settings WHERE exraid_overview_channel_id != %s AND exraid_overview_message_id != %s"
-            params = ('', '')
-            servers = await self.bot.db.execute(query, params)
+            query = "SELECT * FROM settings WHERE exraid_overview_channel_id IS NOT NULL AND exraid_overview_message_id IS NOT NULL"
+            servers = await self.bot.db.execute(query)
 
             for server in servers:
 
