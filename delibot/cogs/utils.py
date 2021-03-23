@@ -23,34 +23,21 @@ class Utils(commands.Cog):
     async def on_guild_join(self, guild):
         """When delibot joins a server and the guild
         doesn't exist in the database, add it."""
-
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                try:
-                    await cur.execute("INSERT INTO settings (server_id) VALUES (%s)", (str(guild.id),))
-                    await conn.commit()
-                except:  # If the guild already exists.
-                    pass
+        query = "INSERT INTO settings (server_id) SELECT %s WHERE NOT EXISTS (SELECT 1 FROM settings WHERE server_id = %s)"
+        params = (str(guild.id), str(guild.id))
+        await self.bot.db.execute(query, params)
 
     async def create_user_if_not_exist(self, guild_id: str, user_id: str):
         """If a user doesn't exist in the database, add it."""
+        query = "INSERT INTO users (server_id, user_id) SELECT %s, %s WHERE NOT EXISTS (SELECT 1 FROM users WHERE server_id = %s AND user_id = %s)"
+        params = (str(guild_id), str(user_id), str(guild_id), str(user_id))
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                try:
-                    await cur.execute("INSERT INTO users (server_id, user_id) VALUES %s, %s",
-                                      (str(guild_id), str(user_id)))
-                    await conn.commit()
-                except:  # If the user already exists.
-                    pass
+        await self.bot.db.execute(query, params)
 
     async def get_gym(self, server_id: str, gym_name: str):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    "SELECT name, lat, lon FROM gyms WHERE server_id = %s AND name LIKE %s ORDER BY CHAR_LENGTH(name) ASC",
-                    (str(server_id), "%" + gym_name + "%"))
-                gym = await cur.fetchone()
+        query = "SELECT name, lat, lon FROM gyms WHERE server_id = %s AND name LIKE %s ORDER BY CHAR_LENGTH(name) ASC"
+        params = (str(server_id), "%" + gym_name + "%")
+        gym = await self.bot.db.execute(query, params, single=True)
 
         if gym is not None:
             gmaps = f'https://www.google.com/maps/place/{gym[1]},{gym[2]}'
@@ -59,12 +46,9 @@ class Utils(commands.Cog):
             return f'{gym_name}'
 
     async def get_pokestop(self, server_id: str, pokestop_name: str):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    "SELECT name, lat, lon FROM pokestops WHERE server_id = %s AND name LIKE %s ORDER BY CHAR_LENGTH(name) ASC",
-                    (str(server_id), "%" + pokestop_name + "%"))
-                pokestop = await cur.fetchone()
+        query = "SELECT name, lat, lon FROM pokestops WHERE server_id = %s AND name LIKE %s ORDER BY CHAR_LENGTH(name) ASC"
+        params = (str(server_id), "%" + pokestop_name + "%")
+        pokestop = await self.bot.db.execute(query, params, single=True)
 
         if pokestop is not None:
             gmaps = f'https://www.google.com/maps/place/{pokestop[1]},{pokestop[2]}'
@@ -98,10 +82,9 @@ class Utils(commands.Cog):
                 return "none"
 
     async def get_translation(self, guild_id: str, keys: str):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(f"SELECT language FROM settings WHERE server_id = {guild_id}")
-                (language_code,) = await cur.fetchone()
+        query = "SELECT language FROM settings WHERE server_id = %s"
+        params = (guild_id, )
+        (language_code, ) = await self.bot.db.execute(query, params, single=True)
 
         file_path = os.path.join('json/locale.json')
 
@@ -135,13 +118,11 @@ class Utils(commands.Cog):
 
         await self.create_user_if_not_exist(ctx.message.guild.id, ctx.message.author.id)
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT * FROM users WHERE server_id = %s AND user_id = %s",
-                                  (ctx.message.guild.id, user_to_check.id))
-                found_user = await cur.fetchone()
+        query = "SELECT * FROM users WHERE server_id = %s AND user_id = %s"
+        params = (ctx.message.guild.id, user_to_check.id)
+        found_user = await self.bot.db.execute(query, params, single=True)
 
-            # Retrieve translation from JSON.
+        # Retrieve translation from JSON.
         name_not_found, name_not_found_desc, stats, raids_joined, raids_created, research_created, contributor, leaderboard = await self.get_translation(
             ctx.message.guild.id,
             "NAME_NOT_FOUND NAME_NOT_FOUND_DESC STATS RAIDS_JOINED RAIDS_CREATED RESEARCH_CREATED CONTRIBUTOR Leaderboard")
@@ -166,12 +147,10 @@ class Utils(commands.Cog):
     @stats.command()
     async def server(self, ctx):
         await ctx.message.delete()
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    'SELECT SUM(raids_created), SUM(raids_joined), SUM(research_created) FROM users WHERE server_id = %s',
-                    (ctx.message.guild.id,))
-                raids_created_count, raids_joined_count, research_created_count = await cur.fetchone()
+
+        query = 'SELECT SUM(raids_created), SUM(raids_joined), SUM(research_created) FROM users WHERE server_id = %s'
+        params = (ctx.message.guild.id, )
+        raids_created_count, raids_joined_count, research_created_count = await self.bot.db.execute(query, params, single=True)
 
         # Retrieve translation from JSON.
         stats, raids_joined, raids_created, research_created, contributor, leaderboard = await self.get_translation(
@@ -188,19 +167,17 @@ class Utils(commands.Cog):
     async def leaderboard(self, ctx):
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute('SELECT * FROM users WHERE server_id = %s ORDER BY raids_created desc limit 5;',
-                                  (ctx.message.guild.id,))
-                raids_created_list = await cur.fetchall()
+        query = 'SELECT * FROM users WHERE server_id = %s ORDER BY raids_created desc limit 5;'
+        params = (ctx.message.guild.id, )
+        raids_created_list = await self.bot.db.execute(query, params)
 
-                await cur.execute('SELECT * FROM users WHERE server_id = %s ORDER BY raids_joined desc limit 5;',
-                                  (ctx.message.guild.id,))
-                raids_joined_list = await cur.fetchall()
+        query = 'SELECT * FROM users WHERE server_id = %s ORDER BY raids_joined desc limit 5;'
+        params = (ctx.message.guild.id, )
+        raids_joined_list = await self.bot.db.execute(query, params)
 
-                await cur.execute('SELECT * FROM users WHERE server_id = %s ORDER BY research_created desc limit 5;',
-                                  (ctx.message.guild.id,))
-                research_created_list = await cur.fetchall()
+        query = 'SELECT * FROM users WHERE server_id = %s ORDER BY research_created desc limit 5;'
+        params = (ctx.message.guild.id, )
+        research_created_list = await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"Leaderboard for {ctx.message.guild.name}", color=discord.Colour.purple())
         emojis = [':first_place:', ':second_place:', ':third_place:', ':medal:', ':medal:', ':medal:', ':medal:',
@@ -245,10 +222,8 @@ class Utils(commands.Cog):
     async def overall(self, ctx):
         await ctx.message.delete()
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT SUM(raids_created), SUM(raids_joined), SUM(research_created) FROM users")
-                raids_created_count, raids_joined_count, research_created_count = await cur.fetchone()
+        query = "SELECT SUM(raids_created), SUM(raids_joined), SUM(research_created) FROM users"
+        raids_created_count, raids_joined_count, research_created_count = await self.bot.db.execute(query, single=True)
 
         # Retrieve translation from JSON.
         stats, raids_joined, raids_created, research_created, contributor, leaderboard = await self.bot.get_cog(
@@ -276,38 +251,38 @@ class Utils(commands.Cog):
         # Retrieve gym location.
         gym_loc = await self.get_gym(ctx.message.guild.id, gym_name.lower())
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT name, lat, lon FROM gyms WHERE server_id = %s AND name LIKE %s",
-                                  (ctx.message.guild.id, "%" + gym_name.lower() + "%"))
+        query = "SELECT name, lat, lon FROM gyms WHERE server_id = %s AND name LIKE %s"
+        params = (ctx.message.guild.id, "%" + gym_name.lower() + "%")
+        response = await self.bot.db.execute(query, params, single=True)
+
+        if len(response) > 0:
+            name, lat, lon = response
+
+            if name is None:
+                embed.add_field(name=f"Sorry, {gym_name} was not found.",
+                                value=f"Are you sure the gym exist? Try finding it with '!list gym'", inline=False)
+            else:
+                embed.add_field(name=f"{gym_name.title()}", value=f"{gym_loc}", inline=False)
                 try:
-                    name, lat, lon = await cur.fetchone()
-                except:
-                    embed.add_field(name=f"Sorry, {gym_name} was not found.",
-                                    value=f"Are you sure the gym exist? Try finding it with '!list gym'", inline=False)
 
-                    await ctx.message.author.send(embed=embed)
-                    return
-
-        if name is None:
+                    url = await self.get_static_map_url(lat, lon)
+                    embed.set_image(url=url)
+                except IndexError:
+                    pass
+            try:
+                await ctx.message.author.send(embed=embed)
+            except discord.Forbidden:
+                embed = discord.Embed(title=f"Insufficient permissions.",
+                                      description=f"{ctx.message.author.mention} You have either blocked me, or messages from strangers.\nEnable: Settings > Privacy & Safety > Allow direct messages from server members.",
+                                      color=discord.Colour.dark_red())
+                embed.set_footer(text="Auto-deleting in 20 seconds..")
+                await ctx.message.channel.send(embed=embed, delete_after=20)
+        else:
             embed.add_field(name=f"Sorry, {gym_name} was not found.",
                             value=f"Are you sure the gym exist? Try finding it with '!list gym'", inline=False)
-        else:
-            embed.add_field(name=f"{gym_name.title()}", value=f"{gym_loc}", inline=False)
-            try:
 
-                url = await self.get_static_map_url(lat, lon)
-                embed.set_image(url=url)
-            except IndexError:
-                pass
-        try:
             await ctx.message.author.send(embed=embed)
-        except discord.Forbidden:
-            embed = discord.Embed(title=f"Insufficient permissions.",
-                                  description=f"{ctx.message.author.mention} You have either blocked me, or messages from strangers.\nEnable: Settings > Privacy & Safety > Allow direct messages from server members.",
-                                  color=discord.Colour.dark_red())
-            embed.set_footer(text="Auto-deleting in 20 seconds..")
-            await ctx.message.channel.send(embed=embed, delete_after=20)
+            return
 
     @commands.group(invoke_without_command=True, aliases=['List', 'l', 'L'])
     async def list(self, ctx):
@@ -326,11 +301,9 @@ class Utils(commands.Cog):
     @list.command(aliases=['Pokestop', 'pokestops', 'Pokestops', 'stops', 'Stops'])
     async def pokestop(self, ctx):
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute('SELECT * FROM pokestops WHERE server_id = %s ORDER BY name;',
-                                  (ctx.message.guild.id,))
-                pokestops = await cur.fetchall()
+        query = 'SELECT * FROM pokestops WHERE server_id = %s ORDER BY name;'
+        params = (ctx.message.guild.id, )
+        pokestops = await self.bot.db.execute(query, params)
 
         total_embeds = math.ceil(len(pokestops) / 25)
         embed_dict = {}
@@ -396,10 +369,9 @@ class Utils(commands.Cog):
     @list.command(aliases=['Gym', 'gyms', 'Gyms'])
     async def gym(self, ctx):
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute('SELECT * FROM gyms WHERE server_id = %s ORDER BY name;', (ctx.message.guild.id,))
-                gyms = await cur.fetchall()
+        query = 'SELECT * FROM gyms WHERE server_id = %s ORDER BY name;'
+        params = (ctx.message.guild.id, )
+        gyms = await self.bot.db.execute(query, params)
 
         total_embeds = math.ceil(len(gyms) / 25)
         embed_dict = {}
@@ -491,15 +463,14 @@ class Utils(commands.Cog):
             return data.get(pokemon_name.title())
 
     async def get_log_channel(self, server_id):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT log_channel_id FROM settings WHERE server_id = %s", (server_id,))
-                (channel_id,) = await cur.fetchone()
+        query = "SELECT log_channel_id FROM settings WHERE server_id = %s"
+        params = (server_id, )
+        (channel_id, ) = await self.bot.db.execute(query, params, single=True)
 
         if channel_id is None:
             return None
-        else:
-            return int(channel_id)
+
+        return int(channel_id)
 
     @staticmethod
     async def get_pokemon_image_url(pokemon_id: int, shiny: bool, alola: bool, other: str = ""):
