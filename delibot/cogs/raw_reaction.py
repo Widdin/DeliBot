@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 
 import discord
@@ -33,14 +34,14 @@ class RawReaction(commands.Cog):
             member = self.bot.get_guild(guild_id).get_member(user_id)
             if await self.is_author(guild_id, channel_id, message_id,
                                     user_id) is True or member.guild_permissions.administrator is True or await self.permission_role_or_admin(
-                    guild_id, member):
+                guild_id, member):
                 await self.edit_raid(guild_id, channel_id, message_id, member)
 
         elif emoji_name == '❌':
             member = self.bot.get_guild(guild_id).get_member(user_id)
             if await self.is_author(guild_id, channel_id, message_id,
                                     user_id) is True or member.guild_permissions.administrator is True or await self.permission_role_or_admin(
-                    guild_id, member):
+                guild_id, member):
                 await self.delete_raid(guild_id, channel_id, message_id, member)
 
         elif emoji_name == '⚔':
@@ -68,19 +69,19 @@ class RawReaction(commands.Cog):
                 await self.update_raid(guild_id, channel_id, message_id)
 
     async def edit_raid(self, guild_id: str, channel_id: str, message_id: str, member: discord.Member):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                success = await cur.execute(
-                    "SELECT * FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                    (guild_id, channel_id, message_id))
-                exraid = False
-                if success == 0:
-                    success = await cur.execute(
-                        "SELECT * FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                        (guild_id, channel_id, message_id))
-                    exraid = True
-                    if success == 0:
-                        return
+        query = "SELECT * FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        params = (guild_id, channel_id, message_id)
+        response = await self.bot.db.execute(query, params)
+
+        exraid = False
+        if len(response) == 0:
+            query = "SELECT * FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (guild_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params)
+            exraid = True
+
+            if len(response) == 0:
+                return
 
         # Retrieve translation from JSON.
         edit_question, edit_type, thank_you, raid_time, raid_location, raid_day = await self.bot.get_cog(
@@ -104,9 +105,9 @@ class RawReaction(commands.Cog):
         def check_reaction(reaction, user):
             return user.id == member.id
 
-        wait_for_reaction, wait_for_user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check_reaction)
-
-        if wait_for_reaction is None:
+        try:
+            wait_for_reaction, wait_for_user = await self.bot.wait_for('reaction_add', timeout=5.0, check=check_reaction)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_red())
@@ -120,13 +121,13 @@ class RawReaction(commands.Cog):
         def check_msg(message):
             return message.author.id == member.id
 
-        wait_for_message = await self.bot.wait_for('message', timeout=60.0, check=check_msg)
-
-        if wait_for_message is None:
+        try:
+            wait_for_message = await self.bot.wait_for('message', timeout=60.0, check=check_msg)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_red())
-            await self.bot.send_message(member, embed=embed)
+            await member.send(embed=embed)
             return
 
         embed = discord.Embed(title=f"{thank_you}!",
@@ -137,19 +138,16 @@ class RawReaction(commands.Cog):
 
         # Update row with new variables
         if exraid is True:
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute("UPDATE exraids SET " + keys[
-                        wait_for_reaction.emoji] + "=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                                      (wait_for_message.content, guild_id, channel_id, message_id))
-                    await conn.commit()
+            query = "UPDATE exraids SET " + keys[
+                wait_for_reaction.emoji] + "=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (wait_for_message.content, guild_id, channel_id, message_id)
+            await self.bot.db.execute(query, params)
+
         elif exraid is False and keys[wait_for_reaction.emoji] != "day":
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    await cur.execute("UPDATE raids SET " + keys[
-                        wait_for_reaction.emoji] + "=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                                      (wait_for_message.content, guild_id, channel_id, message_id))
-                    await conn.commit()
+            query = "UPDATE raids SET " + keys[
+                wait_for_reaction.emoji] + "=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (wait_for_message.content, guild_id, channel_id, message_id)
+            await self.bot.db.execute(query, params)
 
         await self.update_raid(guild_id, channel_id, message_id)
 
@@ -163,25 +161,28 @@ class RawReaction(commands.Cog):
             await self.bot.http.send_message(int(log_channel_id), "", embed=embed.to_dict())
 
     async def update_raid(self, guild_id: str, channel_id: str, message_id: str):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                success = await cur.execute(
-                    "SELECT user_id, pokemon, time, location, valor, mystic, instinct, harmony FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                    (guild_id, channel_id, message_id))
-                if success == 0:
-                    success = await cur.execute(
-                        "SELECT user_id, pokemon, time, day, location, valor, mystic, instinct, harmony FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                        (guild_id, channel_id, message_id))
-                    if success == 0:
-                        return
-                    else:
-                        user_id, boss, time, day, location, valor, mystic, instinct, harmony = await cur.fetchone()
-                        ex_raid = True
-                else:
-                    user_id, boss, time, location, valor, mystic, instinct, harmony = await cur.fetchone()
-                    ex_raid = False
 
-            # conn.close()
+        query = "SELECT user_id, pokemon, time, location, valor, mystic, instinct, harmony FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        params = (guild_id, channel_id, message_id)
+        response = await self.bot.db.execute(query, params)
+
+        if len(response) == 0:
+
+            query = "SELECT user_id, pokemon, time, day, location, valor, mystic, instinct, harmony FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (guild_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params)
+
+            if len(response) == 0:
+                return
+            else:
+                user_id, boss, time, day, location, valor, mystic, instinct, harmony = await self.bot.db.execute(query,
+                                                                                                                 params,
+                                                                                                                 single=True)
+                ex_raid = True
+        else:
+            user_id, boss, time, location, valor, mystic, instinct, harmony = await self.bot.db.execute(query, params,
+                                                                                                        single=True)
+            ex_raid = False
 
         # Total amount of users attending
         total_valor = len(valor.split(",")) - 1
@@ -300,34 +301,27 @@ class RawReaction(commands.Cog):
 
         if team in ['1⃣', '2⃣', '3⃣']:
             nmr_dict = {'1⃣': 1, '2⃣': 2, '3⃣': 3}
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    success = await cur.execute(
-                        "UPDATE raids SET harmony = harmony - %s WHERE server_id = %s AND channel_id = %s AND message_id= %s",
-                        (nmr_dict[team], guild_id, channel_id, message_id))
-                    if success == 0:
-                        await cur.execute(
-                            "UPDATE exraids SET harmony = harmony - %s WHERE server_id = %s AND channel_id = %s AND message_id= %s",
-                            (nmr_dict[team], guild_id, channel_id, message_id))
-                        await conn.commit()
-                    else:
-                        await conn.commit()
+
+            query = "UPDATE raids SET harmony = harmony - %s WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+            params = (nmr_dict[team], guild_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params)
+
+            if len(response) == 0:
+                query = "UPDATE exraids SET harmony = harmony - %s WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+                params = (nmr_dict[team], guild_id, channel_id, message_id)
+                await self.bot.db.execute(query, params)
+
         else:
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    success = await cur.execute(
-                        "UPDATE raids SET " + team + "=REPLACE(" + team + ", %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                        (name + ", ", guild_id, channel_id, message_id))
-                    if success == 0:
-                        await cur.execute(
-                            "UPDATE exraids SET " + team + "=REPLACE(" + team + ", %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                            (name + ", ", guild_id, channel_id, message_id))
-                        await conn.commit()
-                    else:
-                        await conn.commit()
+            query = "UPDATE raids SET " + team + "=REPLACE(" + team + ", %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (name + ", ", guild_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params)
+
+            if len(response) == 0:
+                query = "UPDATE exraids SET " + team + "=REPLACE(" + team + ", %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+                params = (name + ", ", guild_id, channel_id, message_id)
+                await self.bot.db.execute(query, params)
 
     async def append_user(self, guild_id: str, channel_id: str, message_id: str, name: str, team: str):
-
         guild_id = str(guild_id)
         channel_id = str(channel_id)
         message_id = str(message_id)
@@ -335,54 +329,45 @@ class RawReaction(commands.Cog):
 
         if team in ['1⃣', '2⃣', '3⃣']:
             nmr_dict = {'1⃣': 1, '2⃣': 2, '3⃣': 3}
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    success = await cur.execute(
-                        "UPDATE raids SET harmony = harmony + %s WHERE server_id = %s AND channel_id = %s AND message_id= %s",
-                        (nmr_dict[team], guild_id, channel_id, message_id))
-                    if success == 0:
-                        await cur.execute(
-                            "UPDATE exraids SET harmony = harmony + %s WHERE server_id = %s AND channel_id = %s AND message_id= %s",
-                            (nmr_dict[team], guild_id, channel_id, message_id))
-                        await conn.commit()
-                    else:
-                        await conn.commit()
+
+            query = "UPDATE raids SET harmony = harmony + %s WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+            params = (nmr_dict[team], guild_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params)
+
+            if len(response) == 0:
+                query = "UPDATE exraids SET harmony = harmony + %s WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+                params = (nmr_dict[team], guild_id, channel_id, message_id)
+                await self.bot.db.execute(query, params)
+
         else:
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    success = await cur.execute(
-                        "UPDATE raids SET " + team + "=CONCAT(" + team + ", %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                        (name + ", ", guild_id, channel_id, message_id))
-                    if success == 0:
-                        await cur.execute(
-                            "UPDATE exraids SET " + team + "=CONCAT(" + team + ", %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                            (name + ", ", guild_id, channel_id, message_id))
-                        await conn.commit()
-                    else:
-                        await conn.commit()
+            query = "UPDATE raids SET " + team + "=CONCAT(" + team + ", %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (name + ", ", guild_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params)
+
+            if len(response) == 0:
+                query = "UPDATE exraids SET " + team + "=CONCAT(" + team + ", %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+                params = (name + ", ", guild_id, channel_id, message_id)
+                await self.bot.db.execute(query, params)
 
     async def is_author(self, server_id: str, channel_id: str, message_id: str, member_id: str):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                success = await cur.execute(
-                    "SELECT user_id FROM raids WHERE server_id = %s AND channel_id = %s AND message_id= %s",
-                    (server_id, channel_id, message_id))
-                if success == 0:
-                    success = await cur.execute(
-                        "SELECT user_id FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id= %s",
-                        (server_id, channel_id, message_id))
-                    if success == 0:
-                        success = await cur.execute(
-                            "SELECT user_id FROM research WHERE server_id = %s AND channel_id = %s AND message_id= %s",
-                            (server_id, channel_id, message_id))
-                        if success == 0:
-                            return False
-                        else:
-                            (user_id,) = await cur.fetchone()
-                    else:
-                        (user_id,) = await cur.fetchone()
-                else:
-                    (user_id,) = await cur.fetchone()
+        query = "SELECT user_id FROM raids WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+        params = (server_id, channel_id, message_id)
+        response = await self.bot.db.execute(query, params, single=True)
+
+        if response is None:
+            query = "SELECT user_id FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+            params = (server_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params, single=True)
+
+            if response is None:
+                query = "SELECT user_id FROM research WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+                params = (server_id, channel_id, message_id)
+                response = await self.bot.db.execute(query, params, single=True)
+
+                if response is None:
+                    return False
+
+        (user_id, ) = response
 
         if str(user_id) == str(member_id):
             return True
@@ -390,10 +375,10 @@ class RawReaction(commands.Cog):
             return False
 
     async def permission_role_or_admin(self, server_id: str, member: discord.Member):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT role_permission FROM settings WHERE server_id = %s", (server_id,))
-                (role_id,) = await cur.fetchone()
+
+        query = "SELECT role_permission FROM settings WHERE server_id = %s"
+        params = (server_id,)
+        role_id = await self.bot.db.execute(query, params, single=True)
 
         try:
             if discord.utils.get(member.roles, id=int(role_id)):
@@ -404,27 +389,23 @@ class RawReaction(commands.Cog):
             return False
 
     async def delete_raid(self, server_id: str, channel_id: str, message_id: str, member: discord.Member):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                success = await cur.execute(
-                    "DELETE FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                    (server_id, channel_id, message_id))
-                if success == 0:
-                    success = await cur.execute(
-                        "DELETE FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                        (server_id, channel_id, message_id))
-                    if success == 0:
-                        success = await cur.execute(
-                            "DELETE FROM research WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                            (server_id, channel_id, message_id))
-                        if success == 0:
-                            return
-                        else:
-                            await conn.commit()
-                    else:
-                        await conn.commit()
-                else:
-                    await conn.commit()
+        query = "DELETE FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        params = (server_id, channel_id, message_id)
+        response = await self.bot.db.execute(query, params)
+
+        if response is None:
+            query = "DELETE FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (server_id, channel_id, message_id)
+            response = await self.bot.db.execute(query, params, single=True)
+
+            if response is None:
+
+                query = "DELETE FROM research WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+                params = (server_id, channel_id, message_id)
+                response = await self.bot.db.execute(query, params, single=True)
+
+                if response is None:
+                    return
 
         try:
             await self.bot.http.delete_message(channel_id, message_id)
@@ -448,11 +429,9 @@ class RawReaction(commands.Cog):
         channel_id = payload.channel_id
         message_id = payload.message_id
 
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("DELETE FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                                  (str(guild_id), str(channel_id), str(message_id)))
-                await conn.commit()
+        query = "DELETE FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        params = (str(guild_id), str(channel_id), str(message_id))
+        await self.bot.db.execute(query, params)
 
 
 def setup(bot):
