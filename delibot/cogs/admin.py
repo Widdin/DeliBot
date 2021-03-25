@@ -56,9 +56,9 @@ class Admin(commands.Cog):
         def check(message):
             return ctx.author.id == message.author.id
 
-        wait_for_role = await self.bot.wait_for("message", timeout=30.0, check=check)
-
-        if wait_for_role is None:
+        try:
+            wait_for_role = await self.bot.wait_for("message", timeout=30.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -110,9 +110,9 @@ class Admin(commands.Cog):
         def check(m):
             return m.author.id == ctx.message.author.id
 
-        channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-
-        if channel is None:
+        try:
+            channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -173,9 +173,9 @@ class Admin(commands.Cog):
         def check(message):
             return message.author.id == ctx.author.id
 
-        wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-
-        if wait_for_channel is None:
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -236,9 +236,9 @@ class Admin(commands.Cog):
         def check(message):
             return message.author.id == ctx.author.id
 
-        wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-
-        if wait_for_channel is None:
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -299,9 +299,9 @@ class Admin(commands.Cog):
         def check(message):
             return message.author.id == ctx.author.id
 
-        wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-
-        if wait_for_channel is None:
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -350,9 +350,9 @@ class Admin(commands.Cog):
         def check(reaction, user):
             return user.id == ctx.author.id and reaction.emoji in reactions_dict.keys() and reaction.message.id == flag_msg.id
 
-        wait_for_reaction, wait_for_user = await self.bot.wait_for("reaction_add", timeout=20.0, check=check)
-
-        if wait_for_reaction is None:
+        try:
+            wait_for_reaction, wait_for_user = await self.bot.wait_for("reaction_add", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -386,10 +386,9 @@ class Admin(commands.Cog):
 
         def check(message):
             return message.author.id == ctx.author.id
-
-        wait_for_message = await self.bot.wait_for("message", timeout=20.0, check=check)
-
-        if wait_for_message is None:
+        try:
+            wait_for_message = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_red())
@@ -448,9 +447,9 @@ class Admin(commands.Cog):
         def check(message):
             return message.author.id == ctx.author.id
 
-        wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-
-        if wait_for_channel is None:
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -494,9 +493,9 @@ class Admin(commands.Cog):
         def check(message):
             return message.author.id == ctx.author.id
 
-        wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-
-        if wait_for_channel is None:
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
@@ -598,16 +597,17 @@ class Admin(commands.Cog):
         def check(message):
             return message.author.id == ctx.author.id
 
-        wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-        await wait_for_channel.delete()
-        await question_embed.delete()
-
-        if wait_for_channel is None:
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
+
+        await wait_for_channel.delete()
+        await question_embed.delete()
 
         channel_id = wait_for_channel.content[2:-1]
 
@@ -746,16 +746,17 @@ class Admin(commands.Cog):
         def check(message):
             return message.author.id == ctx.author.id
 
-        wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
-        await wait_for_channel.delete()
-        await question_embed.delete()
-
-        if wait_for_channel is None:
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
+
+        await wait_for_channel.delete()
+        await question_embed.delete()
 
         channel_id = wait_for_channel.content[2:-1]
 
