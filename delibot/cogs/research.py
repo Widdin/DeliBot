@@ -75,21 +75,33 @@ class Research(commands.Cog):
                 def check(message):
                     return message.author.id == ctx.author.id
 
-                msg_quest = await self.bot.wait_for("message", timeout=30.0, check=check)
+                try:
+                    msg_quest = await self.bot.wait_for("message", timeout=30.0, check=check)
+                except asyncio.TimeoutError:
+                    return
+
                 questText = msg_quest.content
 
                 embed = discord.Embed(title=what_reward, color=discord.Colour.orange())
                 embed.set_footer(text=type_below)
                 await ctx.message.author.send(embed=embed)
 
-                msg_reward = await self.bot.wait_for("message", timeout=30.0, check=check)
+                try:
+                    msg_reward = await self.bot.wait_for("message", timeout=30.0, check=check)
+                except asyncio.TimeoutError:
+                    return
+
                 rewardText = msg_reward.content
 
                 embed = discord.Embed(title=what_pokestop, color=discord.Colour.green())
                 embed.set_footer(text=type_below)
                 await ctx.message.author.send(embed=embed)
 
-                msg_pokestop = await self.bot.wait_for("message", timeout=30.0, check=check)
+                try:
+                    msg_pokestop = await self.bot.wait_for("message", timeout=30.0, check=check)
+                except asyncio.TimeoutError:
+                    return
+
                 pokestopText = msg_pokestop.content
 
                 embed = discord.Embed(title=f"{thank_you}!",
