@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 
@@ -181,7 +182,10 @@ class Pokebattler(commands.Cog):
         def weather_check(message):
             return message.content.isdigit() and message.author.id == ctx.message.author.id
 
-        weather_msg = await self.bot.wait_for('message', timeout=120, check=weather_check)
+        try:
+            weather_msg = await self.bot.wait_for('message', timeout=120, check=weather_check)
+        except asyncio.TimeoutError:
+            return
 
         await message_1.delete()
         await weather_msg.delete()
@@ -195,7 +199,10 @@ class Pokebattler(commands.Cog):
         embed.set_footer(text="Enter a Number Below:")
         message_2 = await ctx.message.channel.send(embed=embed)
 
-        attack_msg = await self.bot.wait_for('message', timeout=120, check=weather_check)
+        try:
+            attack_msg = await self.bot.wait_for('message', timeout=120, check=weather_check)
+        except asyncio.TimeoutError:
+            return
 
         await message_2.delete()
         await attack_msg.delete()
@@ -211,7 +218,10 @@ class Pokebattler(commands.Cog):
             embed.set_footer(text="Enter a Number Below:")
             message_3 = await ctx.message.channel.send(embed=embed)
 
-            dodge_msg = await self.bot.wait_for('message', timeout=120, check=weather_msg)
+            try:
+                dodge_msg = await self.bot.wait_for('message', timeout=120, check=weather_msg)
+            except asyncio.TimeoutError:
+                return
 
             await message_3.delete()
             await dodge_msg.delete()
@@ -237,7 +247,10 @@ class Pokebattler(commands.Cog):
             url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/Badge_Friendship_GOLD_01.png")
         message_4 = await ctx.message.channel.send(embed=embed)
 
-        friend_msg = await self.bot.wait_for('message', timeout=120, check=weather_check)
+        try:
+            friend_msg = await self.bot.wait_for('message', timeout=120, check=weather_check)
+        except asyncio.TimeoutError:
+            return
 
         await message_4.delete()
         await friend_msg.delete()
