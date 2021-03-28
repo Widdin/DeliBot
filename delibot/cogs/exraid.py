@@ -86,7 +86,7 @@ class Exraid(commands.Cog):
         await self.bot.get_cog("Utils").create_user_if_not_exist(ctx.message.guild.id, ctx.message.author.id)
 
         # Channel to post in if it exist.
-        default_ex_channel = await self.get_default_ex_channel(ctx.message.guild.id)
+        (default_ex_channel, ) = await self.get_default_ex_channel(ctx.message.guild.id)
 
         # Retrieve gym location.
         gym_name = await self.bot.get_cog("Utils").get_gym(ctx.message.guild.id, location.lower())

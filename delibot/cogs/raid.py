@@ -113,7 +113,7 @@ class Raid(commands.Cog):
             await ctx.message.author.send(embed=embed)
 
         # Channel to post in if it exist.
-        default_channel = await self.bot.db.get_default_channel(ctx.message.guild.id)
+        (default_channel, ) = await self.bot.db.get_default_channel(ctx.message.guild.id)
 
         # Create the user in the database if he doesn't exist.
         await self.bot.get_cog("Utils").create_user_if_not_exist(ctx.message.guild.id, ctx.message.author.id)
