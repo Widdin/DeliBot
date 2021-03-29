@@ -53,9 +53,6 @@
 		"GR": "Community Day",
 		"CS": "Community Day"
 	},
-
-
-
 	"INSUFFICIENT_PERM":{
 		"US": "Insufficient permission",
 		"SE": "Otillräckligt tillstånd",
@@ -74,9 +71,6 @@
 		"GR": "You do not have permission to run this command.",
 		"CS": "Nemáš dostatečné pravomoce k používání tohoto příkazu."
 	},
-
-
-
 	"EDIT_QUESTION":{
 		"US": "What would you like to edit?",
 		"SE": "Vad vill du redigera?",
