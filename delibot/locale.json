@@ -5,7 +5,8 @@
 		"FR": "Pokémon à l'affiche",
 		"DE": "Pokémon des Tages",
 		"NL": "Featured Pokémon",
-		"GR": "Featured Pokémon"
+		"GR": "Featured Pokémon",
+		"CS": "Featured Pokémon"
 	},
 	"EXCLUSIVE_MOVE":{
 		"US": "Exclusive Move",
@@ -13,7 +14,8 @@
 		"FR": "Attaque exclusive",
 		"DE": "Exklusive Attacke",
 		"NL": "Exclusive Move",
-		"GR": "Exclusive Move"
+		"GR": "Exclusive Move",
+		"CS": "Exkluzivní Útok"
 	},
 	"BONUS":{
 		"US": "Bonus",
@@ -21,7 +23,8 @@
 		"FR": "Bonus",
 		"DE": "Bonus",
 		"NL": "Bonus",
-		"GR": "Bonus"
+		"GR": "Bonus",
+		"CS": "Bonus"
 	},
 	"DATE":{
 		"US": "Date",
@@ -29,7 +32,8 @@
 		"FR": "Date",
 		"DE": "Datum",
 		"NL": "Date",
-		"GR": "Date"
+		"GR": "Date",
+		"CS": "Datum"
 	},
 	"OFFICIAL_PAGE":{
 		"US": "Official Page",
@@ -37,7 +41,8 @@
 		"FR": "Page officielle",
 		"DE": "Offizielle Seite",
 		"NL": "Official Page",
-		"GR": "Official Page"
+		"GR": "Official Page",
+		"CS": "Official Page"
 	},
 	"COMMUNITY_DAY":{
 		"US": "Community Day",
@@ -45,18 +50,20 @@
 		"FR": "Community Day",
 		"DE": "Community Day",
 		"NL": "Community Day",
-		"GR": "Community Day"
+		"GR": "Community Day",
+		"CS": "Community Day"
 	},
-	
-	
-	
+
+
+
 	"INSUFFICIENT_PERM":{
 		"US": "Insufficient permission",
 		"SE": "Otillräckligt tillstånd",
 		"FR": "Permission insuffisante",
 		"DE": "Unzureichende Berechtigung",
 		"NL": "Insufficient permission",
-		"GR": "Insufficient permission"
+		"GR": "Insufficient permission",
+		"CS": "Neodstatečné pravomoce"
 	},
 	"NO_PERMISSION":{
 		"US": "You do not have permission to run this command.",
@@ -64,18 +71,20 @@
 		"FR": "Vous n'avez pas la permission d'executer cette commande.",
 		"DE": "Du hast keine Berechtigung diesen Befehl auszuführen.",
 		"NL": "You do not have permission to run this command.",
-		"GR": "You do not have permission to run this command."
+		"GR": "You do not have permission to run this command.",
+		"CS": "Nemáš dostatečné pravomoce k používání tohoto příkazu."
 	},
-	
-	
-	
+
+
+
 	"EDIT_QUESTION":{
 		"US": "What would you like to edit?",
 		"SE": "Vad vill du redigera?",
-		"FR": "Que veux tu modifier?", 
+		"FR": "Que veux tu modifier?",
 		"DE": "Was möchtest du ändern?",
 		"NL": "What would you like to edit?",
-		"GR": "What would you like to edit?"
+		"GR": "What would you like to edit?",
+		"CS": "Co by jsi rád upravil?"
 	},
 	"EDIT_TYPE":{
 		"US": "Type a new",
@@ -83,7 +92,8 @@
 		"FR": "Saisir un nouveau",
 		"DE": "Ändere die/das/den",
 		"NL": "Type a new",
-		"GR": "Type a new"
+		"GR": "Type a new",
+		"CS": "Napiš nový text"
 	},
 	"THANK_YOU":{
 		"US": "Thank you",
@@ -91,7 +101,8 @@
 		"FR": "Merci",
 		"DE": "Vielen Dank",
 		"NL": "Thank you",
-		"GR": "Thank you"
+		"GR": "Thank you",
+		"CS": "Děkuji ti"
 	},
 	"RAID_TIME":{
 		"US": "Time",
@@ -99,7 +110,8 @@
 		"FR": "Heure",
 		"DE": "Uhrzeit",
 		"NL": "Time",
-		"GR": "Time"
+		"GR": "Time",
+		"CS": "Čas"
 	},
 	"RAID_LOCATION":{
 		"US": "Location",
@@ -107,7 +119,8 @@
 		"FR": "Lieu",
 		"DE": "Ort",
 		"NL": "Location",
-		"GR": "Location"
+		"GR": "Location",
+		"CS": "Lokace"
 	},
 	"RAID_TOTAL":{
 		"US": "Total",
@@ -115,7 +128,8 @@
 		"FR": "Total",
 		"DE": "Insgesamt",
 		"NL": "Total",
-		"GR": "Total"
+		"GR": "Total",
+		"CS": "Celkem"
 	},
 	"RAID_BY":{
 		"US": "By",
@@ -123,7 +137,8 @@
 		"FR": "Par",
 		"DE": "Von",
 		"NL": "By",
-		"GR": "By"
+		"GR": "By",
+		"CS": "Od"
 	},
 	"RAID_DAY":{
 		"US": "Day",
@@ -131,7 +146,8 @@
 		"FR": "Jour",
 		"DE": "Tag",
 		"NL": "Day",
-		"GR": "Day"
+		"GR": "Day",
+		"CS": "Den"
 	},
 	"IMAGE_FAILED":{
 		"US": "Failed to scan image",
@@ -139,7 +155,8 @@
 		"FR": "Le scan de l'image a échoué",
 		"DE": "Fehler beim Scannen des Bildes",
 		"NL": "Failed to scan image",
-		"GR": "Failed to scan image"
+		"GR": "Failed to scan image",
+		"CS": "Nepodařilo se naskenovat obrázek"
 	},
 	"IMAGE_FAILED_DESC":{
 		"US": "Save the image and send it to Dimios#0592 if the problem occurs often.",
@@ -147,7 +164,8 @@
 		"FR": "Sauvegarder l'image et l'envoyer à Dimios#0592 si le problème arrive souvent.",
 		"DE": "Speichere das Bild und schicke es an Dimios#0592, wenn das Problem häufiger auftritt.",
 		"NL": "Save the image and send it to Dimios#0592 if the problem occurs often.",
-		"GR": "Save the image and send it to Dimios#0592 if the problem occurs often."
+		"GR": "Save the image and send it to Dimios#0592 if the problem occurs often.",
+		"CS": "Ulož obrázek a pošli ho Dimios#0592 pokud k problému dochází čast."
 	},
 	"WARNING":{
 		"US": "Warning",
@@ -155,7 +173,8 @@
 		"FR": "Attention",
 		"DE": "Warnung",
 		"NL": "Warning",
-		"GR": "Warning"
+		"GR": "Warning",
+		"CS": "Varování"
 	},
 	"ERROR":{
 		"US": "Error",
@@ -163,7 +182,8 @@
 		"FR": "Erreur",
 		"DE": "Fehler",
 		"NL": "Error",
-		"GR": "Error"
+		"GR": "Error",
+		"CS": "Chyba"
 	},
 	"RAID_EXIST":{
 		"US": "This raid already exists, so it will not be created.",
@@ -171,7 +191,8 @@
 		"FR": "Ce raid existe deja, il ne va donc pas être recréé.",
 		"DE": "Dieser Raid ist bereits vorhanden und wird daher nicht erstellt.",
 		"NL": "This raid already exists, so it will not be created.",
-		"GR": "This raid already exists, so it will not be created."
+		"GR": "This raid already exists, so it will not be created.",
+		"CS": "Tento raid už existuje, proto nebude vytvořen znovu."
 	},
 	"MISSING_ROLE":{
 		"US": "Missing role",
@@ -179,7 +200,8 @@
 		"FR": "Rôle manquant",
 		"DE": "Fehlende Rolle",
 		"NL": "Missing role",
-		"GR": "Missing role"
+		"GR": "Missing role",
+		"CS": "Chybějící role"
 	},
 	"MISSING_ROLE_DESC":{
 		"US": "The role was not found. Create the role and try again.",
@@ -187,7 +209,8 @@
 		"FR": "Le rôle n'a pas été trouvé. Créé le rôle et recommence.",
 		"DE": "Die Rolle wurde nicht gefunden. Erstelle die Rolle und versuche es erneut.",
 		"NL": "The role was not found. Create the role and try again.",
-		"GR": "The role was not found. Create the role and try again."
+		"GR": "The role was not found. Create the role and try again.",
+		"CS": "Role nebyla nalezena. Vytvoř roli a zkus to znovu."
 	},
 	"TEAM_ALREADY_ASSIGNED":{
 		"US": "Team already assigned",
@@ -195,7 +218,8 @@
 		"FR": "Team déjà assignée",
 		"DE": "Team bereits zugewiesen",
 		"NL": "Team already assigned",
-		"GR": "Team already assigned"
+		"GR": "Team already assigned",
+		"CS": "Tým byl nastaven"
 	},
 	"TEAM_ALREADY_ASSIGNED_DESC":{
 		"US": "You already have a team-role assigned.",
@@ -203,7 +227,8 @@
 		"FR": "Vous avez déjà un rôle de team assigné.",
 		"DE": "Du hast bereits eine zugewiesene Teamrolle.",
 		"NL": "You already have a team-role assigned.",
-		"GR": "You already have a team-role assigned."
+		"GR": "You already have a team-role assigned.",
+		"CS": "Už máš týmovou roli."
 	},
 	"MISSING_PERM":{
 		"US": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
@@ -211,7 +236,8 @@
 		"FR": "Je n'ai pas la permission d'ajouter des rôles. Veuillez me donner le droit de 'manager les rôles' à mon rôle.",
 		"DE": "Ich habe keine Berechtigung Rollen hinzuzufügen. Bitte aktiviere dies für mich in der 'Rollenverwaltung'.",
 		"NL": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
-		"GR": "I don't have permission to add roles. Please enable 'Manage Roles' on my role."
+		"GR": "I don't have permission to add roles. Please enable 'Manage Roles' on my role.",
+		"GR": "Nemám oprávnění přidávat role. Prosím povol 'Manage Roles' v mojí roli."
 	},
 	"TEAM_WELCOME":{
 		"US": "Welcome to",
@@ -219,7 +245,8 @@
 		"FR": "Bienvenue à",
 		"DE": "Willkommen bei",
 		"NL": "Welcome to",
-		"GR": "Welcome to"
+		"GR": "Welcome to",
+		"CS": "Vítej do"
 	},
 	"TEAM_WELCOME_DESC":{
 		"US": "Your team has been updated.",
@@ -227,7 +254,8 @@
 		"FR": "Votre team à été mise à jour.",
 		"DE": "Dein Team wurde aktualisiert.",
 		"NL": "Your team has been updated.",
-		"GR": "Your team has been updated."
+		"GR": "Your team has been updated.",
+		"CS": "Tvůj tým byl upraven."
 	},
 	"WHAT_POKEMON":{
 		"US": "What Pokémon?",
@@ -235,7 +263,8 @@
 		"FR": "Quel Pokemon ?",
 		"DE": "Welches Pokemon?",
 		"NL": "What Pokémon?",
-		"GR": "What Pokémon?"
+		"GR": "What Pokémon?",
+		"CS": "Jaký Pokémon je v raidu?"
 	},
 	"WHAT_TIME":{
 		"US": "What time?",
@@ -243,7 +272,8 @@
 		"FR": "Quelle heure ?",
 		"DE": "Welche Uhrzeit?",
 		"NL": "What time?",
-		"GR": "What time?"
+		"GR": "What time?",
+		"CS": "V kolik se jde?"
 	},
 	"WHAT_LOCATION":{
 		"US": "What location?",
@@ -251,7 +281,8 @@
 		"FR": "Quel lieu ?",
 		"DE": "Welcher Ort?",
 		"NL": "What location?",
-		"GR": "What location?"
+		"GR": "What location?",
+		"CS": "Jaký Stadion?"
 	},
 	"RAID_CREATION":{
 		"US": "The raid will be created in",
@@ -259,7 +290,8 @@
 		"FR": "Le Raid sera créé dans",
 		"DE": "Der Raid wurde erstellt im Kanal",
 		"NL": "The raid will be created in",
-		"GR": "The raid will be created in"
+		"GR": "The raid will be created in",
+		"CS": "Raid bude vytvořen v"
 	},
 	"WHAT_QUEST":{
 		"US": "What quest?",
@@ -267,7 +299,8 @@
 		"FR": "Quelle quête ?",
 		"DE": "Welche Feldforschung?",
 		"NL": "What quest?",
-		"GR": "What quest?"
+		"GR": "What quest?",
+		"CS": "Jaký úkol?"
 	},
 	"WHAT_REWARD":{
 		"US": "What reward?",
@@ -275,7 +308,8 @@
 		"FR": "Quelle récompense ?",
 		"DE": "Welche Belohnung?",
 		"NL": "What reward?",
-		"GR": "What reward?"
+		"GR": "What reward?",
+		"CS": "Jaká odměna?"
 	},
 	"WHAT_POKESTOP":{
 		"US": "What pokestop?",
@@ -283,7 +317,8 @@
 		"FR": "Quel pokestop ?",
 		"DE": "Welcher PokéStop?",
 		"NL": "What pokestop?",
-		"GR": "What pokestop?"
+		"GR": "What pokestop?",
+		"CS": "Jaký Pokestop?"
 	},
 	"TYPE_BELOW":{
 		"US": "Type below:",
@@ -291,7 +326,8 @@
 		"FR": "Ecrire ci dessous :",
 		"DE": "Gib unten ein:",
 		"NL": "Type below:",
-		"GR": "Type below:"
+		"GR": "Type below:",
+		"CS": "Napiš níže:"
 	},
 	"QUEST_CREATION":{
 		"US": "The research will be created in",
@@ -299,7 +335,8 @@
 		"FR": "La quête va être crée dans",
 		"DE": "Die Feldforschung wurde erstellt im Kanal",
 		"NL": "The research will be created in",
-		"GR": "The research will be created in"
+		"GR": "The research will be created in",
+		"CS": "Research bude vytvořen v"
 	},
 	"QUEST":{
 		"US": "Quest",
@@ -307,7 +344,8 @@
 		"FR": "Quête",
 		"DE": "Feldforschung",
 		"NL": "Quest",
-		"GR": "Quest"
+		"GR": "Quest",
+		"CS": "Úkol"
 	},
 	"QUEST_REWARD":{
 		"US": "Reward",
@@ -315,7 +353,8 @@
 		"FR": "Récompense",
 		"DE": "Belohnung",
 		"NL": "Reward",
-		"GR": "Reward"
+		"GR": "Reward",
+		"CS": "Odměna"
 	},
 	"NAME_NOT_FOUND":{
 		"US": "Sorry, your name was not found.",
@@ -323,7 +362,8 @@
 		"FR": "Désolé, votre nom n'a pas été trouvé.",
 		"DE": "Entschuldige, dein Name wurde nicht gefunden.",
 		"NL": "Sorry, your name was not found.",
-		"GR": "Sorry, your name was not found."
+		"GR": "Sorry, your name was not found.",
+		"CS": "Omlouvám se, ale jméno nebylo nalezeno."
 	},
 	"NAME_NOT_FOUND_DESC":{
 		"US": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
@@ -331,7 +371,8 @@
 		"FR": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
 		"DE": "Versuche eine Feldforschung oder einen Raid mit mindestens 2 Teilnehmern zu erstellen.",
 		"NL": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
-		"GR": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending."
+		"GR": "Try reporting a Research Quest or create a Raid that successfully expires with at least 2 people attending.",
+		"CS": "Zkuste nahlásit Research úkol nebo vytvořte Raid, který úspěšně vyprší za účasti alespoň dvou lidí."
 	},
 	"STATS":{
 		"US": "Stats for",
@@ -339,7 +380,8 @@
 		"FR": "Statistiques pour",
 		"DE": "Statistik für",
 		"NL": "Stats for",
-		"GR": "Stats for"
+		"GR": "Stats for",
+		"CS": "Statistiky pro"
 	},
 	"RAIDS_JOINED":{
 		"US": "Raids Joined:",
@@ -347,7 +389,8 @@
 		"FR": "Raids rejoins :",
 		"DE": "Raids abgeschlossen:",
 		"NL": "Raids Joined:",
-		"GR": "Raids Joined:"
+		"GR": "Raids Joined:",
+		"CS": "Raidů zúčastněno:"
 	},
 	"RAIDS_CREATED":{
 		"US": "Raids Created:",
@@ -355,7 +398,8 @@
 		"FR": "Raids créés :",
 		"DE": "Raids erstellt:",
 		"NL": "Raids Created:",
-		"GR": "Raids Created:"
+		"GR": "Raids Created:",
+		"CS": "Raidů vytvořeno:"
 	},
 	"RESEARCH_CREATED":{
 		"US": "Research Created:",
@@ -363,7 +407,8 @@
 		"FR": "Quêtes créées :",
 		"DE": "Feldforschungen erstellt:",
 		"NL": "Research Created:",
-		"GR": "Research Created:"
+		"GR": "Research Created:",
+		"CS": "Researchů vytvořeno:"
 	},
 	"CONTRIBUTOR":{
 		"US": "Contributor:",
@@ -371,7 +416,8 @@
 		"FR": "Contributeur :",
 		"DE": "Unterstützer:",
 		"NL": "Contributor:",
-		"GR": "Contributor:"
+		"GR": "Contributor:",
+		"CS": "Donator:"
 	},
 	"Leaderboard":{
 		"US": "Leaderboard for:",
@@ -379,7 +425,8 @@
 		"FR": "Leaderboard pour :",
 		"DE": "Bestenliste für:",
 		"NL": "Leaderboard for:",
-		"GR": "Leaderboard for:"
+		"GR": "Leaderboard for:",
+		"CS": "Žebříček pro:"
 	},
 	"FUSION_ERROR":{
 		"US": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
@@ -387,6 +434,7 @@
 		"FR": "Gardez à l'esprit que seule la 1ere génération existe, et que vous devez écrire correctement le nom des pokémons.",
 		"DE": "Denke daran, dass das nur für die 1. Generation existiert und du das Pokémon korrekt geschrieben hast.",
 		"NL": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
-		"GR": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly."
+		"GR": "Keep in mind that only generation 1 exists, and you have to spell the Pokémon correctly.",
+		"CS": "Mějte na paměti že existuje pouze generace 1, a musíte napsat správně pokémona."
 	}
 }
