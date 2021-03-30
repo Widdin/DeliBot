@@ -70,10 +70,6 @@ class Raid(commands.Cog):
                 await ctx.message.author.send("Timeout")
                 return
 
-            if wait_for_mon is None:
-                await ctx.message.author.send("Timeout")
-                return
-
             pokemon = wait_for_mon.content
 
             embed = discord.Embed(title=what_time, color=discord.Colour.orange())
@@ -86,10 +82,6 @@ class Raid(commands.Cog):
                 await ctx.message.author.send("Timeout")
                 return
 
-            if wait_for_time is None:
-                await ctx.message.author.send("Timeout")
-                return
-
             time = wait_for_time.content
 
             embed = discord.Embed(title=what_location, color=discord.Colour.green())
@@ -99,10 +91,6 @@ class Raid(commands.Cog):
             try:
                 wait_for_loc = await self.bot.wait_for('message', timeout=30.0, check=check)
             except asyncio.TimeoutError:
-                await ctx.message.author.send("Timeout")
-                return
-
-            if wait_for_loc is None:
                 await ctx.message.author.send("Timeout")
                 return
 
