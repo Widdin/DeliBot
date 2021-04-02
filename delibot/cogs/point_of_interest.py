@@ -98,7 +98,7 @@ class PointOfInterest(commands.Cog):
 
                 query = "INSERT INTO pokestops (server_id, name, lat, lon) VALUES (%s, %s, %s, %s)"
                 params = (ctx.message.guild.id, name.lower(), lat, lon)
-                success = self.bot.db.execute(query, params)
+                success = await self.bot.db.execute(query, params)
 
                 if success == 1:
                     embed = discord.Embed(title=f"Pokestop - {name.title()} was successfully created.",
@@ -154,9 +154,9 @@ class PointOfInterest(commands.Cog):
 
             query = "DELETE FROM gyms WHERE server_id = %s AND name = %s"
             params = (ctx.message.guild.id, name.lower())
-            success = self.bot.db.execute(query, params)
+            response = await self.bot.db.execute(query, params, rowcount=True)
 
-            if success == 1:
+            if response == 1:
                 embed = discord.Embed(title=f"Gym - {name} was successfully deleted.",
                                       color=discord.Colour.green())
                 embed.set_thumbnail(
@@ -183,9 +183,9 @@ class PointOfInterest(commands.Cog):
 
             query = "DELETE FROM pokestops WHERE server_id = %s AND name = %s"
             params = (ctx.message.guild.id, name.lower())
-            success = self.bot.db.execute(query, params)
+            response = await self.bot.db.execute(query, params, rowcount=True)
 
-            if success == 1:
+            if response == 1:
                 embed = discord.Embed(title=f"Pokestop - {name} was successfully deleted.",
                                       color=discord.Colour.green())
                 embed.set_footer(text="Auto-deleting in 15 seconds..")
