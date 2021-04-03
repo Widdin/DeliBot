@@ -391,20 +391,19 @@ class RawReaction(commands.Cog):
     async def delete_raid(self, server_id: str, channel_id: str, message_id: str, member: discord.Member):
         query = "DELETE FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
         params = (server_id, channel_id, message_id)
-        response = await self.bot.db.execute(query, params)
+        response = await self.bot.db.execute(query, params, rowcount=True)
 
-        if response is None:
+        if response != 1:
             query = "DELETE FROM exraids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
             params = (server_id, channel_id, message_id)
-            response = await self.bot.db.execute(query, params, single=True)
+            response = await self.bot.db.execute(query, params, rowcount=True)
 
-            if response is None:
-
+            if response != 1:
                 query = "DELETE FROM research WHERE server_id = %s AND channel_id = %s AND message_id = %s"
                 params = (server_id, channel_id, message_id)
-                response = await self.bot.db.execute(query, params, single=True)
+                response = await self.bot.db.execute(query, params, rowcount=True)
 
-                if response is None:
+                if response == 0:
                     return
 
         try:
