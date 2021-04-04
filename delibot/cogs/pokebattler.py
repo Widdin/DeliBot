@@ -460,7 +460,7 @@ class Pokebattler(commands.Cog):
     @commands.command(name="update_json")
     async def update_json(self, ctx):
 
-        if ctx.author.id != 306926179074703362:
+        if not await ctx.bot.is_owner(ctx.author):
             return
 
         msg = await ctx.channel.send("Updating..")

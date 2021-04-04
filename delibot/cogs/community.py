@@ -16,7 +16,7 @@ class Community(commands.Cog):
     @commands.command(pass_context=True, hidden=True)
     async def update_cday(self, ctx):
 
-        if ctx.author.id != 306926179074703362:
+        if not await ctx.bot.is_owner(ctx.author):
             return
 
         await ctx.message.delete()
