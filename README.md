@@ -6,7 +6,7 @@ DeliBot is a Discord bot written in Python 3.6.
 
 ## Discord
 Join the server to get help, make a suggestion or just chat!  
-Invite - https://discord.gg/f2mkW8g  
+[![Discord](https://discordapp.com/api/guilds/416342611121668096/widget.png?style=banner3)](https://discord.gg/f2mkW8g)
 
 ## How to invite DeliBot to your server
  1. Invite DeliBot - https://discordapp.com/oauth2/authorize?client_id=354229190666616844&scope=bot&permissions=1342532672
