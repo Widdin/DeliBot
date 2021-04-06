@@ -6,9 +6,9 @@ DeliBot is a Discord bot written in Python 3.6.
 
 ## Discord
 Join the server to get help, make a suggestion or just chat!  
-Invite - https://discord.gg/f2mkW8g  
+[![Discord](https://discordapp.com/api/guilds/416342611121668096/widget.png?style=banner3)](https://discord.gg/f2mkW8g)
 
-## How to run DeliBot on your server
+## How to invite DeliBot to your server
  1. Invite DeliBot - https://discordapp.com/oauth2/authorize?client_id=354229190666616844&scope=bot&permissions=1342532672
  2. Go to a channel in your server and run `!install` one time.
 
@@ -142,6 +142,15 @@ For e.g "`!list raids`" will display:
 `!community_day` = `!community` / `!cday` / `!cd`  
 `!research` = `!rs`  / `!Research` / `!Q` / `!Quest` / `!quest`  
 
+
+# How to setup DeliBot
+Prerequisites: python 3.6, git, MySQL
+* Clone the repository  
+`git clone https://github.com/Widdin/DeliBot.git`
+* Install requirements  
+`Python3 -m pip install -r requirements.txt`
+* Setup the database  
+`..`
 
 ## Contribute:
 If you want to contribute with something / contact me, then hit me up on:  
