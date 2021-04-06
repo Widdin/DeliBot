@@ -29,9 +29,6 @@ class Community(commands.Cog):
         date = res.html.find('.communityday__hero__next-event__date')
         bonuses = res.html.find('.communityday__hero__bubble__value')
 
-        for bonus in bonuses:
-            print(bonus.text)
-
         data = {'community': []}
 
         data['community'].append({
@@ -50,13 +47,12 @@ class Community(commands.Cog):
 
     @commands.command(pass_context=True,
                       aliases=["cd", "Cd", "Cday", "cday", "community", "Community", "Community_day"])
-    async def community_day(self, ctx, region: str = None, GMT=None):
+    async def community_day(self, ctx):
         """
         Information message of the next Community-day.
         """
         await ctx.message.delete()
 
-        data = []
         with open('json/data.json') as json_file:
             data = json.load(json_file)
             json_file.close()
@@ -66,41 +62,25 @@ class Community(commands.Cog):
             "Utils").get_translation(ctx.message.guild.id,
                                      "FEATURED_POKEMON EXCLUSIVE_MOVE BONUS DATE OFFICIAL_PAGE COMMUNITY_DAY")
 
-        description = (f"[{official_page_title}](https://pokemongolive.com/events/community-day/)")
-
+        description = f"[{official_page_title}](https://pokemongolive.com/events/community-day/)"
         featured_pokemon = f":star2: __{featured_pokemon_title}__"
-        featured_pokemon_contents = " "
-
         exclusive_move = f":shield: __{exclusive_move_title}__"
-        exclusive_move_contents = " "
-
         bonus_one = f":star: __{bonus_title}__"
-        bonus_one_contents = " "
-
         bonus_two = f":star: __{bonus_title}__"
-        bonus_two_contents = " "
-
         date = f":calendar_spiral: __{date_title}__"
-
-        date_contents = "Aug 11 & 12, 11:00 AM - 2:00 PM"
 
         for c in data['community']:
             featured_pokemon_contents = c['pokemon']
             exclusive_move_contents = c['move']
             bonus_one_contents = c['bonusOne']
             bonus_two_contents = c['bonusTwo']
-            date_contents = c['day']
+            date_contents = c['day'] + ', 11:00 PM - 2:00 PM'
 
-        date_contents += ', 11:00 PM - 2:00 PM'
+        pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(featured_pokemon_contents)
 
-        embed = discord.Embed(colour=0x0000FF, description=description)
-        embed.title = community_day_title
+        embed = discord.Embed(title=community_day_title, colour=0x0000FF, description=description)
 
-        utils = self.bot.get_cog("Utils")
-        pokemon_id = await utils.get_pokemon_id(featured_pokemon_contents)
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + str(
-                pokemon_id) + "_00_shiny.png")
+        embed.set_thumbnail(url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + str(pokemon_id) + "_00_shiny.png")
         embed.set_image(url="https://storage.googleapis.com/pokemongolive/communityday/PKMN_Community-Day-logo2.png")
 
         embed.add_field(name=featured_pokemon, value="\u2022 " + featured_pokemon_contents + "\n\u200b")
