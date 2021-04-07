@@ -1,11 +1,11 @@
 import asyncio
 import json
 import os
+import time
 
 import aiohttp
 import discord
 from discord.ext import commands
-from requests_html import AsyncHTMLSession
 
 
 class Pokebattler(commands.Cog):
@@ -267,15 +267,10 @@ class Pokebattler(commands.Cog):
 
         # Invoked from message.
         if isinstance(message_id, int):
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cur:
-                    result = await cur.execute(
-                        "SELECT pokemon FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s",
-                        (server_id, channel_id, message_id))
-                    if result == 1:
-                        (pokemon,) = await cur.fetchone()
-                    else:
-                        return
+
+            query = "SELECT pokemon FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            params = (server_id, channel_id, message_id)
+            (pokemon, ) = await self.bot.db.execute(query, params, single=True)
 
         # Invoked by command
         else:
@@ -364,7 +359,6 @@ class Pokebattler(commands.Cog):
             name = pokemon['pokemonId'].replace('_', ' ').title()
             quick = await self.get_move_info(pokemon['byMove'][-1]['move1'])
             charge = await self.get_move_info(pokemon['byMove'][-1]['move2'])
-
             embed.add_field(
                 name=f"{i}. {name}",
                 value=f"{self.type_emoji[quick['type']]} {quick['name']}\n{self.type_emoji[charge['type']]} {charge['name']}",
@@ -463,44 +457,44 @@ class Pokebattler(commands.Cog):
         if not await ctx.bot.is_owner(ctx.author):
             return
 
-        msg = await ctx.channel.send("Updating..")
+        # Only update if the file is older than 1 day
+        if not await self.is_modified_older_than('json/raid_bosses.json', days=1):
+            await ctx.channel.send("Can not update because the JSON was recently modified.")
+            return
+        else:
+            await ctx.channel.send("Updating..")
 
-        url_raid = 'https://fight.pokebattler.com/raids'
-        url_moves = 'https://fight.pokebattler.com/moves'
-        url_pokemon = 'https://fight.pokebattler.com/pokemon'
-
-        # Raids
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url_raid) as response:
-                if response.status == 200:
-                    data = await response.json()
+        data = await self.get_json('https://fight.pokebattler.com/raids')
         if data:
-            filepath = os.path.join('json/raid_bosses.json')
-            with open(filepath, 'w', encoding='utf8') as f:
-                json.dump(data, f, indent=4)
+            await self.dump_json('json/raid_bosses.json', data)
 
-        # Moves
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url_moves) as response:
-                if response.status == 200:
-                    data = await response.json()
+        data = await self.get_json('https://fight.pokebattler.com/moves')
         if data:
-            filepath = os.path.join('json/moves.json')
-            with open(filepath, 'w', encoding='utf8') as f:
-                json.dump(data, f, indent=4)
+            await self.dump_json('json/moves.json', data)
 
-        # Pokemon
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url_pokemon) as response:
-                if response.status == 200:
-                    data = await response.json()
+        data = await self.get_json('https://fight.pokebattler.com/pokemon')
         if data:
-            filepath = os.path.join('json/pokemon.json')
-            with open(filepath, 'w', encoding='utf8') as f:
-                json.dump(data, f, indent=4)
+            await self.dump_json('json/pokemon.json', data)
 
-        await msg.edit(content="Successfully updated.")
+        await ctx.channel.send("Successfully updated.")
 
+    @staticmethod
+    async def is_modified_older_than(path, days):
+        date_modified = os.path.getmtime(path)
+        return (time.time() - date_modified) / 3600 > 24 * days
 
+    @staticmethod
+    async def get_json(url):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                if response.status == 200:
+                    return await response.json()
+
+    @staticmethod
+    async def dump_json(path, data):
+        file_path = os.path.join(path)
+        with open(file_path, 'w', encoding='utf8') as f:
+            json.dump(data, f, indent=4)
+        
 def setup(bot):
     bot.add_cog(Pokebattler(bot))
