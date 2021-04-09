@@ -1,3 +1,8 @@
+#Generated JSON
+raid_bosses.json
+pokemon.json
+moves.json
+
 # Config
 config/*
 !config/config.ini.example

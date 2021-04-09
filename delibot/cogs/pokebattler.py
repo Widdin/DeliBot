@@ -2,11 +2,12 @@ import asyncio
 import json
 import os
 import time
-
+import logging
 import aiohttp
 import discord
 from discord.ext import commands
 
+log = logging.getLogger()
 
 class Pokebattler(commands.Cog):
     """
@@ -15,6 +16,7 @@ class Pokebattler(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.bot.loop.create_task(self.update_json())
         self.type_emoji = {'POKEMON_TYPE_BUG': '<:bug:495707181073694722>',
                            'POKEMON_TYPE_DARK': '<:dark:495707181249724416>',
                            'POKEMON_TYPE_DRAGON': '<:dragon:495707180797001739>',
@@ -270,7 +272,7 @@ class Pokebattler(commands.Cog):
 
             query = "SELECT pokemon FROM raids WHERE server_id = %s AND channel_id = %s AND message_id = %s"
             params = (server_id, channel_id, message_id)
-            (pokemon, ) = await self.bot.db.execute(query, params, single=True)
+            (pokemon,) = await self.bot.db.execute(query, params, single=True)
 
         # Invoked by command
         else:
@@ -451,36 +453,41 @@ class Pokebattler(commands.Cog):
 
         return None
 
-    @commands.command(name="update_json")
-    async def update_json(self, ctx):
+    async def update_json(self):
+        await self.bot.wait_until_ready()
+        while not self.bot.is_closed():
 
-        if not await ctx.bot.is_owner(ctx.author):
-            return
+            # Only update if the file is older than 1 day
+            if not await self.is_modified_older_than('json/raid_bosses.json', days=1):
+                log.info("Skipping update because the JSON was recently modified.")
 
-        # Only update if the file is older than 1 day
-        if not await self.is_modified_older_than('json/raid_bosses.json', days=1):
-            await ctx.channel.send("Can not update because the JSON was recently modified.")
-            return
-        else:
-            await ctx.channel.send("Updating..")
+            else:
+                log.info("Updating JSON...")
 
-        data = await self.get_json('https://fight.pokebattler.com/raids')
-        if data:
-            await self.dump_json('json/raid_bosses.json', data)
+                info = {
+                    'https://fight.pokebattler.com/raids': 'json/raid_bosses.json',
+                    'https://fight.pokebattler.com/moves': 'json/moves.json',
+                    'https://fight.pokebattler.com/pokemon': 'json/pokemon.json'
+                }
 
-        data = await self.get_json('https://fight.pokebattler.com/moves')
-        if data:
-            await self.dump_json('json/moves.json', data)
+                for url in info:
+                    data = await self.get_json(url)
+                    if data:
+                        file_path = info[url]
+                        await self.dump_json(file_path, data)
 
-        data = await self.get_json('https://fight.pokebattler.com/pokemon')
-        if data:
-            await self.dump_json('json/pokemon.json', data)
+                log.info("Successfully updated JSON.")
 
-        await ctx.channel.send("Successfully updated.")
+            await asyncio.sleep(86400)
 
     @staticmethod
     async def is_modified_older_than(path, days):
-        date_modified = os.path.getmtime(path)
+        try:
+            date_modified = os.path.getmtime(path)
+        except FileNotFoundError as e:
+            log.info("No JSON were found. Generating them...")
+            return True
+
         return (time.time() - date_modified) / 3600 > 24 * days
 
     @staticmethod
@@ -495,6 +502,7 @@ class Pokebattler(commands.Cog):
         file_path = os.path.join(path)
         with open(file_path, 'w', encoding='utf8') as f:
             json.dump(data, f, indent=4)
-        
+
+
 def setup(bot):
     bot.add_cog(Pokebattler(bot))
