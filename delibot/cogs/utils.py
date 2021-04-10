@@ -2,8 +2,9 @@ import asyncio
 import json
 import math
 import os
-
+import logging
 import discord
+import time
 from discord.ext import commands
 
 from cogs.paginator import HelpPaginator
@@ -11,7 +12,7 @@ from cogs.paginator import HelpPaginator
 from utils import default
 
 config = default.get_config()
-
+log = logging.getLogger()
 
 class Utils(commands.Cog):
     """Commands for various things."""
@@ -471,6 +472,21 @@ class Utils(commands.Cog):
             return None
 
         return int(channel_id)
+
+    @staticmethod
+    async def dump_json(path, data):
+        with open(path, 'w', encoding='utf8') as f:
+            json.dump(data, f, indent=4)
+
+    @staticmethod
+    async def is_modified_older_than(path, days):
+        try:
+            date_modified = os.path.getmtime(path)
+        except FileNotFoundError:
+            log.info(f'{path} was not found. Creating it...')
+            return True
+
+        return (time.time() - date_modified) / 3600 > 24 * days
 
     @staticmethod
     async def get_pokemon_image_url(pokemon_id: int, shiny: bool, alola: bool, other: str = ""):

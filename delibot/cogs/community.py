@@ -1,8 +1,11 @@
+import asyncio
 import json
-
+import logging
 import discord
 from discord.ext import commands
 from requests_html import AsyncHTMLSession
+
+log = logging.getLogger()
 
 
 class Community(commands.Cog):
@@ -12,38 +15,42 @@ class Community(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.bot.loop.create_task(self.update_community_day())
 
-    @commands.command(pass_context=True, hidden=True)
-    async def update_cday(self, ctx):
+    async def update_community_day(self):
+        await self.bot.wait_until_ready()
+        while not self.bot.is_closed():
 
-        if not await ctx.bot.is_owner(ctx.author):
-            return
+            # Only update if the file is older than 1 day
+            if not await self.bot.get_cog("Utils").is_modified_older_than('json/community_day.json', days=1):
+                log.info("Skipping update because the JSON was recently modified.")
 
-        await ctx.message.delete()
+            else:
+                log.info("Updating JSON for community_day")
 
-        asession = AsyncHTMLSession()
-        res = await asession.get('https://pokemongolive.com/en/events/community-day/')
-        await res.html.arender(wait=5.0, sleep=2.0)  # this call executes the js in the page
-        await asession.close()
+                asession = AsyncHTMLSession()
+                res = await asession.get('https://pokemongolive.com/en/events/community-day/')
+                await res.html.arender(wait=5.0, sleep=2.0)  # Execute JS
+                await asession.close()
 
-        date = res.html.find('.communityday__hero__next-event__date')
-        bonuses = res.html.find('.communityday__hero__bubble__value')
+                date = res.html.find('.communityday__hero__next-event__date')
+                bonuses = res.html.find('.communityday__hero__bubble__value')
 
-        data = {'community': []}
+                data = {'community': []}
 
-        data['community'].append({
-            'pokemon': bonuses[0].text,
-            'bonusOne': bonuses[2].text,
-            'bonusTwo': bonuses[3].text,
-            'move': bonuses[1].text,
-            'day': date[0].text
-        })
+                data['community'].append({
+                    'pokemon': bonuses[0].text,
+                    'bonusOne': bonuses[2].text,
+                    'bonusTwo': bonuses[3].text,
+                    'move': bonuses[1].text,
+                    'day': date[0].text
+                })
 
-        with open('json/data.json', 'w') as outfile:
-            json.dump(data, outfile, indent=4, sort_keys=False)
-            outfile.close()
+                await self.bot.get_cog("Utils").dump_json('json/community_day.json', data)
 
-        await ctx.message.channel.send("Updated", delete_after=10)
+                log.info("Successfully updated.")
+
+            await asyncio.sleep(86400)
 
     @commands.command(pass_context=True,
                       aliases=["cd", "Cd", "Cday", "cday", "community", "Community", "Community_day"])
@@ -53,7 +60,7 @@ class Community(commands.Cog):
         """
         await ctx.message.delete()
 
-        with open('json/data.json') as json_file:
+        with open('json/community_day.json') as json_file:
             data = json.load(json_file)
             json_file.close()
 
@@ -80,7 +87,9 @@ class Community(commands.Cog):
 
         embed = discord.Embed(title=community_day_title, colour=0x0000FF, description=description)
 
-        embed.set_thumbnail(url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + str(pokemon_id) + "_00_shiny.png")
+        embed.set_thumbnail(
+            url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + str(
+                pokemon_id) + "_00_shiny.png")
         embed.set_image(url="https://storage.googleapis.com/pokemongolive/communityday/PKMN_Community-Day-logo2.png")
 
         embed.add_field(name=featured_pokemon, value="\u2022 " + featured_pokemon_contents + "\n\u200b")

@@ -458,11 +458,11 @@ class Pokebattler(commands.Cog):
         while not self.bot.is_closed():
 
             # Only update if the file is older than 1 day
-            if not await self.is_modified_older_than('json/raid_bosses.json', days=1):
+            if not await self.bot.get_cog("Utils").is_modified_older_than('json/raid_bosses.json', days=1):
                 log.info("Skipping update because the JSON was recently modified.")
 
             else:
-                log.info("Updating JSON...")
+                log.info("Updating JSON for raid_bosses, moves and pokemon.")
 
                 info = {
                     'https://fight.pokebattler.com/raids': 'json/raid_bosses.json',
@@ -474,21 +474,11 @@ class Pokebattler(commands.Cog):
                     data = await self.get_json(url)
                     if data:
                         file_path = info[url]
-                        await self.dump_json(file_path, data)
+                        await self.bot.get_cog("Utils").dump_json(file_path, data)
 
-                log.info("Successfully updated JSON.")
+                log.info("Successfully updated.")
 
             await asyncio.sleep(86400)
-
-    @staticmethod
-    async def is_modified_older_than(path, days):
-        try:
-            date_modified = os.path.getmtime(path)
-        except FileNotFoundError as e:
-            log.info("No JSON were found. Generating them...")
-            return True
-
-        return (time.time() - date_modified) / 3600 > 24 * days
 
     @staticmethod
     async def get_json(url):
@@ -496,12 +486,6 @@ class Pokebattler(commands.Cog):
             async with session.get(url) as response:
                 if response.status == 200:
                     return await response.json()
-
-    @staticmethod
-    async def dump_json(path, data):
-        file_path = os.path.join(path)
-        with open(file_path, 'w', encoding='utf8') as f:
-            json.dump(data, f, indent=4)
 
 
 def setup(bot):
