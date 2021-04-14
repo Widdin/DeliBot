@@ -148,11 +148,13 @@ Prerequisites: python 3.6, git, MySQL
 * Clone the repository  
 `git clone https://github.com/Widdin/DeliBot.git`
 * Install requirements  
-`Python3 -m pip install -r requirements.txt`
+`python3 -m pip install -r requirements.txt`
 * Setup the database  
-`..`
+`mysql -u root -p < schema.sql`
+* Copy the "config.ini.example" to "config.ini" and fill in the settings
+`cp config.ini.example config.ini`
 
 ## Contribute:
 If you want to contribute with something / contact me, then hit me up on:  
-**Discord** - Widdin#6289  / Dimios#0592
+**Discord** - Widdin#6289 
 
