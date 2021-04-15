@@ -23,6 +23,56 @@ class Admin(commands.Cog):
         self.bot.loop.create_task(self._init_update_event())
 
     @commands.command()
+    @commands.has_permission(administrator=True)
+    async def set_community_day_overview(self, ctx):
+        """
+        This will post a message that updates continuously with on-going / up-coming community days.
+        You will be asked to tag a channel by using #.
+        """
+        await ctx.message.delete()
+
+        embed = discord.Embed(title=f"In which channel would you like me to display community day?",
+                              description=f"Please tag the channel below by using #",
+                              color=discord.Colour.dark_magenta())
+        embed.set_thumbnail(url="https://img.icons8.com/metro/1600/list.png")
+        await ctx.channel.send(embed=embed)
+
+        def check(message):
+            return message.author.id == ctx.author.id
+
+        try:
+            wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
+        except asyncio.TimeoutError:
+            embed = discord.Embed(title=f"Timeout",
+                                  description=f"You took too long to respond, please try again.",
+                                  color=discord.Colour.dark_magenta())
+            await ctx.channel.send(embed=embed)
+            return
+
+        channel_id = wait_for_channel.content[2:-1]
+
+        if not channel_id.isdigit():
+            embed = discord.Embed(title=f"Error - No channel found",
+                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+                                  color=discord.Colour.red())
+            await ctx.channel.send(embed=embed)
+            return
+
+        channel = ctx.guild.get_channel(int(channel_id))
+
+        embed = discord.Embed(title=f"Community day:",
+                              color=discord.Colour.gold())
+        embed.set_thumbnail(
+            url="https://img15.deviantart.net/5a53/i/2016/277/8/f/pikachu_go_by_ry_spirit-dajx7us.png")
+        embed.set_footer(text="Updates every day.")
+        embed.timestamp = datetime.datetime.utcnow()
+        event_msg = await channel.send(embed=embed)
+
+        query = "UPDATE settings SET community_day_overview_channel_id = %s, community_day_overview_message_id = %s WHERE server_id = %s"
+        params = (channel_id, event_msg.id, ctx.message.guild.id)
+        await self.bot.db.execute(query, params)
+
+    @commands.command()
     @commands.has_permissions(administrator=True)
     async def unset_role_permission(self, ctx):
         """
