@@ -92,6 +92,8 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `event_overview_message_id` varchar(25) COLLATE utf8_bin DEFAULT NULL,
   `exraid_overview_channel_id` varchar(25) COLLATE utf8_bin DEFAULT NULL,
   `exraid_overview_message_id` varchar(25) COLLATE utf8_bin DEFAULT NULL,
+  `community_day_channel_id` varchar(25) COLLATE utf8_bin DEFAULT NULL,
+  `community_day_message_id` varchar(25) COLLATE utf8_bin DEFAULT NULL,
   UNIQUE KEY `server_id` (`server_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

@@ -68,7 +68,7 @@ class Admin(commands.Cog):
         embed.timestamp = datetime.datetime.utcnow()
         event_msg = await channel.send(embed=embed)
 
-        query = "UPDATE settings SET community_day_overview_channel_id = %s, community_day_overview_message_id = %s WHERE server_id = %s"
+        query = "UPDATE settings SET community_day_channel_id = %s, community_day_message_id = %s WHERE server_id = %s"
         params = (channel_id, event_msg.id, ctx.message.guild.id)
         await self.bot.db.execute(query, params)
 
