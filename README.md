@@ -151,8 +151,10 @@ Prerequisites: python 3.6, git, MySQL
 `python3 -m pip install -r requirements.txt`
 * Setup the database  
 `mysql -u root -p < schema.sql`
-* Copy the "config.ini.example" to "config.ini" and fill in the settings
+* Copy the "config.ini.example" to "config.ini" and fill in the settings  
 `cp config.ini.example config.ini`
+* Start DeliBot with  
+`python3 bot.py`
 
 ## Contribute:
 If you want to contribute with something / contact me, then hit me up on:  
