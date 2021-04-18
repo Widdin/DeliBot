@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import json
 import logging
 from utils import default
 import discord
@@ -21,10 +22,11 @@ class Admin(commands.Cog):
         self.bot.loop.create_task(self._init_update_raid_overview())
         self.bot.loop.create_task(self._init_update_ex_overview())
         self.bot.loop.create_task(self._init_update_event())
+        self.bot.loop.create_task(self._init_update_community_day())
 
     @commands.command()
-    @commands.has_permission(administrator=True)
-    async def set_community_day_overview(self, ctx):
+    @commands.has_permissions(administrator=True)
+    async def set_community_day(self, ctx):
         """
         This will post a message that updates continuously with on-going / up-coming community days.
         You will be asked to tag a channel by using #.
@@ -60,10 +62,7 @@ class Admin(commands.Cog):
 
         channel = ctx.guild.get_channel(int(channel_id))
 
-        embed = discord.Embed(title=f"Community day:",
-                              color=discord.Colour.gold())
-        embed.set_thumbnail(
-            url="https://img15.deviantart.net/5a53/i/2016/277/8/f/pikachu_go_by_ry_spirit-dajx7us.png")
+        embed = await self.bot.get_cog("Community").get_embed_community_day(self, ctx.message.guild.id)
         embed.set_footer(text="Updates every day.")
         embed.timestamp = datetime.datetime.utcnow()
         event_msg = await channel.send(embed=embed)
@@ -71,6 +70,70 @@ class Admin(commands.Cog):
         query = "UPDATE settings SET community_day_channel_id = %s, community_day_message_id = %s WHERE server_id = %s"
         params = (channel_id, event_msg.id, ctx.message.guild.id)
         await self.bot.db.execute(query, params)
+
+    async def _init_update_community_day(self):
+        await self.bot.wait_until_ready()
+        while not self.bot.is_closed():
+
+            query = "SELECT * FROM settings WHERE community_day_channel_id IS NOT NULL AND community_day_message_id IS NOT NULL"
+            servers = await self.bot.db.execute(query)
+
+            log.info(f'Updating community day for {servers} server(s)')
+
+            with open('json/community_day.json') as json_file:
+                data = json.load(json_file)
+                json_file.close()
+
+            for server in servers:
+                server_id = server[0]
+                channel_id = server[16]
+                message_id = server[17]
+
+                # Retrieve translation from JSON.
+                featured_pokemon_title, exclusive_move_title, bonus_title, date_title, official_page_title, community_day_title = await self.bot.get_cog(
+                    "Utils").get_translation(server_id,
+                                             "FEATURED_POKEMON EXCLUSIVE_MOVE BONUS DATE OFFICIAL_PAGE COMMUNITY_DAY")
+
+                description = f"[{official_page_title}](https://pokemongolive.com/events/community-day/)"
+                featured_pokemon = f":star2: __{featured_pokemon_title}__"
+                exclusive_move = f":shield: __{exclusive_move_title}__"
+                bonus_one = f":star: __{bonus_title}__"
+                bonus_two = f":star: __{bonus_title}__"
+                date = f":calendar_spiral: __{date_title}__"
+
+                for c in data['community']:
+                    featured_pokemon_contents = c['pokemon']
+                    exclusive_move_contents = c['move']
+                    bonus_one_contents = c['bonusOne']
+                    bonus_two_contents = c['bonusTwo']
+                    date_contents = c['day'] + ', 11:00 PM - 2:00 PM'
+
+                pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(featured_pokemon_contents)
+
+                embed = discord.Embed(title=community_day_title, colour=0x0000FF, description=description)
+
+                embed.set_thumbnail(
+                    url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + str(
+                        pokemon_id) + "_00_shiny.png")
+                embed.set_image(
+                    url="https://storage.googleapis.com/pokemongolive/communityday/PKMN_Community-Day-logo2.png")
+
+                embed.add_field(name=featured_pokemon, value="\u2022 " + featured_pokemon_contents + "\n\u200b")
+                embed.add_field(name=exclusive_move, value="\u2022 " + exclusive_move_contents + "\n\u200b")
+                embed.add_field(name=bonus_one, value="\u2022 " + bonus_one_contents + "\n\u200b")
+                embed.add_field(name=bonus_two, value="\u2022 " + bonus_two_contents + "\n\u200b")
+                embed.add_field(name=date, value="\u2022 " + date_contents + "\n\u200b")
+                embed.set_footer(text="Updates every day | Last updated: ")
+                embed.timestamp = datetime.datetime.utcnow()
+
+                try:
+                    await self.bot.http.edit_message(int(channel_id), int(message_id), embed=embed.to_dict())
+                except discord.errors.NotFound:
+                    pass
+                except discord.errors.Forbidden:
+                    pass
+
+            await asyncio.sleep(86400)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -436,6 +499,7 @@ class Admin(commands.Cog):
 
         def check(message):
             return message.author.id == ctx.author.id
+
         try:
             wait_for_message = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:

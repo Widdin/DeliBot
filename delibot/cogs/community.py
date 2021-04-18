@@ -60,13 +60,20 @@ class Community(commands.Cog):
         """
         await ctx.message.delete()
 
+        embed = await self.get_embed_community_day(self, ctx.message.guild.id)
+
+        await ctx.message.channel.send(embed=embed)
+
+    @staticmethod
+    async def get_embed_community_day(self, server_id: int):
+
         with open('json/community_day.json') as json_file:
             data = json.load(json_file)
             json_file.close()
 
         # Retrieve translation from JSON.
         featured_pokemon_title, exclusive_move_title, bonus_title, date_title, official_page_title, community_day_title = await self.bot.get_cog(
-            "Utils").get_translation(ctx.message.guild.id,
+            "Utils").get_translation(server_id,
                                      "FEATURED_POKEMON EXCLUSIVE_MOVE BONUS DATE OFFICIAL_PAGE COMMUNITY_DAY")
 
         description = f"[{official_page_title}](https://pokemongolive.com/events/community-day/)"
@@ -98,8 +105,7 @@ class Community(commands.Cog):
         embed.add_field(name=bonus_two, value="\u2022 " + bonus_two_contents + "\n\u200b")
         embed.add_field(name=date, value="\u2022 " + date_contents + "\n\u200b")
 
-        await ctx.message.channel.send(embed=embed)
-
+        return embed
 
 def setup(bot):
     bot.add_cog(Community(bot))
