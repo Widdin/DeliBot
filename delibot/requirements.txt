@@ -11,7 +11,7 @@ cffi==1.12.2
 chardet==3.0.4
 cryptography==3.3.2
 cssselect==1.0.3
-discord.py==1.5.1
+discord.py==1.7.1
 fake-useragent==0.1.11
 idna==2.8
 idna-ssl==1.1.0
