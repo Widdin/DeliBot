@@ -78,7 +78,7 @@ class Admin(commands.Cog):
             query = "SELECT * FROM settings WHERE community_day_channel_id IS NOT NULL AND community_day_message_id IS NOT NULL"
             servers = await self.bot.db.execute(query)
 
-            log.info(f'Updating community day for {servers} server(s)')
+            log.info(f'Updating community day for {len(servers)} server(s)')
 
             with open('json/community_day.json') as json_file:
                 data = json.load(json_file)
