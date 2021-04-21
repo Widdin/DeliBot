@@ -14,6 +14,7 @@ class Database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bot.loop.create_task(self.init_conn())
+        self.bot.loop.create_task(self.verify_amount_of_servers())
         self.bot.db = self
 
     async def init_conn(self):
@@ -69,6 +70,37 @@ class Database(commands.Cog):
         params = (guild_id,)
 
         return await self.execute(query, params, single=True)
+
+    async def verify_amount_of_servers(self):
+        await self.bot.wait_until_ready()
+
+        query = "SELECT count(*) FROM settings"
+        (amount_in_database, ) = await self.execute(query, single=True)
+
+        amount_in_bot = len(self.bot.guilds)
+
+        if amount_in_bot > amount_in_database:
+            log.info(f'Server(s) are missing in the database: (bot) {amount_in_bot} vs {amount_in_database} (db)')
+
+            query = "SELECT server_id FROM settings"
+            servers_in_database = await self.execute(query)
+
+            for guild in self.bot.guilds:
+
+                if not any(str(guild.id) in i for i in servers_in_database):
+                    log.info(f'Creating entry for the guild "{guild.name}" ({guild.id}) because it was not found.')
+
+                    query = "INSERT INTO settings (server_id) VALUES (%s)"
+                    params = (str(guild.id), )
+
+                    result = await self.execute(query, params, rowcount=True)
+                    if result:
+                        log.info(f'Successfully inserted "{guild.name}" ({guild.id})')
+                    else:
+                        log.info(f'Failed to insert "{guild.name}" ({guild.id})')
+
+        else:
+            log.info("Assuming all servers has an entry in the settings-table.")
 
 
 def setup(bot):
