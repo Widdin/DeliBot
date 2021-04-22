@@ -48,6 +48,7 @@ Join the server to get help, make a suggestion or just chat!
 - `!set_role_permission` - Delibot will ask you to tag a role by using `@`. The role will be granted permission to edit and delete any Raid, also permission to use `add_gym`/`del_gym`. 
 - `!unset_role_permission` - This will remove the role you had set.  
 - `!set_overview` - Set where to show an overview-message of active raids, updates every 2nd minute.
+- `!set_community_day`- A message that updates continuously with on-going / up-coming community days.
 
 ### Server-owner, Administrators, Role Specific
 - `!create gym  {gym name} {lat} {lon}` - Adds a Gym to the database so it will appear as a hyperlink on Raid-creations.  
