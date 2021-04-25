@@ -988,7 +988,9 @@ class Admin(commands.Cog):
                 try:
                     await self.bot.http.edit_message(int(channel_id), int(message_id), embed=embed.to_dict())
                 except discord.errors.NotFound:
-                    pass
+                    query = "UPDATE settings SET exraid_overview_channel_id = NULL, exraid_overview_message_id = NULL WHERE server_id = %s"
+                    params = (server_id,)
+                    await self.bot.db.execute(query, params)
                 except discord.errors.Forbidden:
                     pass
 
