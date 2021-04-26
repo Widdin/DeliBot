@@ -14,6 +14,7 @@ from utils import default
 config = default.get_config()
 log = logging.getLogger()
 
+
 class Utils(commands.Cog):
     """Commands for various things."""
 
@@ -527,24 +528,20 @@ class Utils(commands.Cog):
         return url
 
     @commands.command(hidden=True)
-    async def ping(self, ctx):
-        if ctx.message.author.id == 306926179074703362:
-            await ctx.message.delete()
-            await ctx.send(f"Latency: `{(self.bot.latency * 1000):0.2f} ms`")
-
-    @commands.command(hidden=True)
     async def servers(self, ctx):
-        if ctx.message.author.id == 306926179074703362:
-            await ctx.message.delete()
+        if not await ctx.bot.is_owner(ctx.author):
+            return
 
-            embed = discord.Embed(color=discord.Colour(0x00ff00))
+        await ctx.message.delete()
 
-            A = len(self.bot.guilds)
-            B = sum(g.member_count for g in self.bot.guilds)
+        embed = discord.Embed(color=discord.Colour(0x00ff00))
 
-            embed.description = '**Total servers:** {0}\n**Total users:** {1}'.format(A, B)
+        guilds = len(self.bot.guilds)
+        users = sum(g.member_count for g in self.bot.guilds)
 
-            await ctx.send(embed=embed, delete_after=15)
+        embed.description = '**Total servers:** {0}\n**Total users:** {1}'.format(guilds, users)
+
+        await ctx.send(embed=embed, delete_after=15)
 
     @commands.command()
     async def fusion(self, ctx, mon_one: str, mon_two: str):
