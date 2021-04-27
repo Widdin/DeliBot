@@ -593,9 +593,6 @@ class Utils(commands.Cog):
         except Exception as e:
             await ctx.send(e)
 
-    async def send_logs(self):
-        pass
-
 
 def setup(bot):
     bot.add_cog(Utils(bot))
