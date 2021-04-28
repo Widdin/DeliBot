@@ -31,14 +31,13 @@ initial_extensions = ['cogs.owner',
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix=config['SETTINGS']['prefix'], intents=intents)
+bot = commands.Bot(command_prefix=config['SETTINGS']['prefix'], intents=intents, activity=discord.Game(name='Pokémon GO', type=1))
 bot.remove_command('help')
 
 
 @bot.event
 async def on_ready():
     log.info(f'Logged in as: {bot.user.name} - {bot.user.id} | Version: {discord.__version__}\n')
-    await bot.change_presence(activity=discord.Game(name='Pokémon GO', type=1))
 
 
 if __name__ == '__main__':
