@@ -2,7 +2,7 @@ import asyncio
 import datetime
 import json
 import logging
-from utils import default
+
 import discord
 from discord.ext import commands
 from requests_html import AsyncHTMLSession
@@ -130,7 +130,7 @@ class Admin(commands.Cog):
                     await self.bot.http.edit_message(int(channel_id), int(message_id), embed=embed.to_dict())
                 except discord.errors.NotFound:
                     query = "UPDATE settings SET community_day_channel_id = NULL, community_day_message_id = NULL WHERE server_id = %s"
-                    params = (server_id, )
+                    params = (server_id,)
                     await self.bot.db.execute(query, params)
                 except discord.errors.Forbidden:
                     pass
@@ -663,29 +663,30 @@ class Admin(commands.Cog):
                 rows = item.text.split("\n")
                 events.append(f'{rows[2]}|{rows[0]}|{rows[3]}|{rows[1]}')
 
+            embed = discord.Embed(title=f"Events:",
+                                  color=discord.Colour.gold())
+
+            embed.set_thumbnail(
+                url="https://img15.deviantart.net/5a53/i/2016/277/8/f/pikachu_go_by_ry_spirit-dajx7us.png")
+            embed.set_footer(text="Updates every hour | Last updated: ")
+            embed.timestamp = datetime.datetime.utcnow()
+
+            embed.add_field(name="**HAPPENING** **NOW** 🔓", value="\u200b", inline=False)
+            once = True
+            for event in events:
+                event = event.split("|")
+
+                if "left" not in event[1] and once is True:
+                    embed.add_field(name="**COMING** **UP** **NEXT** 🔒", value="\u200b", inline=False)
+                    once = False
+
+                embed.add_field(name=f"🔸 **{event[0]}** \n{event[3]}",
+                                value=f"**Time:** {event[1]}\n**Description:** {event[2]}\n\u200b", inline=False)
+
             for server in servers:
-                server_id = server[0]
                 channel_id = server[12]
                 message_id = server[13]
 
-                embed = discord.Embed(title=f"Events:",
-                                      color=discord.Colour.gold())
-                embed.set_thumbnail(
-                    url="https://img15.deviantart.net/5a53/i/2016/277/8/f/pikachu_go_by_ry_spirit-dajx7us.png")
-                embed.set_footer(text="Updates every hour | Last updated: ")
-                embed.timestamp = datetime.datetime.utcnow()
-
-                embed.add_field(name="**HAPPENING** **NOW** 🔓", value="\u200b", inline=False)
-                once = True
-                for event in events:
-                    event = event.split("|")
-
-                    if "left" not in event[1] and once is True:
-                        embed.add_field(name="**COMING** **UP** **NEXT** 🔒", value="\u200b", inline=False)
-                        once = False
-
-                    embed.add_field(name=f"🔸 **{event[0]}** \n{event[3]}",
-                                    value=f"**Time:** {event[1]}\n**Description:** {event[2]}\n\u200b", inline=False)
                 try:
                     await self.bot.http.edit_message(int(channel_id), int(message_id), embed=embed.to_dict())
                 except discord.errors.NotFound:
