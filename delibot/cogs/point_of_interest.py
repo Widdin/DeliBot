@@ -49,14 +49,11 @@ class PointOfInterest(commands.Cog):
 
             if lat_check is True and lon_check is True:
 
-                async with self.bot.pool.acquire() as conn:
-                    async with conn.cursor() as cur:
-                        success = await cur.execute(
-                            "INSERT INTO gyms (server_id, name, lat, lon) VALUES (%s, %s, %s, %s)",
-                            (ctx.message.guild.id, name.lower(), lat, lon))
-                        await conn.commit()
+                query = "INSERT INTO gyms (server_id, name, lat, lon) VALUES (%s, %s, %s, %s)"
+                params = (ctx.message.guild.id, name.lower(), lat, lon)
+                response = await self.bot.db.execute(query, params, rowcount=True)
 
-                if success == 1:
+                if response == 1:
                     embed = discord.Embed(title=f"Gym - {name.title()} was successfully created.",
                                           color=discord.Colour.green())
                     embed.set_thumbnail(
@@ -98,9 +95,9 @@ class PointOfInterest(commands.Cog):
 
                 query = "INSERT INTO pokestops (server_id, name, lat, lon) VALUES (%s, %s, %s, %s)"
                 params = (ctx.message.guild.id, name.lower(), lat, lon)
-                success = await self.bot.db.execute(query, params)
+                response = await self.bot.db.execute(query, params, rowcount=True)
 
-                if success == 1:
+                if response == 1:
                     embed = discord.Embed(title=f"Pokestop - {name.title()} was successfully created.",
                                           color=discord.Colour.green())
                     embed.set_thumbnail(
