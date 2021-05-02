@@ -158,6 +158,5 @@ Prerequisites: python 3.6, git, MySQL
 `python3 bot.py`
 
 ## Contribute:
-If you want to contribute with something / contact me, then hit me up on:  
-**Discord** - Widdin#6289 
+If you want to contribute with something / contact me, then hit me up on [Discord](#discord)
 
