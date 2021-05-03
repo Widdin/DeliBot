@@ -1,13 +1,13 @@
 import asyncio
 import json
-import os
-import time
 import logging
+import os
 import aiohttp
 import discord
 from discord.ext import commands
 
 log = logging.getLogger()
+
 
 class Pokebattler(commands.Cog):
     """
