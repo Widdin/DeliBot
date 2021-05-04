@@ -307,19 +307,36 @@ class RawReaction(commands.Cog):
             response = await self.bot.db.execute(query, params)
 
             if len(response) == 0:
-                query = "UPDATE exraids SET harmony = harmony - %s WHERE server_id = %s AND channel_id = %s AND message_id= %s"
+                query = query.replace('raids', 'exraids')
                 params = (nmr_dict[team], guild_id, channel_id, message_id)
                 await self.bot.db.execute(query, params)
 
         else:
-            query = "UPDATE raids SET " + team + "=REPLACE(" + team + ", %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            query = await self.get_pop_user_query(team)
+
+            if query is None:
+                return
+
             params = (name + ", ", guild_id, channel_id, message_id)
             response = await self.bot.db.execute(query, params)
 
             if len(response) == 0:
-                query = "UPDATE exraids SET " + team + "=REPLACE(" + team + ", %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+                query = query.replace('raids', 'exraids')
                 params = (name + ", ", guild_id, channel_id, message_id)
                 await self.bot.db.execute(query, params)
+
+    @staticmethod
+    async def get_pop_user_query(team: str):
+        if team == 'valor':
+            query = "UPDATE raids SET valor=REPLACE(valor, %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        elif team == 'mystic':
+            query = "UPDATE raids SET mystic=REPLACE(mystic, %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        elif team == 'instinct':
+            query = "UPDATE raids SET instinct=REPLACE(instinct, %s, '') WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        else:
+            return None
+
+        return query
 
     async def append_user(self, guild_id: str, channel_id: str, message_id: str, name: str, team: str):
         guild_id = str(guild_id)
