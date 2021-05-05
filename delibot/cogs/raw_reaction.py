@@ -357,14 +357,31 @@ class RawReaction(commands.Cog):
                 await self.bot.db.execute(query, params)
 
         else:
-            query = "UPDATE raids SET " + team + "=CONCAT(" + team + ", %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            query = await self.get_append_user_query(team)
+
+            if query is None:
+                return
+
             params = (name + ", ", guild_id, channel_id, message_id)
             response = await self.bot.db.execute(query, params)
 
             if len(response) == 0:
-                query = "UPDATE exraids SET " + team + "=CONCAT(" + team + ", %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+                query = query.replace('raids', 'exraids')
                 params = (name + ", ", guild_id, channel_id, message_id)
                 await self.bot.db.execute(query, params)
+
+    @staticmethod
+    async def get_append_user_query(team: str):
+        if team == 'valor':
+            query = "UPDATE raids SET valor=CONCAT(valor, %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        elif team == 'mystic':
+            query = "UPDATE raids SET mystic=CONCAT(mystic, %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        elif team == 'instinct':
+            query = "UPDATE raids SET instinct=CONCAT(instinct, %s) WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        else:
+            return None
+
+        return query
 
     async def is_author(self, server_id: str, channel_id: str, message_id: str, member_id: str):
         query = "SELECT user_id FROM raids WHERE server_id = %s AND channel_id = %s AND message_id= %s"
