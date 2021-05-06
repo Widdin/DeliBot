@@ -20,7 +20,7 @@ class Trade(commands.Cog):
 
         left_pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(left_list[-1])
 
-        if left_pokemon_id == None:
+        if left_pokemon_id is None:
             await ctx.channel.send(
                 ctx.message.author.mention + "That pokémon was not found. Some examples:\n\n``!want b unown``\n``!want shiny aron``\n``!want shiny ash pikachu``\n``!want snorlax``",
                 delete_after=10)
@@ -70,7 +70,7 @@ class Trade(commands.Cog):
 
         left_pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(left_list[-1])
 
-        if left_pokemon_id == None:
+        if left_pokemon_id is None:
             await ctx.channel.send(
                 ctx.message.author.mention + "That pokémon was not found. Some examples:\n\n``!offer b unown``\n``!offer shiny aron``\n``!offer shiny ash pikachu``\n``!offer snorlax``",
                 delete_after=10)
@@ -114,7 +114,12 @@ class Trade(commands.Cog):
 
         await ctx.message.delete()
 
-        left, right = info.split(',')
+        try:
+            left, right = info.split(',')
+        except ValueError:
+            await ctx.channel.send('Missing arguments, correct usage: ``!trade {pokémon have*} , {pokémon want*}``', delete_after=15)
+            return
+
         left = left.lower()
         right = right.lower()
 
