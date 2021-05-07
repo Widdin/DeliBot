@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 
-class Rocket_stop(commands.Cog):
+class RocketStop(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -40,7 +40,6 @@ class Rocket_stop(commands.Cog):
             thumbnail_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, False)
 
             # Embed.
-            embed = discord.Embed()
             embed.title = 'Rocket Stop Invasion'
             embed.colour = discord.Color.purple()
             embed.set_thumbnail(url=thumbnail_url)
@@ -72,4 +71,4 @@ class Rocket_stop(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Rocket_stop(bot))
+    bot.add_cog(RocketStop(bot))
