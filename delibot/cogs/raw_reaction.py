@@ -138,14 +138,13 @@ class RawReaction(commands.Cog):
 
         # Update row with new variables
         if exraid is True:
-            query = "UPDATE exraids SET " + keys[
-                wait_for_reaction.emoji] + "=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            query = await self.get_edit_raid_query(keys[wait_for_reaction.emoji])
             params = (wait_for_message.content, guild_id, channel_id, message_id)
             await self.bot.db.execute(query, params)
 
         elif exraid is False and keys[wait_for_reaction.emoji] != "day":
-            query = "UPDATE raids SET " + keys[
-                wait_for_reaction.emoji] + "=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+            query = await self.get_edit_raid_query(keys[wait_for_reaction.emoji])
+            query = query.replace('exraids', 'raids')
             params = (wait_for_message.content, guild_id, channel_id, message_id)
             await self.bot.db.execute(query, params)
 
@@ -159,6 +158,21 @@ class RawReaction(commands.Cog):
                                   color=discord.Color.orange())
             embed.timestamp = datetime.datetime.utcnow()
             await self.bot.http.send_message(int(log_channel_id), "", embed=embed.to_dict())
+
+    @staticmethod
+    async def get_edit_raid_query(key):
+        if key == 'pokemon':
+            query = "UPDATE exraids SET pokemon=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        elif key == 'time':
+            query = "UPDATE exraids SET time=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        elif key == 'location':
+            query = "UPDATE exraids SET location=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        elif key == 'day':
+            query = "UPDATE exraids SET day=%s WHERE server_id = %s AND channel_id = %s AND message_id = %s"
+        else:
+            return None
+
+        return query
 
     async def update_raid(self, guild_id: str, channel_id: str, message_id: str):
 
