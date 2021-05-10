@@ -33,8 +33,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to display community day?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to display community day?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://img.icons8.com/metro/1600/list.png")
         await ctx.channel.send(embed=embed)
@@ -45,8 +45,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed)
             return
@@ -54,8 +54,8 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed)
             return
@@ -149,7 +149,7 @@ class Admin(commands.Cog):
         params = (ctx.message.guild.id,)
         await self.bot.db.execute(query, params)
 
-        embed = discord.Embed(title=f"Permission role has been unset.",
+        embed = discord.Embed(title="Permission role has been unset.",
                               color=discord.Colour.green())
         await ctx.channel.send(embed=embed)
 
@@ -162,8 +162,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"What role would you like to give permission to edit/delete raids & add gyms?",
-                              description=f"Please tag the role below by using @",
+        embed = discord.Embed(title="What role would you like to give permission to edit/delete raids & add gyms?",
+                              description="Please tag the role below by using @",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://media.pokemoncentral.it/wiki/3/3f/Sprxymsh225.gif")
         await ctx.channel.send(embed=embed)
@@ -174,8 +174,8 @@ class Admin(commands.Cog):
         try:
             wait_for_role = await self.bot.wait_for("message", timeout=30.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -184,7 +184,7 @@ class Admin(commands.Cog):
         params = (wait_for_role.content[3:-1], ctx.message.guild.id)
         await self.bot.db.execute(query, params)
 
-        embed = discord.Embed(title=f"Permission role has been set.",
+        embed = discord.Embed(title="Permission role has been set.",
                               description=f"{wait_for_role.content} is the chosen role for additional permissions.",
                               color=discord.Colour.green())
         await ctx.channel.send(embed=embed, delete_after=20)
@@ -201,8 +201,8 @@ class Admin(commands.Cog):
         params = (ctx.message.guild.id,)
         await self.bot.db.execute(query, params)
 
-        embed = discord.Embed(title=f"EX-Pass Scanning Channel has been unset.",
-                              description=f"EX-Pass Scanning is now offline!",
+        embed = discord.Embed(title="EX-Pass Scanning Channel has been unset.",
+                              description="EX-Pass Scanning is now offline!",
                               color=discord.Colour.green())
         await ctx.channel.send(embed=embed)
 
@@ -216,8 +216,8 @@ class Admin(commands.Cog):
 
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to scan for EX-Pass screenshots?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to scan for EX-Pass screenshots?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://media.pokemoncentral.it/wiki/3/3f/Sprxymsh225.gif")
         await ctx.channel.send(embed=embed, delete_after=20)
@@ -228,8 +228,8 @@ class Admin(commands.Cog):
         try:
             channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -237,8 +237,8 @@ class Admin(commands.Cog):
         channel_id = channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -248,8 +248,8 @@ class Admin(commands.Cog):
         await self.bot.db.execute(query, params)
 
         channel = ctx.guild.get_channel(int(channel_id))
-        embed = discord.Embed(title=f"EX-Pass Scanning has been set.",
-                              description=f"This is the chosen channel for scanning EX-Pass screenshots!",
+        embed = discord.Embed(title="EX-Pass Scanning has been set.",
+                              description="This is the chosen channel for scanning EX-Pass screenshots!",
                               color=discord.Colour.green())
         await channel.send(embed=embed)
 
@@ -265,8 +265,8 @@ class Admin(commands.Cog):
         params = (ctx.message.guild.id,)
         await self.bot.db.execute(query, params)
 
-        embed = discord.Embed(title=f"Profile Scanning Channel has been unset.",
-                              description=f"Profile Scanning is now offline!",
+        embed = discord.Embed(title="Profile Scanning Channel has been unset.",
+                              description="Profile Scanning is now offline!",
                               color=discord.Colour.green())
         await ctx.channel.send(embed=embed, delete_after=20)
 
@@ -279,8 +279,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to assign teams?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to assign teams?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://media.pokemoncentral.it/wiki/3/3f/Sprxymsh225.gif")
         await ctx.channel.send(embed=embed, delete_after=20)
@@ -291,8 +291,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -300,8 +300,8 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -311,8 +311,8 @@ class Admin(commands.Cog):
         await self.bot.db.execute(query, params)
 
         channel = ctx.guild.get_channel(int(channel_id))
-        embed = discord.Embed(title=f"Profile Scanning has been set.",
-                              description=f"This is the chosen channel for auto-assigning teams!",
+        embed = discord.Embed(title="Profile Scanning has been set.",
+                              description="This is the chosen channel for auto-assigning teams!",
                               color=discord.Colour.green())
         await channel.send(embed=embed)
 
@@ -328,8 +328,8 @@ class Admin(commands.Cog):
         params = (ctx.message.guild.id,)
         await self.bot.db.execute(query, params)
 
-        embed = discord.Embed(title=f"Raid Channel has been unset.",
-                              description=f"Raids will be posted in the channel they are invoked.",
+        embed = discord.Embed(title="Raid Channel has been unset.",
+                              description="Raids will be posted in the channel they are invoked.",
                               color=discord.Colour.green())
         await ctx.channel.send(embed=embed, delete_after=20)
 
@@ -342,8 +342,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to post Raids?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to post Raids?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://media.pokemoncentral.it/wiki/3/3f/Sprxymsh225.gif")
         await ctx.channel.send(embed=embed, delete_after=20)
@@ -354,8 +354,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -363,8 +363,8 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -374,8 +374,8 @@ class Admin(commands.Cog):
         await self.bot.db.execute(query, params)
 
         channel = ctx.message.guild.get_channel(int(channel_id))
-        embed = discord.Embed(title=f"Raid Channel has been set.",
-                              description=f"This is the chosen channel for posting Raids!",
+        embed = discord.Embed(title="Raid Channel has been set.",
+                              description="This is the chosen channel for posting Raids!",
                               color=discord.Colour.green())
         await channel.send(embed=embed)
 
@@ -391,8 +391,8 @@ class Admin(commands.Cog):
         params = (ctx.message.guild.id,)
         await self.bot.db.execute(query, params)
 
-        embed = discord.Embed(title=f"EX-Raid Channel has been unset.",
-                              description=f"EX-Raids will be posted in the channel they are invoked.",
+        embed = discord.Embed(title="EX-Raid Channel has been unset.",
+                              description="EX-Raids will be posted in the channel they are invoked.",
                               color=discord.Colour.green())
         await ctx.channel.send(embed=embed, delete_after=20)
 
@@ -405,8 +405,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to post EX-Raids?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to post EX-Raids?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://media.pokemoncentral.it/wiki/3/3f/Sprxymsh225.gif")
         await ctx.channel.send(embed=embed, delete_after=20)
@@ -417,8 +417,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -426,8 +426,8 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -437,8 +437,8 @@ class Admin(commands.Cog):
         await self.bot.db.execute(query, params)
 
         channel = ctx.message.guild.get_channel(int(channel_id))
-        embed = discord.Embed(title=f"EX-Raid Channel has been set.",
-                              description=f"This is the chosen channel for posting EX-Raids!",
+        embed = discord.Embed(title="EX-Raid Channel has been set.",
+                              description="This is the chosen channel for posting EX-Raids!",
                               color=discord.Colour.green())
         await channel.send(embed=embed)
 
@@ -451,7 +451,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"Which language would you like?", description=f"Wait for all reactions to appear!",
+        embed = discord.Embed(title="Which language would you like?",
+                              description="Wait for all reactions to appear!",
                               color=discord.Colour.dark_magenta())
         embed.set_footer(text="Please react with an Emoji below:")
         embed.set_thumbnail(url="https://www.unitedwebworks.com/hs-fs/hubfs/earth-gif.gif")
@@ -468,13 +469,13 @@ class Admin(commands.Cog):
         try:
             wait_for_reaction, wait_for_user = await self.bot.wait_for("reaction_add", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
-        embed = discord.Embed(title=f"Thank you!",
+        embed = discord.Embed(title="Thank you!",
                               description=f"The language will be changed to: {reactions_dict[wait_for_reaction.emoji]} - {wait_for_reaction.emoji}",
                               color=discord.Colour.dark_magenta())
         await ctx.channel.send(embed=embed, delete_after=20)
@@ -492,8 +493,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"What is your GMT?",
-                              description=f"[(Greenwich Mean Time)](https://whatismytimezone.com/)\nUse the format ``+0`` or ``-0``",
+        embed = discord.Embed(title="What is your GMT?",
+                              description="[(Greenwich Mean Time)](https://whatismytimezone.com/)\nUse the format ``+0`` or ``-0``",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://americanaddictioncenters.org/wp-content/uploads/2017/02/moving_clock_icon.gif")
         embed.set_footer(text="Type below:")
@@ -505,14 +506,14 @@ class Admin(commands.Cog):
         try:
             wait_for_message = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
         if "+" in wait_for_message.content or "-" in wait_for_message.content:
-            embed = discord.Embed(title=f"Thank you!",
+            embed = discord.Embed(title="Thank you!",
                                   description=f"The GMT will be changed to: {wait_for_message.content}",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
@@ -522,8 +523,8 @@ class Admin(commands.Cog):
             await self.bot.db.execute(query, params)
 
         else:
-            embed = discord.Embed(title=f"Error",
-                                  description=f"You didn't use ``+`` or ``-``, please try again.",
+            embed = discord.Embed(title="Error",
+                                  description="You didn't use ``+`` or ``-``, please try again.",
                                   color=discord.Colour.dark_red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -540,8 +541,8 @@ class Admin(commands.Cog):
         params = (ctx.message.guild.id,)
         await self.bot.db.execute(query, params)
 
-        embed = discord.Embed(title=f"Log Channel has been unset.",
-                              description=f"Logging is now Offline!",
+        embed = discord.Embed(title="Log Channel has been unset.",
+                              description="Logging is now Offline!",
                               color=discord.Colour.green())
         await ctx.channel.send(embed=embed, delete_after=20)
 
@@ -554,8 +555,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to post Logs?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to post Logs?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://mbtskoudsalg.com/images/log-in-button-png-6.png")
         await ctx.channel.send(embed=embed, delete_after=20)
@@ -566,8 +567,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -575,8 +576,8 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -586,8 +587,8 @@ class Admin(commands.Cog):
         await self.bot.db.execute(query, params)
 
         channel = ctx.message.guild.get_channel(int(channel_id))
-        embed = discord.Embed(title=f"Log Channel has been set.",
-                              description=f"This is the chosen channel for posting Logs!",
+        embed = discord.Embed(title="Log Channel has been set.",
+                              description="This is the chosen channel for posting Logs!",
                               color=discord.Colour.green())
         await channel.send(embed=embed)
 
@@ -612,8 +613,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed)
             return
@@ -621,15 +622,15 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed)
             return
 
         channel = ctx.guild.get_channel(int(channel_id))
 
-        embed = discord.Embed(title=f"Events:",
+        embed = discord.Embed(title="Events:",
                               color=discord.Colour.gold())
         embed.set_thumbnail(
             url="https://img15.deviantart.net/5a53/i/2016/277/8/f/pikachu_go_by_ry_spirit-dajx7us.png")
@@ -705,8 +706,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to display raids?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to display raids?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://img.icons8.com/metro/1600/list.png")
         question_embed = await ctx.channel.send(embed=embed)
@@ -717,8 +718,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -729,15 +730,15 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
         channel = ctx.guild.get_channel(int(channel_id))
 
-        embed = discord.Embed(title=f"Active Raids:",
+        embed = discord.Embed(title="Active Raids:",
                               color=discord.Colour.green())
         embed.set_thumbnail(
             url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/raid_tut_group.png")
@@ -765,7 +766,7 @@ class Admin(commands.Cog):
                 params = (server_id,)
                 raids = await self.bot.db.execute(query, params)
 
-                embed = discord.Embed(title=f"Active raids:", color=discord.Colour.dark_green())
+                embed = discord.Embed(title="Active raids:", color=discord.Colour.dark_green())
                 embed.set_thumbnail(
                     url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/raid_tut_group.png")
                 embed.set_footer(text="Updates every 5th minute | Last updated: ")
@@ -856,8 +857,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to display EX-Raids?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to display EX-Raids?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://img.icons8.com/metro/1600/list.png")
         question_embed = await ctx.channel.send(embed=embed)
@@ -868,8 +869,8 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title=f"Timeout",
-                                  description=f"You took too long to respond, please try again.",
+            embed = discord.Embed(title="Timeout",
+                                  description="You took too long to respond, please try again.",
                                   color=discord.Colour.dark_magenta())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
@@ -880,15 +881,15 @@ class Admin(commands.Cog):
         channel_id = wait_for_channel.content[2:-1]
 
         if not channel_id.isdigit():
-            embed = discord.Embed(title=f"Error - No channel found",
-                                  description=f"Please ONLY tag the channel and nothing else, like: #general",
+            embed = discord.Embed(title="Error - No channel found",
+                                  description="Please ONLY tag the channel and nothing else, like: #general",
                                   color=discord.Colour.red())
             await ctx.channel.send(embed=embed, delete_after=20)
             return
 
         channel = ctx.guild.get_channel(int(channel_id))
 
-        embed = discord.Embed(title=f"Active EX-Raids:",
+        embed = discord.Embed(title="Active EX-Raids:",
                               color=discord.Colour.green())
         embed.set_thumbnail(
             url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/raid_tut_group.png")
@@ -917,7 +918,7 @@ class Admin(commands.Cog):
                 params = (server_id,)
                 raids = await self.bot.db.execute(query, params)
 
-                embed = discord.Embed(title=f"Active EX-Raids:",
+                embed = discord.Embed(title="Active EX-Raids:",
                                       color=discord.Colour.dark_green())
                 embed.set_thumbnail(
                     url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/raid_tut_group.png")
@@ -1085,32 +1086,39 @@ class Admin(commands.Cog):
                 try:
                     await emoji.delete(reason="Delibot Re-install")
                 except discord.Forbidden:
-                    embed = discord.Embed(title=f"Error - Insufficient permissions",
-                                          description=f"Edit my role and enable 'Manage Emojis'",
+                    embed = discord.Embed(title="Error - Insufficient permissions",
+                                          description="Edit my role and enable 'Manage Emojis'",
                                           color=discord.Colour.dark_red())
                     await ctx.channel.send(embed=embed)
                     return
 
         await self.upload_emojis(ctx)
 
-        embed = discord.Embed(title=f"Successfully installed!", color=discord.Colour.dark_magenta())
+        embed = discord.Embed(title="Successfully installed!",
+                              color=discord.Colour.dark_magenta())
         await install_msg.edit(embed=embed)
 
     @staticmethod
     async def upload_emojis(ctx):
         with open("images/mystic.png", "rb") as image:
             image_byte = image.read()
-            await ctx.guild.create_custom_emoji(name="mystic", image=image_byte, reason="Installing mystic-emoji")
+            await ctx.guild.create_custom_emoji(name="mystic",
+                                                image=image_byte,
+                                                reason="Installing mystic-emoji")
             await asyncio.sleep(5)
 
         with open("images/valor.png", "rb") as image:
             image_byte = image.read()
-            await ctx.guild.create_custom_emoji(name="valor", image=image_byte, reason="Installing valor-emoji")
+            await ctx.guild.create_custom_emoji(name="valor",
+                                                image=image_byte,
+                                                reason="Installing valor-emoji")
             await asyncio.sleep(5)
 
         with open("images/instinct.png", "rb") as image:
             image_byte = image.read()
-            await ctx.guild.create_custom_emoji(name="instinct", image=image_byte, reason="Installing instinct-emoji")
+            await ctx.guild.create_custom_emoji(name="instinct",
+                                                image=image_byte,
+                                                reason="Installing instinct-emoji")
             await asyncio.sleep(5)
 
 
