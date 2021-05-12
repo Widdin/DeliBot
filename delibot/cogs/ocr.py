@@ -118,7 +118,6 @@ class OCR(commands.Cog):
                 image_bytes = await response.read()
 
         with Image.open(BytesIO(image_bytes)) as my_image:
-            # RGB = my_image.getpixel((1, my_image.size[1]*0.5))
             w, h = my_image.size
 
             crop_w = w * 0.18
@@ -136,9 +135,6 @@ class OCR(commands.Cog):
                 patterns = [greek_pattern]
 
             block = txt.split("\n")
-
-            date = None
-            location = None
 
             for pattern in patterns:
                 rg = re.compile(pattern, re.IGNORECASE | re.DOTALL)
@@ -195,7 +191,8 @@ class OCR(commands.Cog):
                 await ctx.invoke(self.bot.get_command("exraid"), pokemon="Regigigas", time=the_time,
                                  day=f"{date[0]} {date[1]}", location=str(location), delete=False)
 
-                embed = discord.Embed(description=f'Successfully created the EX-Raid!', color=discord.Color.green())
+                embed = discord.Embed(description='Successfully created the EX-Raid!',
+                                      color=discord.Color.green())
                 embed.set_footer(text="Auto-deleting in 15 seconds..")
                 await message.channel.send(embed=embed, delete_after=15)
 
