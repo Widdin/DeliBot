@@ -343,12 +343,12 @@ class Pokebattler(commands.Cog):
         for type in stats_20['types']:
             boss_types += f"{self.type_emoji[type]} {type.replace('POKEMON_TYPE_', '').title()}\n"
 
-        embed.add_field(name=f"CP Ranges",
+        embed.add_field(name="CP Ranges",
                         value=f"**L20:** {stats_20['min_cp']} - {stats_20['max_cp']}\n**L25:** {stats_25['min_cp']} - {stats_25['max_cp']}",
                         inline=True)
         embed.add_field(name="Type", value=f"{boss_types}", inline=True)
-        embed.add_field(name=f"Quick Moves", value=f"{boss_quick}", inline=True)
-        embed.add_field(name=f"Charge Moves", value=f"{boss_charge}", inline=True)
+        embed.add_field(name="Quick Moves", value=f"{boss_quick}", inline=True)
+        embed.add_field(name="Charge Moves", value=f"{boss_charge}", inline=True)
 
         display_weather = WEATHER.replace("_", " ").lower()
         embed.add_field(name="Counters",
@@ -387,7 +387,6 @@ class Pokebattler(commands.Cog):
 
     @staticmethod
     async def get_move_info(move_name):
-        data = []
         with open('json/moves.json') as json_file:
             data = json.load(json_file)
             json_file.close()
