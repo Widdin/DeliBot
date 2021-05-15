@@ -601,8 +601,8 @@ class Admin(commands.Cog):
         """
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"In which channel would you like me to display events?",
-                              description=f"Please tag the channel below by using #",
+        embed = discord.Embed(title="In which channel would you like me to display events?",
+                              description="Please tag the channel below by using #",
                               color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://img.icons8.com/metro/1600/list.png")
         await ctx.channel.send(embed=embed)
@@ -1077,7 +1077,8 @@ class Admin(commands.Cog):
         # Delete command
         await ctx.message.delete()
 
-        embed = discord.Embed(title=f"Installing..", color=discord.Colour.dark_magenta())
+        embed = discord.Embed(title="Installing..",
+                              color=discord.Colour.dark_magenta())
         embed.set_thumbnail(url="https://cdn-images-1.medium.com/max/1600/1*LruTBJfGS0SDPrR9icfrMw.gif")
         install_msg = await ctx.channel.send(embed=embed)
 
