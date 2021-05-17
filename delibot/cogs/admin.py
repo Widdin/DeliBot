@@ -45,10 +45,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         channel_id = wait_for_channel.content[2:-1]
@@ -174,10 +171,7 @@ class Admin(commands.Cog):
         try:
             wait_for_role = await self.bot.wait_for("message", timeout=30.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         query = "UPDATE settings SET role_permission = %s WHERE server_id = %s"
@@ -228,10 +222,7 @@ class Admin(commands.Cog):
         try:
             channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         channel_id = channel.content[2:-1]
@@ -291,10 +282,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         channel_id = wait_for_channel.content[2:-1]
@@ -354,10 +342,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         channel_id = wait_for_channel.content[2:-1]
@@ -417,10 +402,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         channel_id = wait_for_channel.content[2:-1]
@@ -469,10 +451,7 @@ class Admin(commands.Cog):
         try:
             wait_for_reaction, wait_for_user = await self.bot.wait_for("reaction_add", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         embed = discord.Embed(title="Thank you!",
@@ -506,10 +485,7 @@ class Admin(commands.Cog):
         try:
             wait_for_message = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_red())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         if "+" in wait_for_message.content or "-" in wait_for_message.content:
@@ -567,10 +543,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         channel_id = wait_for_channel.content[2:-1]
@@ -613,10 +586,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         channel_id = wait_for_channel.content[2:-1]
@@ -718,10 +688,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         await wait_for_channel.delete()
@@ -869,10 +836,7 @@ class Admin(commands.Cog):
         try:
             wait_for_channel = await self.bot.wait_for("message", timeout=20.0, check=check)
         except asyncio.TimeoutError:
-            embed = discord.Embed(title="Timeout",
-                                  description="You took too long to respond, please try again.",
-                                  color=discord.Colour.dark_magenta())
-            await ctx.channel.send(embed=embed, delete_after=20)
+            await self.timeout_error_msg(ctx.channel)
             return
 
         await wait_for_channel.delete()
@@ -1002,17 +966,16 @@ class Admin(commands.Cog):
                       aliases=['Encounters', 'Encounter', 'encounter', 'Tasks', 'tasks'])
     @commands.has_permissions(administrator=True)
     async def encounters(self, ctx):
-        """
-        In development.
-        """
+        """Retrieves all research tasks with encounters from Silphroad"""
+
         await ctx.message.delete()
         await ctx.message.channel.trigger_typing()
 
-        asession = AsyncHTMLSession()
-        res = await asession.get('https://thesilphroad.com/research-tasks')
+        async_session = AsyncHTMLSession()
+        res = await async_session.get('https://thesilphroad.com/research-tasks')
         await res.html.arender()  # this call executes the js in the page
         items = res.html.find('.task-group')
-        await asession.close()
+        await async_session.close()
 
         my_tasks = []
         my_images = []
@@ -1071,10 +1034,8 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def install(self, ctx):
-        """
-        Uploads necessary emojis to the server in order to work correctly.
-        """
-        # Delete command
+        """Uploads necessary emojis to the server in order to work correctly."""
+
         await ctx.message.delete()
 
         embed = discord.Embed(title="Installing..",
@@ -1121,6 +1082,13 @@ class Admin(commands.Cog):
                                                 image=image_byte,
                                                 reason="Installing instinct-emoji")
             await asyncio.sleep(5)
+
+    @staticmethod
+    async def timeout_error_msg(channel):
+        embed = discord.Embed(title="Timeout",
+                              description="You took too long to respond, please try again.",
+                              color=discord.Colour.dark_magenta())
+        await channel.send(embed=embed, delete_after=20)
 
 
 def setup(bot):
