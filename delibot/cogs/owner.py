@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 
 command_attrs = {'hidden': True}
@@ -10,6 +11,19 @@ class OwnerCog(commands.Cog, name='Owner Commands', command_attrs=command_attrs)
 
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command()
+    async def servers(self, ctx):
+        """Command which shows the total amount of server and users"""
+        await ctx.message.delete()
+
+        guilds = len(self.bot.guilds)
+        users = sum(g.member_count for g in self.bot.guilds)
+
+        embed = discord.Embed(color=discord.Colour(0x00ff00))
+        embed.description = '**Total servers:** {0}\n**Total users:** {1}'.format(guilds, users)
+
+        await ctx.send(embed=embed, delete_after=30)
 
     @commands.command(name='load')
     async def load_cog(self, ctx, *, cog: str):

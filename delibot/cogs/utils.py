@@ -527,22 +527,6 @@ class Utils(commands.Cog):
 
         return url
 
-    @commands.command(hidden=True)
-    async def servers(self, ctx):
-        if not await ctx.bot.is_owner(ctx.author):
-            return
-
-        await ctx.message.delete()
-
-        embed = discord.Embed(color=discord.Colour(0x00ff00))
-
-        guilds = len(self.bot.guilds)
-        users = sum(g.member_count for g in self.bot.guilds)
-
-        embed.description = '**Total servers:** {0}\n**Total users:** {1}'.format(guilds, users)
-
-        await ctx.send(embed=embed, delete_after=15)
-
     @commands.command()
     async def fusion(self, ctx, mon_one: str, mon_two: str):
         """
