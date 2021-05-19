@@ -9,9 +9,7 @@ log = logging.getLogger()
 
 
 class Community(commands.Cog):
-    """
-    Commands for Community-day.
-    """
+    """Commands for Community-day."""
 
     def __init__(self, bot):
         self.bot = bot
@@ -106,6 +104,7 @@ class Community(commands.Cog):
         embed.add_field(name=date, value="\u2022 " + date_contents + "\n\u200b")
 
         return embed
+
 
 def setup(bot):
     bot.add_cog(Community(bot))

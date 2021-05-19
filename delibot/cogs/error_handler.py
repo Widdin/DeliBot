@@ -12,7 +12,8 @@ class CommandErrorHandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        """The event triggered when an error is raised while invoking a command.
+        """
+        The event triggered when an error is raised while invoking a command.
 
         Parameters
         ------------
@@ -54,7 +55,8 @@ class CommandErrorHandler(commands.Cog):
 
     @commands.command(name='repeat', aliases=['mimic', 'copy'])
     async def do_repeat(self, ctx, *, inp: str):
-        """A simple command which repeats your input!
+        """
+        A simple command which repeats your input!
 
         Parameters
         ------------
@@ -65,12 +67,11 @@ class CommandErrorHandler(commands.Cog):
 
     @do_repeat.error
     async def do_repeat_handler(self, ctx, error):
-        """A local Error Handler for our command do_repeat.
-
+        """
+        A local Error Handler for our command do_repeat.
         This will only listen for errors in do_repeat.
         The global on_command_error will still be invoked after.
         """
-
         if isinstance(error, commands.MissingRequiredArgument):
             if error.param.name == 'inp':
                 await ctx.send("You forgot to give me input to repeat!")

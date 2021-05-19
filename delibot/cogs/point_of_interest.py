@@ -3,9 +3,7 @@ from discord.ext import commands
 
 
 class PointOfInterest(commands.Cog):
-    """
-    Commands for adding point of interests (gyms / stops).
-    """
+    """Commands for adding point of interests, gyms and pokestops."""
 
     def __init__(self, bot):
         self.bot = bot

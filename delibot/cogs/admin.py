@@ -966,8 +966,7 @@ class Admin(commands.Cog):
                       aliases=['Encounters', 'Encounter', 'encounter', 'Tasks', 'tasks'])
     @commands.has_permissions(administrator=True)
     async def encounters(self, ctx):
-        """Retrieves all research tasks with encounters from Silphroad"""
-
+        """Retrieves all research tasks with encounters from Silphroad."""
         await ctx.message.delete()
         await ctx.message.channel.trigger_typing()
 
@@ -1035,7 +1034,6 @@ class Admin(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def install(self, ctx):
         """Uploads necessary emojis to the server in order to work correctly."""
-
         await ctx.message.delete()
 
         embed = discord.Embed(title="Installing..",
