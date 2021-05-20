@@ -9,7 +9,9 @@ from discord.ext import commands
 
 
 class OCR(commands.Cog):
-    """Commands for assigning Team-role and reading EX-raid images."""
+    """
+    Commands for assigning Team-role and reading EX-raid images.
+    """
 
     def __init__(self, bot):
         self.bot = bot

@@ -4,7 +4,9 @@ from discord.ext import commands
 
 
 class Silphroad(commands.Cog):
-    """Commands related to Silphroad."""
+    """
+    Commands related to Silphroad.
+    """
 
     def __init__(self, bot):
         self.bot = bot

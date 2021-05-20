@@ -10,7 +10,9 @@ log = logging.getLogger()
 
 
 class Pokebattler(commands.Cog):
-    """Commands related to Pokebattler."""
+    """
+    Commands related to Pokebattler.
+    """
 
     def __init__(self, bot):
         self.bot = bot
