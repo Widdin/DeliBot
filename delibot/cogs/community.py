@@ -9,7 +9,9 @@ log = logging.getLogger()
 
 
 class Community(commands.Cog):
-    """Commands for Community-day."""
+    """
+    Commands for Community-day.
+    """
 
     def __init__(self, bot):
         self.bot = bot
@@ -53,9 +55,7 @@ class Community(commands.Cog):
     @commands.command(pass_context=True,
                       aliases=["cd", "Cd", "Cday", "cday", "community", "Community", "Community_day"])
     async def community_day(self, ctx):
-        """
-        Information message of the next Community-day.
-        """
+        """Information message of the next Community-day."""
         await ctx.message.delete()
 
         embed = await self.get_embed_community_day(self, ctx.message.guild.id)

@@ -31,7 +31,9 @@ initial_extensions = ['cogs.owner',
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix=config['SETTINGS']['prefix'], intents=intents, activity=discord.Game(name='Pokémon GO', type=1))
+bot = commands.Bot(command_prefix=config['SETTINGS']['prefix'],
+                   intents=intents,
+                   activity=discord.Game(name='Pokémon GO', type=1))
 bot.remove_command('help')
 
 

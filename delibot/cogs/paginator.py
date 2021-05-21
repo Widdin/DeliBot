@@ -122,19 +122,19 @@ class Pages:
             await self.show_page(page)
 
     async def first_page(self):
-        """goes to the first page"""
+        """goes to the first page."""
         await self.show_page(1)
 
     async def last_page(self):
-        """goes to the last page"""
+        """goes to the last page."""
         await self.show_page(self.maximum_pages)
 
     async def next_page(self):
-        """goes to the next page"""
+        """goes to the next page."""
         await self.checked_show_page(self.current_page + 1)
 
     async def previous_page(self):
-        """goes to the previous page"""
+        """goes to the previous page."""
         await self.checked_show_page(self.current_page - 1)
 
     async def show_current_page(self):
@@ -142,7 +142,7 @@ class Pages:
             await self.show_page(self.current_page)
 
     async def numbered_page(self):
-        """lets you type a page number to go to"""
+        """lets you type a page number to go to."""
         to_delete = []
         to_delete.append(await self.channel.send('What page do you want to go to?'))
 
@@ -171,7 +171,7 @@ class Pages:
             pass
 
     async def show_help(self):
-        """shows this message"""
+        """shows this message."""
         messages = ['Welcome to the interactive paginator!\n']
         messages.append('This interactively allows you to see pages of text by navigating with '
                         'reactions. They are as follows:\n')
@@ -191,7 +191,7 @@ class Pages:
         self.bot.loop.create_task(go_back_to_current_page())
 
     async def stop_pages(self):
-        """stops the interactive pagination session"""
+        """stops the interactive pagination session."""
         await self.message.delete()
         self.paginating = False
 
@@ -479,8 +479,7 @@ class HelpPaginator(Pages):
             await self.message.add_reaction(reaction)
 
     async def show_help(self):
-        """shows this message"""
-
+        """shows this message."""
         self.embed.title = 'Paginator help'
         self.embed.description = 'Hello! Welcome to the help page.'
 
@@ -498,8 +497,7 @@ class HelpPaginator(Pages):
         self.bot.loop.create_task(go_back_to_current_page())
 
     async def show_bot_help(self):
-        """shows how to use the bot"""
-
+        """shows how to use the bot."""
         self.embed.title = 'Using the bot'
         self.embed.description = 'Hello! Welcome to the help page.'
         self.embed.clear_fields()
