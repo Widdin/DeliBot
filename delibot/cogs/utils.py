@@ -66,7 +66,6 @@ class Utils(commands.Cog):
     @staticmethod
     async def message_type(message):
         """Determine which type of message it is."""
-
         embed_content = message.embeds[0]
         try:
             if "Field Research Quest" in embed_content.get('author')['name']:
@@ -555,9 +554,7 @@ class Utils(commands.Cog):
 
     @commands.command(name='help')
     async def _help(self, ctx, *, command: str = None):
-        """
-        Shows help about a command or the bot
-        """
+        """Shows help about a command or the bot."""
 
         try:
             if command is None:
@@ -576,6 +573,10 @@ class Utils(commands.Cog):
             await p.paginate()
         except Exception as e:
             await ctx.send(e)
+
+    @staticmethod
+    async def days_hours_minutes(td):
+        return td.days, td.seconds // 3600, (td.seconds // 60) % 60
 
 
 def setup(bot):
