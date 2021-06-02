@@ -2,7 +2,7 @@ import asyncio
 import datetime
 import json
 import logging
-
+import aiohttp
 import discord
 from discord.ext import commands
 from requests_html import AsyncHTMLSession
@@ -615,44 +615,102 @@ class Admin(commands.Cog):
     async def _init_update_event(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
+            log.info("Updating event overview")
 
             query = "SELECT * FROM settings WHERE event_overview_channel_id IS NOT NULL AND event_overview_message_id IS NOT NULL"
             servers = await self.bot.db.execute(query)
 
-            log.info("Updating events")
+            url = 'https://raw.githubusercontent.com/ccev/pogoinfo/v2/active/events.json'
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    if response.status == 200:
+                        json = await response.json(content_type='text/plain')
+                    else:
+                        return
 
-            asession = AsyncHTMLSession()
-            res = await asession.get('https://thesilphroad.com/')
-            await res.html.arender(wait=5.0, sleep=2.0)  # this call executes the js in the page
-            items = res.html.find('.timeline-item')
-            await asession.close()
-
-            events = []
-            # For each event-div
-            for item in items:
-                # Add the contents to a list
-                rows = item.text.split("\n")
-                events.append(f'{rows[2]}|{rows[0]}|{rows[3]}|{rows[1]}')
-
-            embed = discord.Embed(title=f"Events:",
-                                  color=discord.Colour.gold())
-
+            embed = discord.Embed(title="Events", color=discord.Colour.gold())
             embed.set_thumbnail(
                 url="https://img15.deviantart.net/5a53/i/2016/277/8/f/pikachu_go_by_ry_spirit-dajx7us.png")
             embed.set_footer(text="Updates every hour | Last updated: ")
             embed.timestamp = datetime.datetime.utcnow()
 
-            embed.add_field(name="**HAPPENING** **NOW** 🔓", value="\u200b", inline=False)
-            once = True
-            for event in events:
-                event = event.split("|")
+            date_now = datetime.datetime.now()
 
-                if "left" not in event[1] and once is True:
-                    embed.add_field(name="**COMING** **UP** **NEXT** 🔒", value="\u200b", inline=False)
-                    once = False
+            ongoing = []
+            upcoming = []
+            ended = []
 
-                embed.add_field(name=f"🔸 **{event[0]}** \n{event[3]}",
-                                value=f"**Time:** {event[1]}\n**Description:** {event[2]}\n\u200b", inline=False)
+            for event in json:
+                date_format = '%Y-%m-%d %H:%M'
+
+                date_start = datetime.datetime.strptime(event['start'], date_format)
+                date_end = datetime.datetime.strptime(event['end'], date_format)
+
+                # Ongoing events
+                if date_start <= date_now:
+
+                    # Time left of the event
+                    date_remaining = (date_end - date_now)
+                    hours_remaining = divmod(date_remaining.total_seconds(), 3600)[0]
+
+                    if hours_remaining > 0:
+
+                        # Duration of the event
+                        date_duration = (date_end - date_start)
+                        event['pretty-print-duration'] = await self.bot.get_cog("Utils").days_hours_minutes(
+                            date_duration)
+                        ongoing.append(event)
+
+                    # Ended events
+                    else:
+                        ended.append(event)
+
+                # Upcoming events
+                else:
+
+                    # Time until start
+                    date_until = (date_start - date_now)
+                    event['pretty-print-duration'] = await self.bot.get_cog("Utils").days_hours_minutes(date_until)
+
+                    upcoming.append(event)
+
+            # Sort by start date
+            upcoming = sorted(upcoming, key=lambda k: k['start'])
+
+            embed.add_field(name="🔓 **ONGOING**", value="\u200b", inline=False)
+            for event in ongoing:
+                days, hours, minutes = event["pretty-print-duration"]
+                embed.add_field(name=f':small_orange_diamond: {event["name"]}',
+                                value=f'**Time left:** {days} days, {hours} hours, {minutes} minutes\n**Starts:** {event["start"]}\n**Ends:** {event["end"]}\n\u200b',
+                                inline=False)
+
+            embed.add_field(name="🔒 **COMING** **UP** **NEXT**", value="\u200b", inline=False)
+            for event in upcoming:
+                days, hours, minutes = event["pretty-print-duration"]
+                embed.add_field(name=f':small_orange_diamond: {event["name"]}',
+                                value=f'**Time until start:** {days} days, {hours} hours\n**Starts:** {event["start"]}\n**Ends:** {event["end"]}\n\u200b',
+                                inline=False)
+
+            embed.add_field(name="**HAS** **ENDED**", value="\u200b", inline=False)
+            for event in ended:
+                embed.add_field(name=f':small_orange_diamond: {event["name"]}',
+                                value=f'{event["start"]} - {event["end"]}\n\u200b',
+                                inline=False)
+
+            # Keep the length within the limits for the embed
+            if len(embed.fields) > 25 or len(embed) > 6000:
+                # Remove all fields above number 25, starting
+                # from the bottom of "Coming up next" and moving up
+                events_to_remove = len(embed.fields) - 25
+
+                index_end = None
+                for index, field in enumerate(embed.fields):
+                    if field.name == '**HAS** **ENDED**':
+                        index_end = index
+                        break
+
+                for i in range(1, events_to_remove):
+                    embed.remove_field(index_end - i)
 
             for server in servers:
                 channel_id = server[12]
