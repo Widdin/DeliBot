@@ -440,7 +440,13 @@ class Admin(commands.Cog):
         embed.set_thumbnail(url="https://www.unitedwebworks.com/hs-fs/hubfs/earth-gif.gif")
         flag_msg = await ctx.channel.send(embed=embed, delete_after=20)
 
-        reactions_dict = {'🇺🇸': 'US', '🇸🇪': 'SE', '🇩🇪': 'DE', '🇫🇷': 'FR', '🇬🇷': 'GR', '🇳🇱': 'NL'}
+        reactions_dict = {'🇺🇸': 'US',
+                          '🇸🇪': 'SE',
+                          '🇩🇪': 'DE',
+                          '🇫🇷': 'FR',
+                          '🇬🇷': 'GR',
+                          '🇳🇱': 'NL',
+                          '🇪🇸': 'ES'}
 
         for reaction in reactions_dict:
             await  flag_msg.add_reaction(reaction)
