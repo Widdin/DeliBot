@@ -2,12 +2,18 @@ import logging
 
 import discord
 from discord.ext import commands
-
+from datetime import datetime
 from utils import default
 
-logging.basicConfig(format='%(asctime)s [%(filename)14s:%(lineno)4d][%(levelname)8s] %(message)s',
+logging.basicConfig(format='%(asctime)s [%(filename)14s:%(lineno)4d][%(funcName)30s][%(levelname)8s] %(message)s',
                     level=logging.INFO)
+
+fileHandler = logging.FileHandler(filename='logs/' + '{:%Y-%m-%d}.log'.format(datetime.now()))
+formatter = logging.Formatter('%(asctime)s [%(filename)14s:%(lineno)4d][%(levelname)8s] %(message)s')
+fileHandler.setFormatter(formatter)
+
 log = logging.getLogger()
+log.addHandler(fileHandler)
 
 config = default.get_config()
 

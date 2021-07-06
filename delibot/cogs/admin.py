@@ -6,6 +6,7 @@ import aiohttp
 import discord
 from discord.ext import commands
 from requests_html import AsyncHTMLSession
+from pathlib import Path
 
 log = logging.getLogger()
 
@@ -75,9 +76,9 @@ class Admin(commands.Cog):
             query = "SELECT * FROM settings WHERE community_day_channel_id IS NOT NULL AND community_day_message_id IS NOT NULL"
             servers = await self.bot.db.execute(query)
 
-            log.info(f'Updating community day for {len(servers)} server(s)')
+            log.info(f'Updating community day for {len(servers)} servers.')
 
-            with open('json/community_day.json') as json_file:
+            with open(Path('json/community_day.json')) as json_file:
                 data = json.load(json_file)
                 json_file.close()
 
@@ -621,10 +622,10 @@ class Admin(commands.Cog):
     async def _init_update_event(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
-            log.info("Updating event overview")
-
             query = "SELECT * FROM settings WHERE event_overview_channel_id IS NOT NULL AND event_overview_message_id IS NOT NULL"
             servers = await self.bot.db.execute(query)
+
+            log.info(f'Updating event overview for {len(servers)} servers.')
 
             url = 'https://raw.githubusercontent.com/ccev/pogoinfo/v2/active/events.json'
             async with aiohttp.ClientSession() as session:
@@ -788,6 +789,8 @@ class Admin(commands.Cog):
             query = "SELECT * FROM settings WHERE raid_overview_channel_id IS NOT NULL AND raid_overview_message_id IS NOT NULL"
             servers = await self.bot.db.execute(query)
 
+            log.info(f'Updating raid overview for {len(servers)} servers.')
+
             for server in servers:
                 server_id = server[0]
                 channel_id = server[10]
@@ -935,6 +938,8 @@ class Admin(commands.Cog):
 
             query = "SELECT * FROM settings WHERE exraid_overview_channel_id IS NOT NULL AND exraid_overview_message_id IS NOT NULL"
             servers = await self.bot.db.execute(query)
+
+            log.info(f'Updating ex overview for {len(servers)} servers.')
 
             for server in servers:
 
@@ -1124,21 +1129,21 @@ class Admin(commands.Cog):
 
     @staticmethod
     async def upload_emojis(ctx):
-        with open("images/mystic.png", "rb") as image:
+        with open(Path("images/mystic.png"), "rb") as image:
             image_byte = image.read()
             await ctx.guild.create_custom_emoji(name="mystic",
                                                 image=image_byte,
                                                 reason="Installing mystic-emoji")
             await asyncio.sleep(5)
 
-        with open("images/valor.png", "rb") as image:
+        with open(Path("images/valor.png"), "rb") as image:
             image_byte = image.read()
             await ctx.guild.create_custom_emoji(name="valor",
                                                 image=image_byte,
                                                 reason="Installing valor-emoji")
             await asyncio.sleep(5)
 
-        with open("images/instinct.png", "rb") as image:
+        with open(Path("images/instinct.png"), "rb") as image:
             image_byte = image.read()
             await ctx.guild.create_custom_emoji(name="instinct",
                                                 image=image_byte,

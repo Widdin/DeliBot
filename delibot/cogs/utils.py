@@ -5,6 +5,8 @@ import os
 import logging
 import discord
 import time
+import pymysql
+from pathlib import Path
 from discord.ext import commands
 
 from cogs.paginator import HelpPaginator
@@ -25,16 +27,27 @@ class Utils(commands.Cog):
     async def on_guild_join(self, guild):
         """When delibot joins a server and the guild
         doesn't exist in the database, add it."""
-        query = "INSERT INTO settings (server_id) SELECT %s WHERE NOT EXISTS (SELECT 1 FROM settings WHERE server_id = %s)"
-        params = (str(guild.id), str(guild.id))
-        await self.bot.db.execute(query, params)
+        query = "INSERT INTO settings (server_id) VALUES (%s)"
+        params = (str(guild.id), )
+
+        try:
+            await self.bot.db.execute(query, params)
+            log.info(f'Server "{guild.name}" ({guild.id}) inserted.')
+        except pymysql.err.IntegrityError:
+            log.info(f'Server "{guild.name}" ({guild.id}) already exist.')
+            return
 
     async def create_user_if_not_exist(self, guild_id: str, user_id: str):
         """If a user doesn't exist in the database, add it."""
-        query = "INSERT INTO users (server_id, user_id) SELECT %s, %s WHERE NOT EXISTS (SELECT 1 FROM users WHERE server_id = %s AND user_id = %s)"
-        params = (str(guild_id), str(user_id), str(guild_id), str(user_id))
+        query = "INSERT INTO users (server_id, user_id) VALUES (%s, %s)"
+        params = (str(guild_id), str(user_id))
 
-        await self.bot.db.execute(query, params)
+        try:
+            await self.bot.db.execute(query, params)
+            log.info(f'User {user_id} and server {guild_id} inserted.')
+        except pymysql.err.IntegrityError:
+            log.info(f'User {user_id} and server {guild_id} already exist.')
+            return
 
     async def get_gym(self, server_id: str, gym_name: str):
         query = "SELECT name, lat, lon FROM gyms WHERE server_id = %s AND name LIKE %s ORDER BY CHAR_LENGTH(name) ASC"
@@ -87,10 +100,13 @@ class Utils(commands.Cog):
         params = (guild_id, )
         (language_code, ) = await self.bot.db.execute(query, params, single=True)
 
-        file_path = os.path.join('json/locale.json')
+        file_path = Path('json/locale.json')
 
-        with open(file_path, 'r', encoding='utf8') as f:
-            data = json.load(f)
+        if file_path.exists():
+            with open(file_path, 'r', encoding='utf8') as f:
+                data = json.load(f)
+        else:
+            log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
 
         result = ()
         for key in keys.split(" "):
@@ -437,31 +453,47 @@ class Utils(commands.Cog):
 
     @staticmethod
     async def get_pokemon_name(pokemon_id: str):
-        filepath = os.path.join('json/pokemon_id.json')
-        with open(filepath, 'r', encoding='utf8') as f:
-            data = json.load(f)
-            return data.get(pokemon_id)
+        file_path = Path('json/pokemon_id.json')
+
+        if file_path.exists():
+            with open(file_path, 'r', encoding='utf8') as f:
+                data = json.load(f)
+                return data.get(pokemon_id)
+
+        log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
 
     @staticmethod
     async def get_pokemon_id(pokemon_name: str):
-        filepath = os.path.join('json/pokemon_en_fr_de.json')
-        with open(filepath, 'r', encoding='utf8') as f:
-            data = json.load(f)
-            return data.get(pokemon_name.title())
+        file_path = Path('json/pokemon_en_fr_de.json')
+
+        if file_path.exists():
+            with open(file_path, 'r', encoding='utf8') as f:
+                data = json.load(f)
+                return data.get(pokemon_name.title())
+
+        log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
 
     @staticmethod
     async def get_unown_id(pokemon_name: str):
-        filepath = os.path.join('json/unown.json')
-        with open(filepath, 'r', encoding='utf8') as f:
-            data = json.load(f)
-            return data.get(pokemon_name.title())
+        file_path = Path('json/unown.json')
+
+        if file_path.exists():
+            with open(file_path, 'r', encoding='utf8') as f:
+                data = json.load(f)
+                return data.get(pokemon_name.title())
+
+        log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
 
     @staticmethod
     async def get_pika_id(pokemon_name: str):
-        filepath = os.path.join('json/pikachu.json')
-        with open(filepath, 'r', encoding='utf8') as f:
-            data = json.load(f)
-            return data.get(pokemon_name.title())
+        file_path = Path('json/pikachu.json')
+
+        if file_path.exists():
+            with open(file_path, 'r', encoding='utf8') as f:
+                data = json.load(f)
+                return data.get(pokemon_name.title())
+
+        log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
 
     async def get_log_channel(self, server_id):
         query = "SELECT log_channel_id FROM settings WHERE server_id = %s"
@@ -475,7 +507,7 @@ class Utils(commands.Cog):
 
     @staticmethod
     async def dump_json(path, data):
-        with open(path, 'w', encoding='utf8') as f:
+        with open(Path(path), 'w', encoding='utf8') as f:
             json.dump(data, f, indent=4)
 
     @staticmethod
