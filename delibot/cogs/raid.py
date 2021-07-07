@@ -1,8 +1,10 @@
 import asyncio
-from datetime import datetime
-
+import logging
 import discord
 from discord.ext import commands
+from datetime import datetime
+
+log = logging.getLogger()
 
 
 class Raid(commands.Cog):
@@ -19,6 +21,8 @@ class Raid(commands.Cog):
         while not self.bot.is_closed():
             raids = await self.bot.db.get_raids_older_than(2)
 
+            log.info(f'Deleting {len(raids)} old raids...')
+
             if len(raids) > 0:
                 await self.bot.db.delete_raids_older_than(2)
 
@@ -30,6 +34,7 @@ class Raid(commands.Cog):
 
                     await self.bot.http.delete_message(channel_id, message_id)
 
+            log.info(f'Finished deleting {len(raids)} old raids.')
             await asyncio.sleep(300)
 
     @commands.command(name="raid", aliases=["r", "R", "Raid"])

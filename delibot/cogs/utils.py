@@ -32,7 +32,7 @@ class Utils(commands.Cog):
 
         try:
             await self.bot.db.execute(query, params)
-            log.info(f'Server "{guild.name}" ({guild.id}) inserted.')
+            log.info(f'New server "{guild.name}" ({guild.id}) created.')
         except pymysql.err.IntegrityError:
             log.info(f'Server "{guild.name}" ({guild.id}) already exist.')
             return
@@ -44,7 +44,7 @@ class Utils(commands.Cog):
 
         try:
             await self.bot.db.execute(query, params)
-            log.info(f'User {user_id} and server {guild_id} inserted.')
+            log.info(f'New user {user_id} and server {guild_id} created.')
         except pymysql.err.IntegrityError:
             log.info(f'User {user_id} and server {guild_id} already exist.')
             return

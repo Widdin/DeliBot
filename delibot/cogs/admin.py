@@ -133,6 +133,7 @@ class Admin(commands.Cog):
                 except discord.errors.Forbidden:
                     pass
 
+            log.info(f'Finished updating community day for {len(servers)} servers. Sleeping for 24 hours.')
             await asyncio.sleep(86400)
 
     @commands.command()
@@ -730,6 +731,7 @@ class Admin(commands.Cog):
                 except discord.errors.Forbidden:
                     pass
 
+            log.info(f'Finished updating event overview for {len(servers)} servers. Sleeping for 24 hours.')
             await asyncio.sleep(86400)
 
     @commands.command()
@@ -880,6 +882,7 @@ class Admin(commands.Cog):
                 except discord.errors.HTTPException:
                     pass
 
+            log.info(f'Finished updating raid overview for {len(servers)} servers. Sleeping for 24 hours.')
             await asyncio.sleep(300)
 
     @commands.command()
@@ -1029,6 +1032,7 @@ class Admin(commands.Cog):
                 except discord.errors.Forbidden:
                     pass
 
+            log.info(f'Finished updating ex overview for {len(servers)} servers. Sleeping for 24 hours.')
             await asyncio.sleep(900)
 
     @commands.command(pass_context=True, hidden=True,

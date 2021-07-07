@@ -39,7 +39,7 @@ class Database(commands.Cog):
             log.critical(f'Could not connect to database. Reason: {e}')
             exit()
         else:
-            log.info("Successfully connected to database")
+            log.info("Successfully connected to database.")
 
     async def execute(self, query, params=None, single=False, rowcount=False):
         async with self.bot.pool.acquire() as conn:

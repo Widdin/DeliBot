@@ -1,8 +1,10 @@
 import asyncio
-from datetime import datetime
-
+import logging
 import discord
+from datetime import datetime
 from discord.ext import commands
+
+log = logging.getLogger()
 
 
 class Exraid(commands.Cog):
@@ -23,6 +25,8 @@ class Exraid(commands.Cog):
 
             query = "DELETE FROM exraids WHERE created_at < ADDDATE(NOW(), INTERVAL -14 DAY)"
             await self.bot.db.execute(query)
+
+            log.info(f'Deleting {len(results)} old ex-raids...')
 
             for result in results:
                 try:
@@ -61,6 +65,7 @@ class Exraid(commands.Cog):
 
                 await asyncio.sleep(10)
 
+            log.info(f'Finished deleting {len(results)} old ex-raids.')
             await asyncio.sleep(3600)
 
     async def get_default_ex_channel(self, guild_id):
