@@ -882,7 +882,7 @@ class Admin(commands.Cog):
                 except discord.errors.HTTPException:
                     pass
 
-            log.info(f'Finished updating raid overview for {len(servers)} servers. Sleeping for 24 hours.')
+            log.info(f'Finished updating raid overview for {len(servers)} servers. Sleeping for 5 minutes.')
             await asyncio.sleep(300)
 
     @commands.command()
@@ -1032,7 +1032,7 @@ class Admin(commands.Cog):
                 except discord.errors.Forbidden:
                     pass
 
-            log.info(f'Finished updating ex overview for {len(servers)} servers. Sleeping for 24 hours.')
+            log.info(f'Finished updating ex overview for {len(servers)} servers. Sleeping for 15 minutes.')
             await asyncio.sleep(900)
 
     @commands.command(pass_context=True, hidden=True,
