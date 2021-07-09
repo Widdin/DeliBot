@@ -65,7 +65,7 @@ class Exraid(commands.Cog):
 
                 await asyncio.sleep(10)
 
-            log.info(f'Finished deleting {len(results)} old ex-raids.')
+            log.info(f'Finished deleting {len(results)} old ex-raids. Sleeping for 60 minutes.')
             await asyncio.sleep(3600)
 
     async def get_default_ex_channel(self, guild_id):

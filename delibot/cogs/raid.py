@@ -34,7 +34,7 @@ class Raid(commands.Cog):
 
                     await self.bot.http.delete_message(channel_id, message_id)
 
-            log.info(f'Finished deleting {len(raids)} old raids.')
+            log.info(f'Finished deleting {len(raids)} old raids. Sleeping for 5 minutes.')
             await asyncio.sleep(300)
 
     @commands.command(name="raid", aliases=["r", "R", "Raid"])
