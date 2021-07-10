@@ -731,8 +731,8 @@ class Admin(commands.Cog):
                 except discord.errors.Forbidden:
                     pass
 
-            log.info(f'Finished updating event overview for {len(servers)} servers. Sleeping for 24 hours.')
-            await asyncio.sleep(86400)
+            log.info(f'Finished updating event overview for {len(servers)} servers. Sleeping for 1 hour.')
+            await asyncio.sleep(3600)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
