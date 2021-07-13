@@ -664,7 +664,7 @@ class Admin(commands.Cog):
                     if hours_remaining > 0:
 
                         # Duration of the event
-                        date_duration = (date_end - date_start)
+                        date_duration = (date_end - date_now)
                         event['pretty-print-duration'] = await self.bot.get_cog("Utils").days_hours_minutes(
                             date_duration)
                         ongoing.append(event)
