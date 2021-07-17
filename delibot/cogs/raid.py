@@ -37,8 +37,8 @@ class Raid(commands.Cog):
                     except discord.NotFound:
                         pass
                     except discord.Forbidden:
-                        await self.bot.http.send_message(channel_id, 'Insufficient permission to delete old raids.')
-
+                        pass
+                    
             log.info(f'Finished deleting {len(raids)} old raids. Sleeping for 5 minutes.')
             await asyncio.sleep(300)
 
