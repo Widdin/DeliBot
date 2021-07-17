@@ -32,7 +32,12 @@ class Raid(commands.Cog):
 
                     # TODO: Update raids_created / raids_joined
 
-                    await self.bot.http.delete_message(channel_id, message_id)
+                    try:
+                        await self.bot.http.delete_message(channel_id, message_id)
+                    except discord.NotFound:
+                        pass
+                    except discord.Forbidden:
+                        await self.bot.http.send_message(channel_id, 'Insufficient permission to delete old raids.')
 
             log.info(f'Finished deleting {len(raids)} old raids. Sleeping for 5 minutes.')
             await asyncio.sleep(300)
