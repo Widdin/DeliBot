@@ -86,7 +86,7 @@ class Community(commands.Cog):
             exclusive_move_contents = c['move']
             bonus_one_contents = c['bonusOne']
             bonus_two_contents = c['bonusTwo']
-            date_contents = c['day'] + ', 11:00 PM - 2:00 PM'
+            date_contents = c['day'] + ', 11:00 AM - 5:00 PM'
 
         pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(featured_pokemon_contents)
 
