@@ -650,37 +650,38 @@ class Admin(commands.Cog):
 
             for event in json:
                 date_format = '%Y-%m-%d %H:%M'
+                
+                if event['start'] is not None:
+                    date_start = datetime.datetime.strptime(event['start'], date_format)
+                    date_end = datetime.datetime.strptime(event['end'], date_format)
 
-                date_start = datetime.datetime.strptime(event['start'], date_format)
-                date_end = datetime.datetime.strptime(event['end'], date_format)
+                    # Ongoing events
+                    if date_start <= date_now:
 
-                # Ongoing events
-                if date_start <= date_now:
+                        # Time left of the event
+                        date_remaining = (date_end - date_now)
+                        hours_remaining = divmod(date_remaining.total_seconds(), 3600)[0]
 
-                    # Time left of the event
-                    date_remaining = (date_end - date_now)
-                    hours_remaining = divmod(date_remaining.total_seconds(), 3600)[0]
+                        if hours_remaining > 0:
 
-                    if hours_remaining > 0:
+                            # Duration of the event
+                            date_duration = (date_end - date_now)
+                            event['pretty-print-duration'] = await self.bot.get_cog("Utils").days_hours_minutes(
+                                date_duration)
+                            ongoing.append(event)
 
-                        # Duration of the event
-                        date_duration = (date_end - date_now)
-                        event['pretty-print-duration'] = await self.bot.get_cog("Utils").days_hours_minutes(
-                            date_duration)
-                        ongoing.append(event)
+                        # Ended events
+                        else:
+                            ended.append(event)
 
-                    # Ended events
+                    # Upcoming events
                     else:
-                        ended.append(event)
 
-                # Upcoming events
-                else:
+                        # Time until start
+                        date_until = (date_start - date_now)
+                        event['pretty-print-duration'] = await self.bot.get_cog("Utils").days_hours_minutes(date_until)
 
-                    # Time until start
-                    date_until = (date_start - date_now)
-                    event['pretty-print-duration'] = await self.bot.get_cog("Utils").days_hours_minutes(date_until)
-
-                    upcoming.append(event)
+                        upcoming.append(event)
 
             # Sort by start date
             upcoming = sorted(upcoming, key=lambda k: k['start'])
