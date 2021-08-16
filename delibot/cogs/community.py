@@ -38,12 +38,18 @@ class Community(commands.Cog):
 
                 data = {'community': []}
 
+                # If the site says 'CHECK BACK SOON FOR MORE DETAILS.'
+                if len(date) == 0:
+                    date = 'TBA'
+                else:
+                    date = date[0].text
+
                 data['community'].append({
                     'pokemon': bonuses[0].text,
                     'bonusOne': bonuses[2].text,
                     'bonusTwo': bonuses[3].text,
                     'move': bonuses[1].text,
-                    'day': date[0].text
+                    'day': date
                 })
 
                 await self.bot.get_cog("Utils").dump_json('json/community_day.json', data)
