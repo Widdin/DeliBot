@@ -495,6 +495,17 @@ class Utils(commands.Cog):
 
         log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
 
+    @staticmethod
+    async def get_form(pokemon_id: int):
+        file_path = Path('json/forms.json')
+
+        if file_path.exists():
+            with open(file_path, 'r', encoding='utf8') as f:
+                data = json.load(f)
+                return data.get(str(pokemon_id))
+
+        log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
+
     async def get_log_channel(self, server_id):
         query = "SELECT log_channel_id FROM settings WHERE server_id = %s"
         params = (server_id, )
@@ -520,43 +531,17 @@ class Utils(commands.Cog):
 
         return (time.time() - date_modified) / 3600 > 24 * days
 
-    @staticmethod
-    async def get_pokemon_image_url(pokemon_id: int, shiny: bool, alola: bool, other: str = ""):
-        url = f"https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_{pokemon_id}"
+    async def get_pokemon_image_url(self, pokemon_id: int, shiny: bool = False, alola: bool = False, icon_url: bool = False):
+        base_url = f'https://raw.githubusercontent.com/whitewillem/PogoAssets/main/uicons/pokemon/{pokemon_id}'
 
-        # Giratina Origin Forme
-        if pokemon_id == "487" and "o" in other.lower():
-            url += "_12"
+        if icon_url:
+            base_url = f'https://raw.githubusercontent.com/nileplumb/PkmnShuffleMap/master/UICONS/pokemon/{pokemon_id}'
 
-        # Deoxys Defense Forme
-        elif pokemon_id == "386":
-            url += "_14"
+        if alola:
+            form = await self.get_form(pokemon_id)
+            base_url = f'{base_url}_f{form["alola"]}'
 
-        # Therium forms for Tornadus / Thundurus / Landorus
-        elif pokemon_id in ["641", "642", "645"]:
-            url += "_12"
-
-        elif pokemon_id == "150":
-            url = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_150_00_shiny.png"
-            return url
-
-        elif pokemon_id in ["487", "641", "642", "645", "646", "647", "648", "649"]:
-            url += "_11"
-        elif alola:
-            url += "_61"
-        else:
-            url += "_00"
-
-        if shiny:
-            url += "_shiny"
-
-        url += ".png"
-
-        # Normal = pokemon_id_00.png
-        # Alola = pokemon_id_61.png
-        # Shiny = pokemon_id_00_shiny.png
-
-        return url
+        return f'{base_url}.png'
 
     @commands.command()
     async def fusion(self, ctx, mon_one: str, mon_two: str):
@@ -566,8 +551,8 @@ class Utils(commands.Cog):
         await ctx.message.delete()
 
         try:
-            mon_one_id = (await self.get_pokemon_id(mon_one)).lstrip("0")
-            mon_two_id = (await self.get_pokemon_id(mon_two)).lstrip("0")
+            mon_one_id = await self.get_pokemon_id(mon_one)
+            mon_two_id = await self.get_pokemon_id(mon_two)
         except AttributeError:
             embed = discord.Embed(title="Error",
                                   description="Keep in mind that only generation 1 exists, and you have to spell the pokémon correctly.",

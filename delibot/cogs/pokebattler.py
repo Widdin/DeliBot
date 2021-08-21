@@ -370,16 +370,16 @@ class Pokebattler(commands.Cog):
                 break
 
         if alola:
-            embed.set_author(name=f"Alola {boss} {raid_tier.replace('_', ' ').title()}",
-                             icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, True)
-            embed.set_thumbnail(url=url)
-        else:
-            embed.set_author(name=f"{boss} {raid_tier.replace('_', ' ').title()}",
-                             icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, False)
-            embed.set_thumbnail(url=url)
+            icon_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, alola=True, icon_url=True)
+            embed.set_author(name=f"Alola {boss} {raid_tier.replace('_', ' ').title()}", icon_url=icon_url)
+            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, alola=True)
 
+        else:
+            icon_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, icon_url=True)
+            embed.set_author(name=f"{boss} {raid_tier.replace('_', ' ').title()}", icon_url=icon_url)
+            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
+
+        embed.set_thumbnail(url=url)
         embed.set_footer(text="Counters provided by Pokebattler.",
                          icon_url="https://articles.pokebattler.com/wp-content/uploads/2017/11/Asset-2.png")
 

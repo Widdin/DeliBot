@@ -290,10 +290,10 @@ class RawReaction(commands.Cog):
                 embed.set_author(name=boss.title(), icon_url="http://cdn.onlinewebfonts.com/svg/img_555509.png")
 
         elif Alola:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, True)
+            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, alola=True)
             embed.set_thumbnail(url=url)
         else:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, False)
+            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
             embed.set_thumbnail(url=url)
 
         embed.add_field(name=f"Valor ({total_valor})", value=f"{valor_names}", inline=False)

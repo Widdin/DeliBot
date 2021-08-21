@@ -129,6 +129,7 @@ class Trade(commands.Cog):
         left_pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(left_list[-1])
         right_pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(right_list[-1])
 
+        # TODO: Replace with get_pokemon_image_url
         left_link = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + left_pokemon_id
         right_link = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + right_pokemon_id
 

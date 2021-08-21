@@ -134,37 +134,38 @@ class Raid(commands.Cog):
         # Create embed
         embed = discord.Embed(description=f"**{raid_time}:** {time}\n**{raid_location}:** {gym_name}",
                               color=discord.Colour.green())
-        embed.set_author(name=pokemon.title(),
-                         icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
 
         # Images of eggs
         if pokemon_id is None:
             image_base_url = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/"
 
             if pokemon.lower() in ['t1', 't2', 'tier1', 'tier2', 'egg1', 'egg2']:
-                embed_url = image_base_url + 'ic_raid_egg_normal.png'
+                icon_url = image_base_url + 'ic_raid_egg_normal.png'
 
             elif pokemon.lower() in ['t3', 't4', 'tier3', 'tier4', 'egg3', 'egg4']:
-                embed_url = image_base_url + 'ic_raid_egg_rare.png'
+                icon_url = image_base_url + 'ic_raid_egg_rare.png'
 
             elif pokemon.lower() in ['t5', 'tier5', 'egg5']:
-                embed_url = image_base_url + 'ic_raid_egg_legendary.png'
+                icon_url = image_base_url + 'ic_raid_egg_legendary.png'
 
             else:
-                embed_url = "http://cdn.onlinewebfonts.com/svg/img_555509.png"
+                icon_url = "http://cdn.onlinewebfonts.com/svg/img_555509.png"
 
-            embed.set_thumbnail(url=embed_url)
-            embed.set_author(name=pokemon.title(), icon_url=embed_url)
+            embed.set_thumbnail(url=icon_url)
 
         # Alolan Image
         elif is_alola:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, True)
+            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, alola=True)
+            icon_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, alola=True, icon_url=True)
             embed.set_thumbnail(url=url)
 
         # Normal Image
         else:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, False, pokemon)
+            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
+            icon_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, icon_url=True)
             embed.set_thumbnail(url=url)
+
+        embed.set_author(name=pokemon.title(), icon_url=icon_url)
 
         embed.add_field(name="Valor (0)", value="\u200b", inline=False)
         embed.add_field(name="Mystic (0)", value="\u200b", inline=False)
