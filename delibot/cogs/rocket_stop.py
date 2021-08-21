@@ -37,7 +37,7 @@ class RocketStop(commands.Cog):
 
             # Image of pokemon.
             pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon)
-            thumbnail_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, False)
+            thumbnail_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
 
             # Embed.
             embed.title = 'Rocket Stop Invasion'
