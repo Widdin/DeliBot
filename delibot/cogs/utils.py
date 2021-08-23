@@ -495,6 +495,17 @@ class Utils(commands.Cog):
 
         log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
 
+    @staticmethod
+    async def get_form(pokemon_id: int):
+        file_path = Path('json/forms.json')
+
+        if file_path.exists():
+            with open(file_path, 'r', encoding='utf8') as f:
+                data = json.load(f)
+                return data.get(str(pokemon_id))
+
+        log.critical(f'Could not find the JSON file located at "{file_path.absolute()}".')
+
     async def get_log_channel(self, server_id):
         query = "SELECT log_channel_id FROM settings WHERE server_id = %s"
         params = (server_id, )
@@ -560,8 +571,8 @@ class Utils(commands.Cog):
         await ctx.message.delete()
 
         try:
-            mon_one_id = (await self.get_pokemon_id(mon_one)).lstrip("0")
-            mon_two_id = (await self.get_pokemon_id(mon_two)).lstrip("0")
+            mon_one_id = await self.get_pokemon_id(mon_one)
+            mon_two_id = await self.get_pokemon_id(mon_two)
         except AttributeError:
             embed = discord.Embed(title="Error",
                                   description="Keep in mind that only generation 1 exists, and you have to spell the pokémon correctly.",

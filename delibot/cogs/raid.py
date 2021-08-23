@@ -140,8 +140,6 @@ class Raid(commands.Cog):
         # Create embed
         embed = discord.Embed(description=f"**{raid_time}:** {time}\n**{raid_location}:** {gym_name}",
                               color=discord.Colour.green())
-        embed.set_author(name=pokemon.title(),
-                         icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
 
         # Images
         if pokemon_id is None:
