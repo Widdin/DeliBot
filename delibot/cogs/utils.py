@@ -521,42 +521,36 @@ class Utils(commands.Cog):
         return (time.time() - date_modified) / 3600 > 24 * days
 
     @staticmethod
-    async def get_pokemon_image_url(pokemon_id: int, shiny: bool, alola: bool, other: str = ""):
-        url = f"https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_{pokemon_id}"
+    async def get_egg_image_url(egg_tier: int = None, pokemon: str = None):
+        url = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/main/uicons/raid/egg/'
 
-        # Giratina Origin Forme
-        if pokemon_id == "487" and "o" in other.lower():
-            url += "_12"
+        if egg_tier is not None:
+            url += f'{egg_tier}.png'
+            return {'url': url, 'icon_url': url}
 
-        # Deoxys Defense Forme
-        elif pokemon_id == "386":
-            url += "_14"
+        if pokemon is not None:
+            if pokemon.lower() in ['t1', 't2', 'tier1', 'tier2', 'egg1', 'egg2']:
+                url += '1.png'
+            elif pokemon.lower() in ['t3', 't4', 'tier3', 'tier4', 'egg3', 'egg4']:
+                url += '3.png'
+            elif pokemon.lower() in ['t5', 'tier5', 'egg5']:
+                url += '5.png'
+            else:
+                url = "http://cdn.onlinewebfonts.com/svg/img_555509.png"
 
-        # Therium forms for Tornadus / Thundurus / Landorus
-        elif pokemon_id in ["641", "642", "645"]:
-            url += "_12"
+            return {'url': url, 'icon_url': url}
 
-        elif pokemon_id == "150":
-            url = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_150_00_shiny.png"
-            return url
+    async def get_pokemon_image_url(self, pokemon_id: int, pokemon_form: str = "normal", is_shiny: bool = False, is_alola: bool = False):
 
-        elif pokemon_id in ["487", "641", "642", "645", "646", "647", "648", "649"]:
-            url += "_11"
-        elif alola:
-            url += "_61"
-        else:
-            url += "_00"
+        url = f'https://raw.githubusercontent.com/whitewillem/PogoAssets/main/uicons/pokemon/{pokemon_id}'
+        icon_url = f'https://raw.githubusercontent.com/nileplumb/PkmnShuffleMap/master/UICONS/pokemon/{pokemon_id}'
 
-        if shiny:
-            url += "_shiny"
+        if is_alola:
+            form = await self.get_form(pokemon_id)
+            url = f'{url}_f{form["alola"]}'
+            icon_url = f'{icon_url}_f{form["alola"]}'
 
-        url += ".png"
-
-        # Normal = pokemon_id_00.png
-        # Alola = pokemon_id_61.png
-        # Shiny = pokemon_id_00_shiny.png
-
-        return url
+        return {'url': f'{url}.png', 'icon_url': f'{icon_url}.png'}
 
     @commands.command()
     async def fusion(self, ctx, mon_one: str, mon_two: str):

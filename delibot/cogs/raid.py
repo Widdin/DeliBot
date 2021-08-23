@@ -42,6 +42,56 @@ class Raid(commands.Cog):
             log.info(f'Finished deleting {len(raids)} old raids. Sleeping for 5 minutes.')
             await asyncio.sleep(300)
 
+    async def ask_user(self, ctx):
+
+        raid_creation, type_below, what_pokemon, what_time, what_location, thank_you, raid_time, raid_location, raid_total, raid_by = await self.bot.get_cog(
+            "Utils").get_translation(ctx.message.guild.id, "RAID_CREATION TYPE_BELOW WHAT_POKEMON WHAT_TIME WHAT_LOCATION THANK_YOU RAID_TIME RAID_LOCATION RAID_TOTAL RAID_BY")
+
+        embed = discord.Embed(title=what_pokemon, color=discord.Colour.red())
+        embed.set_footer(text=type_below)
+        await ctx.message.author.send(embed=embed)
+
+        def check(message):
+            return message.author.id == ctx.author.id
+
+        try:
+            wait_for_mon = await self.bot.wait_for('message', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.message.author.send("Timeout")
+            return
+
+        pokemon = wait_for_mon.content
+
+        embed = discord.Embed(title=what_time, color=discord.Colour.orange())
+        embed.set_footer(text=type_below)
+        await ctx.message.author.send(embed=embed)
+
+        try:
+            wait_for_time = await self.bot.wait_for('message', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.message.author.send("Timeout")
+            return
+
+        time = wait_for_time.content
+
+        embed = discord.Embed(title=what_location, color=discord.Colour.green())
+        embed.set_footer(text=type_below)
+        await ctx.message.author.send(embed=embed)
+
+        try:
+            wait_for_loc = await self.bot.wait_for('message', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.message.author.send("Timeout")
+            return
+
+        location = wait_for_loc.content
+
+        embed = discord.Embed(title=thank_you, description=f"{raid_creation} {ctx.message.channel.name}",
+                              color=discord.Colour.green())
+        await ctx.message.author.send(embed=embed)
+
+        return pokemon, time, location
+
     @commands.command(name="raid", aliases=["r", "R", "Raid"])
     async def raid(self, ctx, pokemon: str = None, time: str = None, *, location: str = None):
         """
@@ -62,53 +112,11 @@ class Raid(commands.Cog):
 
         # Retrieve translation from JSON.
         raid_creation, type_below, what_pokemon, what_time, what_location, thank_you, raid_time, raid_location, raid_total, raid_by = await self.bot.get_cog(
-            "Utils").get_translation(ctx.message.guild.id,
-                                     "RAID_CREATION TYPE_BELOW WHAT_POKEMON WHAT_TIME WHAT_LOCATION THANK_YOU RAID_TIME RAID_LOCATION RAID_TOTAL RAID_BY")
+            "Utils").get_translation(ctx.message.guild.id, "RAID_CREATION TYPE_BELOW WHAT_POKEMON WHAT_TIME WHAT_LOCATION THANK_YOU RAID_TIME RAID_LOCATION RAID_TOTAL RAID_BY")
 
         # No input given, ask the user in PM for input.
         if pokemon is None or time is None or location is None:
-            embed = discord.Embed(title=what_pokemon, color=discord.Colour.red())
-            embed.set_footer(text=type_below)
-            await ctx.message.author.send(embed=embed)
-
-            def check(message):
-                return message.author.id == ctx.author.id
-
-            try:
-                wait_for_mon = await self.bot.wait_for('message', timeout=30.0, check=check)
-            except asyncio.TimeoutError:
-                await ctx.message.author.send("Timeout")
-                return
-
-            pokemon = wait_for_mon.content
-
-            embed = discord.Embed(title=what_time, color=discord.Colour.orange())
-            embed.set_footer(text=type_below)
-            await ctx.message.author.send(embed=embed)
-
-            try:
-                wait_for_time = await self.bot.wait_for('message', timeout=30.0, check=check)
-            except asyncio.TimeoutError:
-                await ctx.message.author.send("Timeout")
-                return
-
-            time = wait_for_time.content
-
-            embed = discord.Embed(title=what_location, color=discord.Colour.green())
-            embed.set_footer(text=type_below)
-            await ctx.message.author.send(embed=embed)
-
-            try:
-                wait_for_loc = await self.bot.wait_for('message', timeout=30.0, check=check)
-            except asyncio.TimeoutError:
-                await ctx.message.author.send("Timeout")
-                return
-
-            location = wait_for_loc.content
-
-            embed = discord.Embed(title=thank_you, description=f"{raid_creation} {ctx.message.channel.name}",
-                                  color=discord.Colour.green())
-            await ctx.message.author.send(embed=embed)
+            pokemon, time, location = await self.ask_user(ctx)
 
         # Channel to post in if it exist.
         (default_channel, ) = await self.bot.db.get_default_channel(ctx.message.guild.id)
@@ -116,10 +124,6 @@ class Raid(commands.Cog):
         # Create the user in the database if he doesn't exist.
         await self.bot.get_cog("Utils").create_user_if_not_exist(ctx.message.guild.id, ctx.message.author.id)
 
-        # Get the pokémon ID
-        pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon)
-
-        # Check if alolan
         is_alola = False
         if 'alola' in pokemon.lower() or 'alolan' in pokemon.lower():
             is_alola = True
@@ -127,6 +131,8 @@ class Raid(commands.Cog):
             time = location.split(" ")[0]
             location = ' '.join(location.split(" ")[1:])
             pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon.split(" ")[1])
+        else:
+            pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon)
 
         # Retrieve gym location.
         gym_name = await self.bot.get_cog("Utils").get_gym(ctx.message.guild.id, location.lower())
@@ -137,35 +143,14 @@ class Raid(commands.Cog):
         embed.set_author(name=pokemon.title(),
                          icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
 
-        # Images of eggs
+        # Images
         if pokemon_id is None:
-            image_base_url = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/"
-
-            if pokemon.lower() in ['t1', 't2', 'tier1', 'tier2', 'egg1', 'egg2']:
-                embed_url = image_base_url + 'ic_raid_egg_normal.png'
-
-            elif pokemon.lower() in ['t3', 't4', 'tier3', 'tier4', 'egg3', 'egg4']:
-                embed_url = image_base_url + 'ic_raid_egg_rare.png'
-
-            elif pokemon.lower() in ['t5', 'tier5', 'egg5']:
-                embed_url = image_base_url + 'ic_raid_egg_legendary.png'
-
-            else:
-                embed_url = "http://cdn.onlinewebfonts.com/svg/img_555509.png"
-
-            embed.set_thumbnail(url=embed_url)
-            embed.set_author(name=pokemon.title(), icon_url=embed_url)
-
-        # Alolan Image
-        elif is_alola:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, True)
-            embed.set_thumbnail(url=url)
-
-        # Normal Image
+            images = await self.bot.get_cog("Utils").get_egg_image_url(pokemon=pokemon)
         else:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, False, pokemon)
-            embed.set_thumbnail(url=url)
+            images = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, is_alola=is_alola)
 
+        embed.set_thumbnail(url=images['url'])
+        embed.set_author(name=pokemon.title(), icon_url=images['icon_url'])
         embed.add_field(name="Valor (0)", value="\u200b", inline=False)
         embed.add_field(name="Mystic (0)", value="\u200b", inline=False)
         embed.add_field(name="Instinct (0)", value="\u200b", inline=False)
