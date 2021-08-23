@@ -116,10 +116,6 @@ class Raid(commands.Cog):
         # Create the user in the database if he doesn't exist.
         await self.bot.get_cog("Utils").create_user_if_not_exist(ctx.message.guild.id, ctx.message.author.id)
 
-        # Get the pokémon ID
-        pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon)
-
-        # Check if alolan
         is_alola = False
         if 'alola' in pokemon.lower() or 'alolan' in pokemon.lower():
             is_alola = True
@@ -127,6 +123,8 @@ class Raid(commands.Cog):
             time = location.split(" ")[0]
             location = ' '.join(location.split(" ")[1:])
             pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon.split(" ")[1])
+        else:
+            pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon)
 
         # Retrieve gym location.
         gym_name = await self.bot.get_cog("Utils").get_gym(ctx.message.guild.id, location.lower())
@@ -135,38 +133,14 @@ class Raid(commands.Cog):
         embed = discord.Embed(description=f"**{raid_time}:** {time}\n**{raid_location}:** {gym_name}",
                               color=discord.Colour.green())
 
-        # Images of eggs
+        # Images
         if pokemon_id is None:
-            image_base_url = "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/"
-
-            if pokemon.lower() in ['t1', 't2', 'tier1', 'tier2', 'egg1', 'egg2']:
-                icon_url = image_base_url + 'ic_raid_egg_normal.png'
-
-            elif pokemon.lower() in ['t3', 't4', 'tier3', 'tier4', 'egg3', 'egg4']:
-                icon_url = image_base_url + 'ic_raid_egg_rare.png'
-
-            elif pokemon.lower() in ['t5', 'tier5', 'egg5']:
-                icon_url = image_base_url + 'ic_raid_egg_legendary.png'
-
-            else:
-                icon_url = "http://cdn.onlinewebfonts.com/svg/img_555509.png"
-
-            embed.set_thumbnail(url=icon_url)
-
-        # Alolan Image
-        elif is_alola:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, alola=True)
-            icon_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, alola=True, icon_url=True)
-            embed.set_thumbnail(url=url)
-
-        # Normal Image
+            images = await self.bot.get_cog("Utils").get_egg_image_url(pokemon=pokemon)
         else:
-            url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
-            icon_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, icon_url=True)
-            embed.set_thumbnail(url=url)
+            images = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, is_alola=is_alola)
 
-        embed.set_author(name=pokemon.title(), icon_url=icon_url)
-
+        embed.set_thumbnail(url=images['url'])
+        embed.set_author(name=pokemon.title(), icon_url=images['icon_url'])
         embed.add_field(name="Valor (0)", value="\u200b", inline=False)
         embed.add_field(name="Mystic (0)", value="\u200b", inline=False)
         embed.add_field(name="Instinct (0)", value="\u200b", inline=False)
