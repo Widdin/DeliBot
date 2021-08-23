@@ -244,31 +244,19 @@ class RawReaction(commands.Cog):
         # Retrieve gym location.
         gym_name = await self.bot.get_cog("Utils").get_gym(guild_id, location.lower())
 
-        Alola = False
+        is_alola = False
         if 'alola' in boss.lower() or 'alolan' in boss.lower():
-            Alola = True
+            is_alola = True
             boss_id_fix = boss.split(" ")[1]
             pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(boss_id_fix)
         else:
             pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(boss)
 
-        if ex_raid is True:
-            embed = discord.Embed(
-                description=f"**{raid_time}: ** {time}\n**{raid_day}:** {day}\n**{raid_location}:** {gym_name}",
-                color=discord.Colour.green())
-            embed.set_author(name=f"⭐{boss.title()}⭐",
-                             icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
-        else:
-            embed = discord.Embed(description=f"**{raid_time}:** {time}\n**{raid_location}:** {gym_name}",
-                                  color=discord.Colour.green())
-            embed.set_author(name=boss.title(),
-                             icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
-
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + str(
-                pokemon_id) + "_00.png")
-
+        # Images
         if pokemon_id is None:
+            images = await self.bot.get_cog("Utils").get_egg_image_url(pokemon=boss)
+        else:
+            images = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, is_alola=is_alola)
 
             if boss.lower() in ['t1', 't2', 'tier1', 'tier2', 'egg1', 'egg2']:
                 embed.set_thumbnail(
@@ -296,6 +284,8 @@ class RawReaction(commands.Cog):
             url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
             embed.set_thumbnail(url=url)
 
+        embed.set_author(name=boss.title(), icon_url=images['icon_url'])
+        embed.set_thumbnail(url=images['url'])
         embed.add_field(name=f"Valor ({total_valor})", value=f"{valor_names}", inline=False)
         embed.add_field(name=f"Mystic ({total_mystic})", value=f"{mystic_names}", inline=False)
         embed.add_field(name=f"Instinct ({total_instinct})", value=f"{instinct_names}", inline=False)

@@ -35,14 +35,12 @@ class RocketStop(commands.Cog):
             # Amount of minutes left.
             minutes_left = (duration - counter) / 60
 
-            # Image of pokemon.
             pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(pokemon)
             thumbnail_url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
 
-            # Embed.
             embed.title = 'Rocket Stop Invasion'
             embed.colour = discord.Color.purple()
-            embed.set_thumbnail(url=thumbnail_url)
+            embed.set_thumbnail(url=images['url'])
             embed.description = f'**Encounter:** {pokemon}\n\n' \
                                 f'**Location:** {location.title()}\n\n' \
                                 f'**Time Left:** {minutes_left} Minutes\n'
