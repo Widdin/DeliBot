@@ -42,6 +42,57 @@ class Raid(commands.Cog):
             log.info(f'Finished deleting {len(raids)} old raids. Sleeping for 5 minutes.')
             await asyncio.sleep(300)
 
+    async def ask_for_input(self, ctx):
+        raid_creation, type_below, what_pokemon, what_time, what_location, thank_you, raid_time, raid_location, raid_total, raid_by = await self.bot.get_cog(
+            "Utils").get_translation(ctx.message.guild.id,
+                                     "RAID_CREATION TYPE_BELOW WHAT_POKEMON WHAT_TIME WHAT_LOCATION THANK_YOU RAID_TIME RAID_LOCATION RAID_TOTAL RAID_BY")
+
+        embed = discord.Embed(title=what_pokemon, color=discord.Colour.red())
+        embed.set_footer(text=type_below)
+        await ctx.message.author.send(embed=embed)
+
+        def check(message):
+            return message.author.id == ctx.author.id
+
+        try:
+            wait_for_mon = await self.bot.wait_for('message', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.message.author.send("Timeout")
+            return
+
+        pokemon = wait_for_mon.content
+
+        embed = discord.Embed(title=what_time, color=discord.Colour.orange())
+        embed.set_footer(text=type_below)
+        await ctx.message.author.send(embed=embed)
+
+        try:
+            wait_for_time = await self.bot.wait_for('message', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.message.author.send("Timeout")
+            return
+
+        time = wait_for_time.content
+
+        embed = discord.Embed(title=what_location, color=discord.Colour.green())
+        embed.set_footer(text=type_below)
+        await ctx.message.author.send(embed=embed)
+
+        try:
+            wait_for_loc = await self.bot.wait_for('message', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.message.author.send("Timeout")
+            return
+
+        location = wait_for_loc.content
+
+        channel_url = f"https://discordapp.com/channels/{ctx.message.guild.id}/{ctx.message.channel.id}"
+        embed = discord.Embed(title=thank_you, description=f"{raid_creation} [{ctx.message.channel.name}]({channel_url})",
+                              color=discord.Colour.green())
+        await ctx.message.author.send(embed=embed)
+
+        return pokemon, time, location
+
     @commands.command(name="raid", aliases=["r", "R", "Raid"])
     async def raid(self, ctx, pokemon: str = None, time: str = None, *, location: str = None):
         """
@@ -67,48 +118,7 @@ class Raid(commands.Cog):
 
         # No input given, ask the user in PM for input.
         if pokemon is None or time is None or location is None:
-            embed = discord.Embed(title=what_pokemon, color=discord.Colour.red())
-            embed.set_footer(text=type_below)
-            await ctx.message.author.send(embed=embed)
-
-            def check(message):
-                return message.author.id == ctx.author.id
-
-            try:
-                wait_for_mon = await self.bot.wait_for('message', timeout=30.0, check=check)
-            except asyncio.TimeoutError:
-                await ctx.message.author.send("Timeout")
-                return
-
-            pokemon = wait_for_mon.content
-
-            embed = discord.Embed(title=what_time, color=discord.Colour.orange())
-            embed.set_footer(text=type_below)
-            await ctx.message.author.send(embed=embed)
-
-            try:
-                wait_for_time = await self.bot.wait_for('message', timeout=30.0, check=check)
-            except asyncio.TimeoutError:
-                await ctx.message.author.send("Timeout")
-                return
-
-            time = wait_for_time.content
-
-            embed = discord.Embed(title=what_location, color=discord.Colour.green())
-            embed.set_footer(text=type_below)
-            await ctx.message.author.send(embed=embed)
-
-            try:
-                wait_for_loc = await self.bot.wait_for('message', timeout=30.0, check=check)
-            except asyncio.TimeoutError:
-                await ctx.message.author.send("Timeout")
-                return
-
-            location = wait_for_loc.content
-
-            embed = discord.Embed(title=thank_you, description=f"{raid_creation} {ctx.message.channel.name}",
-                                  color=discord.Colour.green())
-            await ctx.message.author.send(embed=embed)
+            pokemon, time, location = await self.ask_for_input(ctx)
 
         # Channel to post in if it exist.
         (default_channel, ) = await self.bot.db.get_default_channel(ctx.message.guild.id)
