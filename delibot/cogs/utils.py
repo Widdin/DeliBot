@@ -531,17 +531,36 @@ class Utils(commands.Cog):
 
         return (time.time() - date_modified) / 3600 > 24 * days
 
-    async def get_pokemon_image_url(self, pokemon_id: int, shiny: bool = False, alola: bool = False, icon_url: bool = False):
-        base_url = f'https://raw.githubusercontent.com/whitewillem/PogoAssets/main/uicons/pokemon/{pokemon_id}'
+    @staticmethod
+    async def get_egg_image_url(egg_tier: int = None, pokemon: str = None):
+        url = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/main/uicons/raid/egg/'
 
-        if icon_url:
-            base_url = f'https://raw.githubusercontent.com/nileplumb/PkmnShuffleMap/master/UICONS/pokemon/{pokemon_id}'
+        if egg_tier is not None:
+            url += f'{egg_tier}.png'
+            return {'url': url, 'icon_url': url}
 
-        if alola:
+        if pokemon is not None:
+            if pokemon.lower() in ['t1', 't2', 'tier1', 'tier2', 'egg1', 'egg2']:
+                url += '1.png'
+            elif pokemon.lower() in ['t3', 't4', 'tier3', 'tier4', 'egg3', 'egg4']:
+                url += '3.png'
+            elif pokemon.lower() in ['t5', 'tier5', 'egg5']:
+                url += '5.png'
+            else:
+                url = "http://cdn.onlinewebfonts.com/svg/img_555509.png"
+
+            return {'url': url, 'icon_url': url}
+
+    async def get_pokemon_image_url(self, pokemon_id: int, pokemon_form: str = "normal", is_shiny: bool = False, is_alola: bool = False):
+        url = f'https://raw.githubusercontent.com/whitewillem/PogoAssets/main/uicons/pokemon/{pokemon_id}'
+        icon_url = f'https://raw.githubusercontent.com/nileplumb/PkmnShuffleMap/master/UICONS/pokemon/{pokemon_id}'
+
+        if is_alola:
             form = await self.get_form(pokemon_id)
-            base_url = f'{base_url}_f{form["alola"]}'
+            url = f'{url}_f{form["alola"]}'
+            icon_url = f'{icon_url}_f{form["alola"]}'
 
-        return f'{base_url}.png'
+        return {'url': f'{url}.png', 'icon_url': f'{icon_url}.png'}
 
     @commands.command()
     async def fusion(self, ctx, mon_one: str, mon_two: str):

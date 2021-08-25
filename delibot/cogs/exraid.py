@@ -103,18 +103,14 @@ class Exraid(commands.Cog):
         embed = discord.Embed(
             description=f"**{raid_time}:** {time}\n**{raid_day}:** {day}\n**{raid_location}:** {gym_name}",
             color=discord.Colour.green())
-        embed.set_author(name=f"⭐{pokemon.title()}⭐",
-                         icon_url="https://www.pkparaiso.com/imagenes/shuffle/sprites/" + str(pokemon_id) + ".png")
-        embed.timestamp = datetime.utcnow()
-
-        # Pokemon image.
-        url = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, False, False)
-        embed.set_thumbnail(url=url)
-
+        images = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id)
+        embed.set_thumbnail(url=images['url'])
+        embed.set_author(name=f"⭐{pokemon.title()}⭐", icon_url=images['icon_url'])
         embed.add_field(name="Valor (0)", value="\u200b", inline=False)
         embed.add_field(name="Mystic (0)", value="\u200b", inline=False)
         embed.add_field(name="Instinct (0)", value="\u200b", inline=False)
         embed.set_footer(text=f"{raid_total} 0 | {raid_by} {str(ctx.message.author)}")
+        embed.timestamp = datetime.utcnow()
 
         # Other channel
         if '<' in location and '>' in location:
