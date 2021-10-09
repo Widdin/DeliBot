@@ -392,10 +392,9 @@ class RawReaction(commands.Cog):
             return False
 
     async def permission_role_or_admin(self, server_id: str, member: discord.Member):
-
         query = "SELECT role_permission FROM settings WHERE server_id = %s"
-        params = (server_id,)
-        role_id = await self.bot.db.execute(query, params, single=True)
+        params = server_id
+        (role_id, ) = await self.bot.db.execute(query, params, single=True)
 
         try:
             if discord.utils.get(member.roles, id=int(role_id)):
