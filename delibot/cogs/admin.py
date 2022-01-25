@@ -78,49 +78,12 @@ class Admin(commands.Cog):
 
             log.info(f'Updating community day for {len(servers)} servers.')
 
-            with open(Path('json/community_day.json')) as json_file:
-                data = json.load(json_file)
-                json_file.close()
-
             for server in servers:
                 server_id = server[0]
                 channel_id = server[16]
                 message_id = server[17]
 
-                # Retrieve translation from JSON.
-                featured_pokemon_title, exclusive_move_title, bonus_title, date_title, official_page_title, community_day_title = await self.bot.get_cog(
-                    "Utils").get_translation(server_id,
-                                             "FEATURED_POKEMON EXCLUSIVE_MOVE BONUS DATE OFFICIAL_PAGE COMMUNITY_DAY")
-
-                description = f"[{official_page_title}](https://pokemongolive.com/events/community-day/)"
-                featured_pokemon = f":star2: __{featured_pokemon_title}__"
-                exclusive_move = f":shield: __{exclusive_move_title}__"
-                bonus_one = f":star: __{bonus_title}__"
-                bonus_two = f":star: __{bonus_title}__"
-                date = f":calendar_spiral: __{date_title}__"
-
-                for c in data['community']:
-                    featured_pokemon_contents = c['pokemon']
-                    exclusive_move_contents = c['move']
-                    bonus_one_contents = c['bonusOne']
-                    bonus_two_contents = c['bonusTwo']
-                    date_contents = c['day'] + ', 11:00 AM - 5:00 PM'
-
-                pokemon_id = await self.bot.get_cog("Utils").get_pokemon_id(featured_pokemon_contents)
-
-                embed = discord.Embed(title=community_day_title, colour=0x0000FF, description=description)
-
-                embed.set_thumbnail(
-                    url="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_" + str(
-                        pokemon_id) + "_00_shiny.png")
-                embed.set_image(
-                    url="https://storage.googleapis.com/pokemongolive/communityday/PKMN_Community-Day-logo2.png")
-
-                embed.add_field(name=featured_pokemon, value="\u2022 " + featured_pokemon_contents + "\n\u200b")
-                embed.add_field(name=exclusive_move, value="\u2022 " + exclusive_move_contents + "\n\u200b")
-                embed.add_field(name=bonus_one, value="\u2022 " + bonus_one_contents + "\n\u200b")
-                embed.add_field(name=bonus_two, value="\u2022 " + bonus_two_contents + "\n\u200b")
-                embed.add_field(name=date, value="\u2022 " + date_contents + "\n\u200b")
+                embed = await self.bot.get_cog("Community").get_embed_community_day(self, server_id)
                 embed.set_footer(text="Updates every day | Last updated: ")
                 embed.timestamp = datetime.datetime.utcnow()
 
