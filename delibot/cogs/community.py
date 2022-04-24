@@ -40,6 +40,7 @@ class Community(commands.Cog):
                     if event['type'] == "community-day":
                         await self.bot.get_cog("Utils").dump_json('json/community_day.json', event)
                         log.info("Successfully updated.")
+                        break
 
             await asyncio.sleep(86400)
 
