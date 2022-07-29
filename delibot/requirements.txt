@@ -17,7 +17,7 @@ idna==2.8
 idna-ssl==1.1.0
 lxml==4.6.5
 multidict==4.5.2
-numpy==1.21.0
+numpy==1.22.0
 parse==1.11.1
 Pillow==9.0.1
 pycparser==2.19
