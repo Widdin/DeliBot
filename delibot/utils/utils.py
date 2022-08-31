@@ -1,15 +1,14 @@
 import asyncio
 import json
+import logging
 import math
 import os
-import logging
-import discord
 import time
-import pymysql
 from pathlib import Path
-from discord.ext import commands
 
-from cogs.paginator import HelpPaginator
+import discord
+import pymysql
+from discord.ext import commands
 
 from utils import default
 
@@ -20,7 +19,7 @@ log = logging.getLogger()
 class Utils(commands.Cog):
     """Commands for various things."""
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
     @commands.Cog.listener()
@@ -28,7 +27,7 @@ class Utils(commands.Cog):
         """When delibot joins a server and the guild
         doesn't exist in the database, add it."""
         query = "INSERT INTO settings (server_id) VALUES (%s)"
-        params = (str(guild.id), )
+        params = (str(guild.id),)
 
         try:
             await self.bot.db.execute(query, params)
@@ -97,8 +96,8 @@ class Utils(commands.Cog):
 
     async def get_translation(self, guild_id: str, keys: str):
         query = "SELECT language FROM settings WHERE server_id = %s"
-        params = (guild_id, )
-        (language_code, ) = await self.bot.db.execute(query, params, single=True)
+        params = (guild_id,)
+        (language_code,) = await self.bot.db.execute(query, params, single=True)
 
         file_path = Path('json/locale.json')
 
@@ -166,8 +165,9 @@ class Utils(commands.Cog):
         await ctx.message.delete()
 
         query = 'SELECT SUM(raids_created), SUM(raids_joined), SUM(research_created) FROM users WHERE server_id = %s'
-        params = (ctx.message.guild.id, )
-        raids_created_count, raids_joined_count, research_created_count = await self.bot.db.execute(query, params, single=True)
+        params = (ctx.message.guild.id,)
+        raids_created_count, raids_joined_count, research_created_count = await self.bot.db.execute(query, params,
+                                                                                                    single=True)
 
         # Retrieve translation from JSON.
         stats, raids_joined, raids_created, research_created, contributor, leaderboard = await self.get_translation(
@@ -185,15 +185,15 @@ class Utils(commands.Cog):
         await ctx.message.delete()
 
         query = 'SELECT * FROM users WHERE server_id = %s ORDER BY raids_created desc limit 5;'
-        params = (ctx.message.guild.id, )
+        params = (ctx.message.guild.id,)
         raids_created_list = await self.bot.db.execute(query, params)
 
         query = 'SELECT * FROM users WHERE server_id = %s ORDER BY raids_joined desc limit 5;'
-        params = (ctx.message.guild.id, )
+        params = (ctx.message.guild.id,)
         raids_joined_list = await self.bot.db.execute(query, params)
 
         query = 'SELECT * FROM users WHERE server_id = %s ORDER BY research_created desc limit 5;'
-        params = (ctx.message.guild.id, )
+        params = (ctx.message.guild.id,)
         research_created_list = await self.bot.db.execute(query, params)
 
         embed = discord.Embed(title=f"Leaderboard for {ctx.message.guild.name}", color=discord.Colour.purple())
@@ -319,7 +319,7 @@ class Utils(commands.Cog):
     async def pokestop(self, ctx):
 
         query = 'SELECT * FROM pokestops WHERE server_id = %s ORDER BY name;'
-        params = (ctx.message.guild.id, )
+        params = (ctx.message.guild.id,)
         pokestops = await self.bot.db.execute(query, params)
 
         total_embeds = math.ceil(len(pokestops) / 25)
@@ -387,7 +387,7 @@ class Utils(commands.Cog):
     async def gym(self, ctx):
 
         query = 'SELECT * FROM gyms WHERE server_id = %s ORDER BY name;'
-        params = (ctx.message.guild.id, )
+        params = (ctx.message.guild.id,)
         gyms = await self.bot.db.execute(query, params)
 
         total_embeds = math.ceil(len(gyms) / 25)
@@ -508,8 +508,8 @@ class Utils(commands.Cog):
 
     async def get_log_channel(self, server_id):
         query = "SELECT log_channel_id FROM settings WHERE server_id = %s"
-        params = (server_id, )
-        (channel_id, ) = await self.bot.db.execute(query, params, single=True)
+        params = (server_id,)
+        (channel_id,) = await self.bot.db.execute(query, params, single=True)
 
         if channel_id is None:
             return None
@@ -551,7 +551,8 @@ class Utils(commands.Cog):
 
             return {'url': url, 'icon_url': url}
 
-    async def get_pokemon_image_url(self, pokemon_id: int, pokemon_form: str = "normal", is_shiny: bool = False, is_alola: bool = False):
+    async def get_pokemon_image_url(self, pokemon_id: int, pokemon_form: str = "normal", is_shiny: bool = False,
+                                    is_alola: bool = False):
         url = f'https://raw.githubusercontent.com/whitewillem/PogoAssets/main/uicons/pokemon/{pokemon_id}'
         icon_url = f'https://raw.githubusercontent.com/nileplumb/PkmnShuffleMap/master/UICONS/pokemon/{pokemon_id}'
 
@@ -588,32 +589,10 @@ class Utils(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name='help')
-    async def _help(self, ctx, *, command: str = None):
-        """Shows help about a command or the bot."""
-
-        try:
-            if command is None:
-                p = await HelpPaginator.from_bot(ctx)
-            else:
-                entity = self.bot.get_cog(command) or self.bot.get_command(command)
-
-                if entity is None:
-                    clean = command.replace('@', '@\u200b')
-                    return await ctx.send(f'Command or category "{clean}" not found.')
-                elif isinstance(entity, commands.Command):
-                    p = await HelpPaginator.from_command(ctx, entity)
-                else:
-                    p = await HelpPaginator.from_cog(ctx, entity)
-
-            await p.paginate()
-        except Exception as e:
-            await ctx.send(e)
-
     @staticmethod
     async def days_hours_minutes(td):
         return td.days, td.seconds // 3600, (td.seconds // 60) % 60
 
 
-def setup(bot):
-    bot.add_cog(Utils(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(Utils(bot))

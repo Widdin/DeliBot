@@ -11,11 +11,13 @@ log = logging.getLogger()
 
 class Database(commands.Cog):
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.bot.loop.create_task(self.init_conn())
-        self.bot.loop.create_task(self.verify_amount_of_servers())
         self.bot.db = self
+
+    async def cog_load(self) -> None:
+        await self.init_conn()
+        await self.verify_amount_of_servers()
 
     async def init_conn(self):
         log.info("Connecting to database...")
@@ -27,7 +29,7 @@ class Database(commands.Cog):
         db_port = config.getint('DATABASE', 'db-port')
 
         try:
-            self.bot.pool = await aiomysql.create_pool(
+            self.bot.db_pool = await aiomysql.create_pool(
                 host=db_host,
                 port=db_port,
                 user=db_user,
@@ -42,7 +44,7 @@ class Database(commands.Cog):
             log.info("Successfully connected to database.")
 
     async def execute(self, query, params=None, single=False, rowcount=False):
-        async with self.bot.pool.acquire() as conn:
+        async with self.bot.db_pool.acquire() as conn:
             async with conn.cursor() as cur:
                 await cur.execute(query, params or ())
 
@@ -72,10 +74,8 @@ class Database(commands.Cog):
         return await self.execute(query, params, single=True)
 
     async def verify_amount_of_servers(self):
-        await self.bot.wait_until_ready()
-
         query = "SELECT count(*) FROM settings"
-        (amount_in_database, ) = await self.execute(query, single=True)
+        (amount_in_database,) = await self.execute(query, single=True)
 
         amount_in_bot = len(self.bot.guilds)
 
@@ -91,7 +91,7 @@ class Database(commands.Cog):
                     log.info(f'Creating entry for the guild "{guild.name}" ({guild.id}) because it was not found.')
 
                     query = "INSERT INTO settings (server_id) VALUES (%s)"
-                    params = (str(guild.id), )
+                    params = (str(guild.id),)
 
                     result = await self.execute(query, params, rowcount=True)
                     if result:
@@ -103,5 +103,5 @@ class Database(commands.Cog):
             log.info("Assuming all servers has an entry in the settings-table.")
 
 
-def setup(bot):
-    bot.add_cog(Database(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(Database(bot))

@@ -175,5 +175,5 @@ class PointOfInterest(commands.Cog):
             raise commands.CheckFailure
 
 
-def setup(bot):
-    bot.add_cog(PointOfInterest(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(PointOfInterest(bot))

@@ -75,5 +75,5 @@ class Pokebox(commands.Cog):
             return "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/Item_COIN_BOX_01.png"
 
 
-def setup(bot):
-    bot.add_cog(Pokebox(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(Pokebox(bot))

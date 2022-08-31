@@ -274,5 +274,5 @@ class OCR(commands.Cog):
         await message.channel.send(embed=embed)
 
 
-def setup(bot):
-    bot.add_cog(OCR(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(OCR(bot))

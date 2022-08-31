@@ -7,14 +7,11 @@ from discord.ext import commands
 
 class RawReaction(commands.Cog):
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        await self.bot.wait_until_ready()
-
-        # If it's the bot, return
         if payload.user_id == self.bot.user.id:
             return
 
@@ -50,9 +47,6 @@ class RawReaction(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
-        await self.bot.wait_until_ready()
-
-        # If it's the bot, return
         if payload.user_id == self.bot.user.id:
             return
 
@@ -106,7 +100,8 @@ class RawReaction(commands.Cog):
             return user.id == member.id
 
         try:
-            wait_for_reaction, wait_for_user = await self.bot.wait_for('reaction_add', timeout=5.0, check=check_reaction)
+            wait_for_reaction, wait_for_user = await self.bot.wait_for('reaction_add', timeout=5.0,
+                                                                       check=check_reaction)
         except asyncio.TimeoutError:
             embed = discord.Embed(title=f"Timeout",
                                   description=f"You took too long to respond, please try again.",
@@ -157,6 +152,7 @@ class RawReaction(commands.Cog):
                                   description=f'➥ :bust_in_silhouette: {member.mention} ({member})\n➥ :mag_right: {keys[wait_for_reaction.emoji].title()} to {wait_for_message.content} ([{message_id}](https://discordapp.com/channels/{guild_id}/{channel_id}/{message_id}))',
                                   color=discord.Color.orange())
             embed.timestamp = datetime.datetime.utcnow()
+            # TODO
             await self.bot.http.send_message(int(log_channel_id), "", embed=embed.to_dict())
 
     @staticmethod
@@ -204,7 +200,7 @@ class RawReaction(commands.Cog):
         total_instinct = len(instinct.split(",")) - 1
         total = total_valor + total_mystic + total_instinct + harmony
 
-        guild = self.bot.get_guild(guild_id)
+        guild = self.bot.get_guild(int(guild_id))
 
         valor_ids = valor.split(",")[:-1]
         valor_names = ""
@@ -258,10 +254,13 @@ class RawReaction(commands.Cog):
             images = await self.bot.get_cog("Utils").get_pokemon_image_url(pokemon_id, is_alola=is_alola)
 
         if ex_raid is True:
-            embed = discord.Embed(description=f"**{raid_time}: ** {time}\n**{raid_day}:** {day}\n**{raid_location}:** {gym_name}", color=discord.Colour.green())
+            embed = discord.Embed(
+                description=f"**{raid_time}: ** {time}\n**{raid_day}:** {day}\n**{raid_location}:** {gym_name}",
+                color=discord.Colour.green())
             boss = f"⭐{boss.title()}⭐"
         else:
-            embed = discord.Embed(description=f"**{raid_time}:** {time}\n**{raid_location}:** {gym_name}", color=discord.Colour.green())
+            embed = discord.Embed(description=f"**{raid_time}:** {time}\n**{raid_location}:** {gym_name}",
+                                  color=discord.Colour.green())
 
         embed.set_author(name=boss.title(), icon_url=images['icon_url'])
         embed.set_thumbnail(url=images['url'])
@@ -270,10 +269,9 @@ class RawReaction(commands.Cog):
         embed.add_field(name=f"Instinct ({total_instinct})", value=f"{instinct_names}", inline=False)
         embed.set_footer(text=f"{raid_total}: {total} | {raid_by}: {guild.get_member(int(user_id))}")
 
-        try:
-            await self.bot.http.edit_message(channel_id, message_id, embed=embed.to_dict())
-        except discord.errors.NotFound:
-            return
+        channel = self.bot.get_partial_messageable(id=int(channel_id), guild_id=int(guild_id))
+        message = discord.PartialMessage(channel=channel, id=int(message_id))
+        await message.edit(embed=embed)
 
     async def pop_user(self, guild_id: str, channel_id: str, message_id: str, name: str, team: str):
 
@@ -384,7 +382,7 @@ class RawReaction(commands.Cog):
                 if response is None:
                     return False
 
-        (user_id, ) = response
+        (user_id,) = response
 
         if str(user_id) == str(member_id):
             return True
@@ -394,7 +392,7 @@ class RawReaction(commands.Cog):
     async def permission_role_or_admin(self, server_id: str, member: discord.Member):
         query = "SELECT role_permission FROM settings WHERE server_id = %s"
         params = server_id
-        (role_id, ) = await self.bot.db.execute(query, params, single=True)
+        (role_id,) = await self.bot.db.execute(query, params, single=True)
 
         try:
             if discord.utils.get(member.roles, id=int(role_id)):
@@ -449,5 +447,5 @@ class RawReaction(commands.Cog):
         await self.bot.db.execute(query, params)
 
 
-def setup(bot):
-    bot.add_cog(RawReaction(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(RawReaction(bot))

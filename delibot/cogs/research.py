@@ -161,5 +161,5 @@ class Research(commands.Cog):
         await self.bot.db.execute(query, params)
 
 
-def setup(bot):
-    bot.add_cog(Research(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(Research(bot))
