@@ -154,37 +154,13 @@ class Raid(commands.Cog):
         embed.set_footer(text=f"{raid_total}: 0 | {raid_by}: {str(interaction.user)}")
         embed.timestamp = datetime.utcnow()
 
-        # <@&484280142806646815>
-        # Role tagged in args
-        if '<' in location and '>' in location and '@&' in location:
-            role = location.split(" ")[-1]
-            location = location.replace(role, '').strip()
-
-            gym_name = await self.bot.get_cog("Utils").get_gym(interaction.guild_id, location.lower())
-
-            embed.description = f'**{raid_time}:** {time}\n**{raid_location}:** {gym_name}'
-            await interaction.response.send_message(f"{role}", embed=embed)
-
-        # <#556266308371480576>
-        # Other channel in args
-        elif '<' in location and '>' in location and '#' in location:
-            channel_id = location.split(" ")[-1]
-            other_channel = interaction.guild.get_channel(int(channel_id[2:-1]))
-            location = location.replace(channel_id, '').strip()
-
-            gym_name = await self.bot.get_cog("Utils").get_gym(interaction.guild_id, location.lower())
-
-            embed.description = f'**{raid_time}:** {time}\n**{raid_location}:** {gym_name}'
-            await other_channel.send(embed=embed)
-
-        elif default_channel is not None:
+        if default_channel is not None:
             other_channel = interaction.guild.get_channel(int(default_channel))
-            await other_channel.send(embed=embed)
-
+            raid_message = await other_channel.send(embed=embed)
+            await interaction.response.send_message(f'Raid created in {other_channel.mention}', ephemeral=True)
         else:
             await interaction.response.send_message(embed=embed)
-
-        raid_message = await interaction.original_response()
+            raid_message = await interaction.original_response()
 
         # Fix full name if its short version
         if gym_name.rfind("]") != -1:
