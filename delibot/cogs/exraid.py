@@ -114,20 +114,13 @@ class Exraid(commands.Cog):
         embed.set_footer(text=f"{raid_total} 0 | {raid_by} {str(interaction.user)}")
         embed.timestamp = datetime.utcnow()
 
-        # Other channel
-        if '<' in location and '>' in location:
-            channel_id = location.split(" ")[-1]
-            other_channel = self.bot.get_channel(int(channel_id[2:-1]))
-            location = location.replace(channel_id, '')
-            embed.description = f'**{raid_time}:** {time}\n**{raid_location}:** {location.title()}'
-            await other_channel.send(embed=embed)
-        elif default_ex_channel is not None:
+        if default_ex_channel is not None:
             other_channel = self.bot.get_channel(int(default_ex_channel))
-            await other_channel.send(embed=embed)
+            raid_message = await other_channel.send(embed=embed)
+            await interaction.response.send_message(f'Exraid created in {other_channel.mention}', ephemeral=True)
         else:
             await interaction.response.send_message(embed=embed)
-
-        raid_message = await interaction.original_response()
+            raid_message = await interaction.original_response()
 
         # Fix full name if its short version
         if gym_name.rfind("]") != -1:
