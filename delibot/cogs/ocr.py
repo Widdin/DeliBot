@@ -1,10 +1,12 @@
 import re
 from io import BytesIO
+from typing import Literal
 
 import aiohttp
 import discord
 import pytesseract
 from PIL import Image
+from discord import app_commands
 from discord.ext import commands
 
 
@@ -13,81 +15,78 @@ class OCR(commands.Cog):
     Commands for assigning Team-role and reading EX-raid images.
     """
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-    @commands.command(name="valor", aliases=['instinct', 'mystic', 'Instinct', 'Mystic', 'Valor'])
-    async def valor(self, ctx):
+    @app_commands.command()
+    async def set_team(self, interaction: discord.Interaction, team: Literal['Valor', 'Mystic', 'Instinct']):
         """
         Assigns a team to yourself.
-        Example: *!mystic*
         """
-        # Deletes your command.
-        await ctx.message.delete()
-
-        # Check which team
-        team = ctx.message.clean_content[1:].title()
 
         # Retrieve translation from JSON.
         error, missing_role, missing_role_desc, team_already_assigned, team_already_assigned_desc, insufficient_perm, missing_perm, team_welcome, team_welcome_desc = await self.bot.get_cog(
-            "Utils").get_translation(ctx.message.guild.id,
+            "Utils").get_translation(interaction.guild_id,
                                      "ERROR MISSING_ROLE MISSING_ROLE_DESC TEAM_ALREADY_ASSIGNED TEAM_ALREADY_ASSIGNED_DESC INSUFFICIENT_PERM MISSING_PERM TEAM_WELCOME TEAM_WELCOME_DESC")
 
-        TARGET_COLORS = {"Valor": discord.Colour.red(), "Instinct": discord.Colour.gold(),
-                         "Mystic": discord.Colour.blue()}
-        TARGET_IMAGES = {
+        team_colors = {
+            "Valor": discord.Colour.red(),
+            "Instinct": discord.Colour.gold(),
+            "Mystic": discord.Colour.blue()
+        }
+
+        team_images = {
             "Valor": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_red.png",
             "Instinct": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_yellow.png",
-            "Mystic": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_blue.png"}
+            "Mystic": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_blue.png"
+        }
 
-        role = discord.utils.get(ctx.message.guild.roles, name=team)  # Uppercase
+        role = discord.utils.get(interaction.guild.roles, name=team)  # Uppercase
         if role is None:
-            role = discord.utils.get(ctx.message.guild.roles, name=team.lower())  # Lowercase
+            role = discord.utils.get(interaction.guild.roles, name=team.lower())  # Lowercase
             if role is None:
                 embed = discord.Embed(title=f"{error} - {missing_role}",
                                       description=f"{team} {missing_role_desc}",
                                       color=discord.Colour.red())
-                await ctx.message.channel.send(embed=embed, delete_after=15)
+                await interaction.response.send_message(embed=embed, ephemeral=True)
                 return
 
-        for author_role in ctx.message.author.roles:
-            if author_role.name.lower() in ['valor', 'instinct', 'mystic']:
+        for user_role in interaction.user.roles:
+            if user_role.name.lower() in ['valor', 'instinct', 'mystic']:
                 embed = discord.Embed(title=f"{error} - {team_already_assigned}",
                                       description=f"{team_already_assigned_desc}",
                                       color=discord.Colour.red())
-                await ctx.message.channel.send(embed=embed, delete_after=15)
+                await interaction.response.send_message(embed=embed, ephemeral=True)
                 return
 
         try:
-            await ctx.message.author.add_roles(role)
+            await interaction.user.add_roles(role)
         except discord.Forbidden:
             embed = discord.Embed(title=f"{error} - {insufficient_perm}",
                                   description=f"{missing_perm}",
                                   color=discord.Colour.red())
-            await ctx.message.channel.send(embed=embed, delete_after=15)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
             return
 
         embed = discord.Embed(title=f"{team_welcome} {team.title()}!",
-                              description=f"{ctx.message.author.mention} {team_welcome_desc}",
-                              color=TARGET_COLORS[team.title()])
-        embed.set_thumbnail(url=TARGET_IMAGES[team.title()])
-        await ctx.message.channel.send(embed=embed, delete_after=15)
+                              description=f"{interaction.user.mention} {team_welcome_desc}",
+                              color=team_colors[team.title()])
+        embed.set_thumbnail(url=team_images[team.title()])
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if len(message.attachments) == 1 and message.author.id != self.bot.user.id:
+    @app_commands.command()
+    async def scan_team(self, interaction: discord.Interaction, image: discord.Attachment):
+        query = "SELECT profile_channel_id, exraid_channel_id FROM settings WHERE server_id = %s"
+        params = (str(interaction.guild_id),)
+        profile_channel_id, exraid_channel_id = await self.bot.db.execute(query, params, single=True)
 
-            query = "SELECT profile_channel_id, exraid_channel_id FROM settings WHERE server_id = %s"
-            params = (str(message.guild.id),)
-            profile_channel_id, exraid_channel_id = await self.bot.db.execute(query, params, single=True)
+        # Scan Profile Image
+        if str(interaction.channel.id) == profile_channel_id:
+            await self.ocr_team_image(interaction, image)
 
-            # Scan Profile Image
-            if str(message.channel.id) == profile_channel_id:
-                await self.ocr_team_image(message)
-
-            # Scan Exraid Image
-            elif str(message.channel.id) == exraid_channel_id:
-                await self.ocr_ex_image(message)
+        # Scan Exraid Image
+        # elif str(interaction.channel.id) == exraid_channel_id:
+        #    await self.ocr_ex_image(image)
 
     async def exraid_exist(self, server_id: str, pokemon: str, time: str, day: str, location: str):
         query = "SELECT * FROM exraids WHERE server_id = %s AND pokemon = %s AND time = %s AND day = %s AND location = %s"
@@ -101,7 +100,6 @@ class OCR(commands.Cog):
             return True
 
     async def ocr_ex_image(self, message, re_run: int = 0):
-
         # 10. August 10:00 - 12:00
         ger_pattern = '(\d+)(\.)(\s+)(\w+)(\s+)(\d+:\d+)(\s+)-(\s+)(\d+:\d+)'
         # 10 August 10:00 - 12:00
@@ -211,67 +209,68 @@ class OCR(commands.Cog):
                 await message.add_reaction('❌')
                 return
 
-    async def ocr_team_image(self, message):
-        img_url = message.attachments[0].url
+    async def ocr_team_image(self, interaction, attachment):
+        img_url = attachment.url
 
         async with aiohttp.ClientSession() as client_session:
             async with client_session.get(img_url) as response:
                 image_bytes = await response.read()
 
         with Image.open(BytesIO(image_bytes)) as my_image:
-            RGB = my_image.getpixel((1, my_image.size[1] * 0.5))
+            rgb = my_image.getpixel((1, my_image.size[1] * 0.5))
 
-        TARGET_COLORS = {"Valor": (255, 0, 0), "Instinct": (255, 255, 0), "Mystic": (0, 0, 255)}
-        TARGET_IMAGES = {
-            "Valor": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_red.png",
-            "Instinct": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_yellow.png",
-            "Mystic": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_blue.png"}
+        target_colors = {"Valor": (255, 0, 0), "Instinct": (255, 255, 0), "Mystic": (0, 0, 255)}
 
         def color_difference(color1, color2):
             return sum([abs(component1 - component2) for component1, component2 in zip(color1, color2)])
 
-        differences = [[color_difference(RGB, target_value), target_name] for target_name, target_value in
-                       TARGET_COLORS.items()]
-        differences.sort()  # sorted by the first element of inner lists
+        differences = [[color_difference(rgb, target_value), target_name] for target_name, target_value in target_colors.items()]
+        differences.sort()
         my_color_name = differences[0][1]
 
         # Retrieve translation from JSON.
         error, missing_role, missing_role_desc, team_already_assigned, team_already_assigned_desc, insufficient_perm, missing_perm, team_welcome, team_welcome_desc = await self.bot.get_cog(
-            "Utils").get_translation(message.guild.id,
+            "Utils").get_translation(interaction.guild.id,
                                      "ERROR MISSING_ROLE MISSING_ROLE_DESC TEAM_ALREADY_ASSIGNED TEAM_ALREADY_ASSIGNED_DESC INSUFFICIENT_PERM MISSING_PERM TEAM_WELCOME TEAM_WELCOME_DESC")
 
-        role = discord.utils.get(message.guild.roles, name=f'{my_color_name}')  # Uppercase
+        role = discord.utils.get(interaction.guild.roles, name=f'{my_color_name}')  # Uppercase
         if role is None:
-            role = discord.utils.get(message.guild.roles, name=f'{my_color_name.lower()}')  # Lowercase
+            role = discord.utils.get(interaction.guild.roles, name=f'{my_color_name.lower()}')  # Lowercase
             if role is None:
                 embed = discord.Embed(title=f"{error} - {missing_role}",
                                       description=f"{my_color_name} {missing_role_desc}",
                                       color=discord.Colour.red())
-                await message.channel.send(embed=embed, delete_after=20)
+                await interaction.response.send_message(embed=embed)
                 return
 
-        for author_role in message.author.roles:
+        for author_role in interaction.user.roles:
             if author_role.name.lower() in ['valor', 'instinct', 'mystic']:
                 embed = discord.Embed(title=f"{error} - {team_already_assigned}",
                                       description=team_already_assigned_desc,
                                       color=discord.Colour.red())
-                await message.channel.send(embed=embed, delete_after=20)
+                await interaction.response.send_message(embed=embed)
                 return
 
         try:
-            await message.author.add_roles(role)
+            await interaction.user.add_roles(role)
         except discord.Forbidden:
             embed = discord.Embed(title=f"{error} - {insufficient_perm}",
                                   description=missing_perm,
                                   color=discord.Colour.red())
-            await message.channel.send(embed=embed, delete_after=20)
+            await interaction.response.send_message(embed=embed)
             return
 
+        target_images = {
+            "Valor": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_red.png",
+            "Instinct": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_yellow.png",
+            "Mystic": "https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/static_assets/png/team_blue.png"
+        }
+
         embed = discord.Embed(title=f"{team_welcome} {my_color_name}!",
-                              description=f"{message.author.mention} {team_welcome_desc}",
-                              color=discord.Color((RGB[0] << 16) + (RGB[1] << 8) + RGB[2]))
-        embed.set_thumbnail(url=TARGET_IMAGES[my_color_name])
-        await message.channel.send(embed=embed)
+                              description=f"{interaction.user.mention} {team_welcome_desc}",
+                              color=discord.Color((rgb[0] << 16) + (rgb[1] << 8) + rgb[2]))
+        embed.set_thumbnail(url=target_images[my_color_name])
+        await interaction.response.send_message(embed=embed)
 
 
 async def setup(bot: commands.Bot) -> None:

@@ -60,14 +60,14 @@ async def main():
                   # 'cogs.pokebox',
                   # 'cogs.pokebattler',
                   # 'cogs.point_of_interest',
-                  # 'cogs.ocr',
+                  'cogs.ocr',
                   # 'cogs.research',
                   # 'cogs.trade',
                   # 'cogs.rocket_stop',
                   # 'cogs.trade'
                   ]
 
-    async with CustomBot(commands.when_mentioned, initial_extensions=extensions, intents=intents) as bot:
+    async with CustomBot(commands.when_mentioned, initial_extensions=extensions, intents=intents, activity=discord.Game(name='Pokémon GO', type=0)) as bot:
         if config.getboolean('TOKEN', 'is-developing'):
             log.info("Running with Development token")
             token = config['TOKEN']['dev-token']
