@@ -83,6 +83,10 @@ class OCR(commands.Cog):
         # Scan Profile Image
         if str(interaction.channel.id) == profile_channel_id:
             await self.ocr_team_image(interaction, image)
+        else:
+            channel = interaction.guild.get_channel(int(profile_channel_id)) if profile_channel_id is not None else None
+            mention = channel.mention if channel is not None else "<not set, use set_profile_scan>"
+            await interaction.response.send_message(f'You are not allowed to use this command here.\nUse the channel: {mention}.', ephemeral=True)
 
         # Scan Exraid Image
         # elif str(interaction.channel.id) == exraid_channel_id:
