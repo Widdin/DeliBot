@@ -77,5 +77,5 @@ class CommandErrorHandler(commands.Cog):
                 await ctx.send("You forgot to give me input to repeat!")
 
 
-def setup(bot):
-    bot.add_cog(CommandErrorHandler(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(CommandErrorHandler(bot))

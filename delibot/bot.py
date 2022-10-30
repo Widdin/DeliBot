@@ -1,62 +1,81 @@
+import asyncio
 import logging
+import logging.handlers
+from datetime import datetime
+from typing import List, Optional
 
 import discord
 from discord.ext import commands
-from datetime import datetime
+
 from utils import default
 
-logging.basicConfig(format='%(asctime)s [%(filename)14s:%(lineno)4d][%(funcName)30s][%(levelname)8s] %(message)s',
-                    level=logging.INFO)
 
-fileHandler = logging.FileHandler(filename='logs/' + '{:%Y-%m-%d}.log'.format(datetime.now()))
-formatter = logging.Formatter('%(asctime)s [%(filename)14s:%(lineno)4d][%(levelname)8s] %(message)s')
-fileHandler.setFormatter(formatter)
+class CustomBot(commands.Bot):
+    def __init__(
+            self,
+            *args,
+            initial_extensions: List[str],
+            testing_guild_id: Optional[int] = None,
+            **kwargs,
+    ):
+        super().__init__(*args, **kwargs)
+        self.db_pool = None
+        self.testing_guild_id = testing_guild_id
+        self.initial_extensions = initial_extensions
 
-log = logging.getLogger()
-log.addHandler(fileHandler)
+    async def setup_hook(self) -> None:
+        for extension in self.initial_extensions:
+            await self.load_extension(extension)
 
-config = default.get_config()
-
-initial_extensions = ['cogs.owner',
-                      'cogs.raid',
-                      'cogs.utils',
-                      'cogs.raw_reaction',
-                      'cogs.exraid',
-                      'cogs.silphroad',
-                      'cogs.pokebox',
-                      'cogs.pokebattler',
-                      'cogs.point_of_interest',
-                      'cogs.community',
-                      'cogs.ocr',
-                      'cogs.admin',
-                      'cogs.research',
-                      'cogs.trade',
-                      'cogs.rocket_stop',
-                      'utils.db']
-
-intents = discord.Intents.default()
-intents.members = True
-
-bot = commands.Bot(command_prefix=config['SETTINGS']['prefix'],
-                   intents=intents,
-                   activity=discord.Game(name='Pokémon GO', type=1))
-bot.remove_command('help')
+        if self.testing_guild_id:
+            guild = discord.Object(self.testing_guild_id)
+            self.tree.copy_global_to(guild=guild)
+            await self.tree.sync(guild=guild)
 
 
-@bot.event
-async def on_ready():
-    log.info(f'Logged in as: {bot.user.name} - {bot.user.id} | Version: {discord.__version__}\n')
+async def main():
+    logging.basicConfig(format='%(asctime)s [%(filename)14s:%(lineno)4d][%(funcName)30s][%(levelname)8s] %(message)s',
+                        level=logging.INFO)
+    file_handler = logging.FileHandler(filename='logs/' + '{:%Y-%m-%d}.log'.format(datetime.now()))
+    formatter = logging.Formatter('%(asctime)s [%(filename)14s:%(lineno)4d][%(levelname)8s] %(message)s')
+    file_handler.setFormatter(formatter)
+
+    log = logging.getLogger()
+    log.addHandler(file_handler)
+
+    config = default.get_config()
+
+    intents = discord.Intents.default()
+    intents.members = True
+
+    extensions = ['utils.db',
+                  'utils.utils',
+                  'cogs.owner',
+                  'cogs.raid',
+                  'cogs.raw_reaction',
+                  'cogs.exraid',
+                  'cogs.community',
+                  'cogs.admin',
+                  # 'cogs.silphroad',
+                  # 'cogs.pokebox',
+                  # 'cogs.pokebattler',
+                  # 'cogs.point_of_interest',
+                  'cogs.ocr',
+                  # 'cogs.research',
+                  # 'cogs.trade',
+                  # 'cogs.rocket_stop',
+                  # 'cogs.trade'
+                  ]
+
+    async with CustomBot(commands.when_mentioned, initial_extensions=extensions, intents=intents, activity=discord.Game(name='Pokémon GO', type=0)) as bot:
+        if config.getboolean('TOKEN', 'is-developing'):
+            log.info("Running with Development token")
+            token = config['TOKEN']['dev-token']
+        else:
+            log.info("Running with Production token")
+            token = config['TOKEN']['prod-token']
+
+        await bot.start(token)
 
 
-if __name__ == '__main__':
-    for extension in initial_extensions:
-        bot.load_extension(extension)
-
-    if config.getboolean('TOKEN', 'is-developing'):
-        log.info("Running with Development token")
-        TOKEN = config['TOKEN']['dev-token']
-    else:
-        log.info("Running with Production token")
-        TOKEN = config['TOKEN']['prod-token']
-
-    bot.run(TOKEN, bot=True, reconnect=True)
+asyncio.run(main())

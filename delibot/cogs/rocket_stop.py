@@ -69,5 +69,5 @@ class RocketStop(commands.Cog):
                 pass
 
 
-def setup(bot):
-    bot.add_cog(RocketStop(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(RocketStop(bot))

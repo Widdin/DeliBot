@@ -485,5 +485,5 @@ class Pokebattler(commands.Cog):
                     return await response.json()
 
 
-def setup(bot):
-    bot.add_cog(Pokebattler(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(Pokebattler(bot))
