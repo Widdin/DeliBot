@@ -1,7 +1,7 @@
 import re
 from io import BytesIO
 from typing import Literal
-
+from datetime import datetime
 import aiohttp
 import discord
 import pytesseract
@@ -275,6 +275,18 @@ class OCR(commands.Cog):
                               color=discord.Color((rgb[0] << 16) + (rgb[1] << 8) + rgb[2]))
         embed.set_thumbnail(url=target_images[my_color_name])
         await interaction.response.send_message(embed=embed)
+
+        log_channel_id = await self.bot.get_cog("Utils").get_log_channel(interaction.guild.id)
+        if log_channel_id is not None:
+            log_channel = interaction.guild.get_channel(int(log_channel_id))
+
+            embed = discord.Embed(title="[SCAN_TEAM]",
+                                  description=f'➥ :bust_in_silhouette: {interaction.user.mention} ({interaction.user}) was assigned to ({my_color_name}) with the attached image,',
+                                  color=discord.Color.green())
+            embed.set_image(url=img_url)
+            embed.timestamp = datetime.utcnow()
+
+            await log_channel.send(embed=embed)
 
 
 async def setup(bot: commands.Bot) -> None:
