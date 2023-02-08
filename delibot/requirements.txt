@@ -9,7 +9,7 @@ bs4==0.0.1
 certifi==2019.3.9
 cffi==1.12.2
 chardet==3.0.4
-cryptography==3.3.2
+cryptography==39.0.1
 cssselect==1.0.3
 discord.py==1.7.1
 fake-useragent==0.1.11
